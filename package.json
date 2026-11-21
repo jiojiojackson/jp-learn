@@ -1,0 +1,13 @@
+{
+  "name": "jp-learn",
+  "version": "1.0.0",
+  "private": true,
+  "description": "日语专注修行：游戏化学习计时器，部署在 Cloudflare Workers + D1",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.45.0"
+  }
+}

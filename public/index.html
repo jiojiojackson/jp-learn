@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>日语专注修行</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EEF1F8;--surface:#fff;--ink:#16204A;--muted:#5C6690;--line:#D5DBEC;--gold:#F2B93B;--goldink:#3A2A00;--pink:#D6456B;--pri:#243B8F;--priink:#fff;--ok:#2E8B6E;
+--disp:"Dela Gothic One","Zen Kaku Gothic New",sans-serif;--body:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1430;--surface:#18204A;--ink:#EAEFFF;--muted:#9AA6D6;--line:#2A3566;--pri:#6F8CFF;--priink:#0E1430;--ok:#52C9A2;--pink:#F27C9B;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0E1430;--surface:#18204A;--ink:#EAEFFF;--muted:#9AA6D6;--line:#2A3566;--pri:#6F8CFF;--priink:#0E1430;--ok:#52C9A2;--pink:#F27C9B;color-scheme:dark}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.6;padding:0 16px 150px}
+main{max-width:560px;margin:0 auto}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+h1,h2{margin:0;font-weight:700}
+h2{font-size:1.05rem;margin:28px 0 10px}
+.top{padding:22px 0 6px}
+.top h1{font-family:var(--disp);font-size:1.5rem;font-weight:400;letter-spacing:.02em}
+.hud{display:flex;align-items:center;gap:14px;margin-top:12px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.lv{font-family:var(--disp);font-size:1.6rem;color:var(--pri);min-width:3.4ch}
+.xp{flex:1}
+.xp small{color:var(--muted)}
+.track{height:10px;border-radius:6px;background:var(--line);overflow:hidden;margin-top:4px}
+.track i{display:block;height:100%;background:var(--gold);transition:width .4s}
+.pts{text-align:right}
+.pts b{display:block;font-family:var(--disp);font-weight:400;font-size:1.7rem;line-height:1.1}
+.pts small{color:var(--muted)}
+.goal{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:12px}
+.goal.on{border-color:var(--pri)}
+.goal header{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.pick{background:none;border:0;padding:0;font-weight:700;font-size:1.05rem;text-align:left}
+.cnt{font-family:var(--disp);font-size:1.2rem}
+.bar{height:12px;border-radius:7px;background:var(--line);margin:10px 0 8px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);transition:width .35s}
+.goal footer{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:.85rem}
+.goal .meta{flex:1}
+.ghost{background:none;border:0;color:var(--muted);padding:4px 6px;font-size:.85rem;text-decoration:underline}
+.ghost:disabled{opacity:.4;cursor:default}
+.tap{width:100%;margin-top:10px;min-height:52px;border:0;border-radius:12px;background:var(--gold);color:var(--goldink);font-weight:700;font-size:1.05rem}
+.tap:active{transform:scale(.98)}
+.tap:disabled{background:var(--line);color:var(--muted);cursor:default}
+.add{display:flex;gap:8px;flex-wrap:wrap}
+.add input{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-height:44px}
+.add .nm{flex:1 1 170px}.add .num{width:92px}
+.btn{min-height:44px;padding:0 16px;border-radius:10px;border:0;background:var(--pri);color:var(--priink);font-weight:700}
+.empty{color:var(--muted);margin:4px 0 12px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.cell{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.cell b{display:block;font-family:var(--disp);font-weight:400;font-size:1.25rem}
+.cell small{color:var(--muted)}
+.week{display:flex;gap:6px;align-items:flex-end;height:130px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 10px 8px}
+.col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:.72rem;color:var(--muted)}
+.col .b{width:100%;max-width:30px;border-radius:5px 5px 0 0;background:var(--pri);min-height:2px}
+.col.today .b{background:var(--gold)}
+.note{color:var(--muted);font-size:.9rem;margin:8px 0 0}
+.rank{list-style:none;margin:0;padding:0}
+.rank li{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:6px}
+.rank li.me{border-color:var(--gold);border-width:2px}
+.no{font-family:var(--disp);width:2.1rem;height:2.1rem;border-radius:50%;display:grid;place-items:center;background:var(--line)}
+.rank li:nth-child(1) .no{background:var(--gold);color:var(--goldink)}
+.rank li:nth-child(2) .no{background:#B9C2DA;color:#1d2540}
+.rank li:nth-child(3) .no{background:#D79B6B;color:#2c1500}
+.rank .d{flex:1}.rank .d small{display:block;color:var(--muted)}
+.rank .p{font-family:var(--disp);font-size:1.2rem}
+.badges{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.bd{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.bd.lock{opacity:.5}
+.bd b{display:block}.bd small{color:var(--muted)}
+.bd.got b{color:var(--pink)}
+.dock{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:0 16px calc(12px + env(safe-area-inset-bottom,0px));z-index:5}
+.dock .strip{height:5px;background:var(--line);margin:0 -16px 10px}
+.dock .strip i{display:block;height:100%;width:0;background:var(--gold);transition:width 1s linear}
+.dockin{max-width:560px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.clock{flex:1;min-width:0}
+.clock b{display:block;font-family:var(--disp);font-weight:400;font-size:1.9rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.clock small{display:block;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.go{min-width:112px;min-height:56px;border:0;border-radius:28px;background:var(--pri);color:var(--priink);font-weight:700;font-size:1.1rem;padding:0 22px}
+.go.run{background:var(--pink);color:#fff}
+.fin{min-height:44px;padding:0 6px;background:none;border:0;color:var(--muted);text-decoration:underline}
+.toast{position:fixed;left:50%;bottom:calc(110px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:20px;font-weight:700;font-size:.9rem;opacity:0;pointer-events:none;transition:opacity .25s;z-index:9;max-width:90%;text-align:center}
+.toast.on{opacity:1}
+.veil{position:fixed;inset:0;background:rgba(10,14,36,.6);display:none;align-items:center;justify-content:center;padding:16px;z-index:20}
+.veil.on{display:flex}
+.card{background:var(--surface);border-radius:20px;padding:20px;max-width:420px;width:100%;max-height:90%;overflow:auto}
+.card h2{margin-top:0;font-family:var(--disp);font-weight:400;font-size:1.35rem}
+.card .grid{margin:12px 0}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<div class="top">
+  <h1>日语专注修行</h1>
+  <small class="note" id="sync" style="margin:0">连接中…</small>
+  <div class="hud" id="hud"></div>
+</div>
+
+<h2>学习目标</h2>
+<div id="goals"></div>
+<div class="add">
+  <input class="nm" id="gname" placeholder="目标，例如：N3 单词" maxlength="30">
+  <input class="num" id="gtotal" type="number" min="1" max="999" placeholder="项目数">
+  <button class="btn" id="gadd">添加目标</button>
+</div>
+
+<div id="dash"></div>
+</main>
+
+<div class="dock">
+  <div class="strip"><i id="strip"></i></div>
+  <div class="dockin">
+    <div class="clock"><b id="clk">00:00</b><small id="sub">选择目标后点击开始</small></div>
+    <button class="fin" id="end" hidden>结束</button>
+    <button class="go" id="go">开始</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="veil" id="veil"><div class="card" id="card"></div></div>
+
+<script>
+const TOKEN_KEY="jp-focus-token";
+let S={goals:[],activeId:null,days:{},session:null,badges:{},flags:{}},pendDel=null,tickN=0,toastT=null;
+let loaded=false,rev=0,pushT=null,pushing=false,again=false,lock=false;
+const dirty=new Set();
+
+/* ---- sync with Cloudflare D1 (via the Worker API) ---- */
+const tok=()=>{try{return localStorage.getItem(TOKEN_KEY)||""}catch(e){return""}};
+function api(method,body,keep){const h={"content-type":"application/json"},t=tok();if(t)h.Authorization="Bearer "+t;
+  return fetch("/api/state",{method,headers:h,body:body?JSON.stringify(body):undefined,keepalive:!!keep})}
+function setSync(t){const el=document.getElementById("sync");if(el)el.textContent=t}
+function modal(html,locked){lock=!!locked;document.getElementById("card").innerHTML=html;document.getElementById("veil").classList.add("on")}
+function unmodal(){lock=false;document.getElementById("veil").classList.remove("on")}
+function save(){if(!loaded)return;setSync("待同步");clearTimeout(pushT);pushT=setTimeout(push,800)}
+async function push(keep){
+  if(!loaded)return;
+  if(pushing){again=true;return}
+  clearTimeout(pushT);pushT=null;pushing=true;
+  if(S.session)flush();
+  const ks=[...dirty];dirty.clear();
+  const body={rev,goals:S.goals,activeId:S.activeId,session:S.session,badges:S.badges,flags:S.flags,days:Object.fromEntries(ks.map(k=>[k,S.days[k]]))};
+  setSync("同步中…");
+  try{
+    const r=await api("PUT",body,keep);
+    if(r.status===409){pushing=false;await pull(true);toast("已载入其他设备的最新数据，请重做刚才的操作");return}
+    if(r.status===401){pushing=false;ks.forEach(k=>dirty.add(k));askToken();return}
+    if(!r.ok)throw new Error("http "+r.status);
+    rev=(await r.json()).rev;setSync("已同步");
+  }catch(e){ks.forEach(k=>dirty.add(k));setSync("同步失败，10 秒后重试");pushT=setTimeout(push,10000)}
+  pushing=false;if(again){again=false;push()}
+}
+async function pull(force){
+  if(!force&&(dirty.size||pushT))await push();
+  const r=await api("GET");
+  if(r.status===401){askToken();return false}
+  if(!r.ok)throw new Error("http "+r.status);
+  const j=await r.json();
+  S=Object.assign({goals:[],days:{},activeId:null,session:null,badges:{},flags:{}},j.state);
+  rev=j.rev;dirty.clear();loaded=true;setSync("已同步");render();return true;
+}
+function askToken(){
+  modal(`<h2>需要访问口令</h2><p class="note">请输入部署时设置的 ACCESS_TOKEN。</p>
+  <input id="tk" type="password" autocomplete="current-password" style="width:100%;font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);min-height:44px;margin-top:10px">
+  <button class="btn" id="tkok" style="width:100%;margin-top:12px">确认</button>`,true);
+  const go=()=>{try{localStorage.setItem(TOKEN_KEY,document.getElementById("tk").value.trim())}catch(e){}boot()};
+  document.getElementById("tkok").onclick=go;
+  document.getElementById("tk").onkeydown=e=>{if(e.key==="Enter")go()};
+}
+async function boot(){
+  modal('<p class="note">正在加载数据…</p>',true);
+  try{if(await pull(true))unmodal()}
+  catch(e){modal('<h2>无法连接服务器</h2><p class="note">请检查网络后重试。</p><button class="btn" id="retry" style="width:100%;margin-top:12px">重试</button>',true);document.getElementById("retry").onclick=boot}
+}
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pad=n=>String(n).padStart(2,"0");
+const dk=(d=new Date())=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const day=k=>{dirty.add(k);return S.days[k]||(S.days[k]={ms:0,pauseMs:0,items:0,pts:0,sessions:0,pauses:0,best:0})};
+const goal=id=>S.goals.find(g=>g.id===id);
+const clock=ms=>{const t=Math.floor(ms/1000),h=Math.floor(t/3600),m=Math.floor(t%3600/60),s=t%60;return(h?h+":"+pad(m):pad(m))+":"+pad(s)};
+const mins=ms=>{const m=Math.round(ms/60000);return m>=60?Math.floor(m/60)+" 小时 "+(m%60)+" 分":m+" 分钟"};
+const BLOCK=25*60000;
+
+function live(){const s=S.session;if(!s)return{act:0,pau:0};const d=Date.now()-s.since;return{act:s.act+(s.run?d:0),pau:s.pau+(s.run?0:d)}}
+function flush(){const s=S.session;if(!s||!s.run)return;const n=Date.now(),d=n-s.since,g=goal(S.activeId);s.act+=d;if(g)g.ms=(g.ms||0)+d;s.since=n}
+function ds(k){const d=S.days[k]||{},t=k===dk()&&S.session,l=t?live():{act:0,pau:0};
+  return{ms:(d.ms||0)+l.act,pau:(d.pauseMs||0)+l.pau,items:d.items||0,pts:(d.pts||0)+Math.floor(l.act/60000),pauses:(d.pauses||0)+(t?S.session.pauses:0),best:Math.max(d.best||0,t?S.session.best:0)}}
+const focus=x=>x.ms+x.pau>0?Math.round(x.ms/(x.ms+x.pau)*100):null;
+function allKeys(){const a=Object.keys(S.days);if(!a.includes(dk()))a.push(dk());return a}
+function totalPts(){return allKeys().reduce((n,k)=>n+ds(k).pts,0)}
+function streak(){let n=0;const d=new Date();for(let i=0;i<400;i++){const x=ds(dk(d));if(x.ms>0||x.items>0)n++;else if(i>0)break;d.setDate(d.getDate()-1)}return n}
+
+const BADGES=[
+{id:"first",n:"初次出击",d:"完成第 1 个项目",f:()=>allKeys().some(k=>ds(k).items>0)},
+{id:"block",n:"二十五分钟",d:"连续专注 25 分钟不暂停",f:()=>allKeys().some(k=>ds(k).best>=BLOCK)},
+{id:"p100",n:"百分日",d:"单日积分达到 100",f:()=>allKeys().some(k=>ds(k).pts>=100)},
+{id:"streak",n:"三日连击",d:"连续 3 天学习",f:()=>streak()>=3},
+{id:"goal",n:"目标达成",d:"完成一个学习目标",f:()=>!!S.flags.goal},
+{id:"calm",n:"心如止水",d:"一次学习专注度 90% 以上（至少 10 分钟）",f:()=>!!S.flags.calm}];
+function checkBadges(){BADGES.forEach(b=>{if(!S.badges[b.id]&&b.f()){S.badges[b.id]=dk();day(dk()).pts+=30;toast("解锁成就「"+b.n+"」 +30 分")}})}
+
+function toast(t){const el=$("#toast");el.textContent=t;el.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove("on"),2400)}
+
+/* ---- actions ---- */
+function addGoal(){const name=$("#gname").value.trim(),total=parseInt($("#gtotal").value,10);
+  if(!name||!(total>=1)){toast("请填写目标名称和项目数");return}
+  const g={id:Date.now().toString(36),name,total:Math.min(total,999),done:0,ms:0};S.goals.push(g);if(!S.activeId)S.activeId=g.id;
+  $("#gname").value="";$("#gtotal").value="";save();render()}
+function inc(g){if(g.done>=g.total)return;g.done++;const d=day(dk());d.pts+=10;d.items++;if(S.session)S.session.items++;
+  if(g.done>=g.total){d.pts+=50;S.flags.goal=1;toast("目标「"+g.name+"」达成！ +60 分")}else toast("+10 分");
+  checkBadges();save();render()}
+function undo(g){if(g.done<=0)return;const d=day(dk());g.done--;d.items=Math.max(0,d.items-1);d.pts=Math.max(0,d.pts-10);save();render()}
+function del(g){if(pendDel!==g.id){pendDel=g.id;renderGoals();setTimeout(()=>{if(pendDel===g.id){pendDel=null;renderGoals()}},3000);return}
+  flush();S.goals=S.goals.filter(x=>x!==g);if(S.activeId===g.id)S.activeId=S.goals[0]?S.goals[0].id:null;pendDel=null;save();render()}
+function pick(g){flush();S.activeId=g.id;save();render()}
+function toggle(){
+  if(!goal(S.activeId)){toast("先添加并选择一个学习目标");return}
+  const n=Date.now();let s=S.session;
+  if(!s)S.session={run:true,since:n,act:0,pau:0,pauses:0,items:0,best:0,blockStart:n,blockAwarded:0,startDay:dk()};
+  else if(s.run){flush();s.run=false;s.since=n;s.pauses++;s.blockStart=null;s.blockAwarded=0}
+  else{s.pau+=n-s.since;s.run=true;s.since=n;s.blockStart=n;s.blockAwarded=0}
+  save();render()}
+function endSession(){const s=S.session;if(!s)return;
+  if(s.run)flush();else s.pau+=Date.now()-s.since;
+  const d=day(s.startDay),m=Math.floor(s.act/60000),f=s.act+s.pau>0?Math.round(s.act/(s.act+s.pau)*100):0;
+  d.ms+=s.act;d.pauseMs+=s.pau;d.sessions++;d.pauses+=s.pauses;d.best=Math.max(d.best,s.best);d.pts+=m;
+  if(f>=90&&s.act>=600000)S.flags.calm=1;
+  S.session=null;checkBadges();save();render();
+  const msg=s.act<60000?"这次时间太短，先坐稳再开始。":f>=90?"专注度极高，几乎没有被打断。":f>=70?"不错，再减少几次暂停会更稳。":"暂停偏多。下次把单次学习缩短到 15 分钟，完成后再休息。";
+  $("#card").innerHTML=`<h2>本次学习结束</h2><div class="grid">
+  <div class="cell"><b>${mins(s.act)}</b><small>专注时长</small></div>
+  <div class="cell"><b>${f}%</b><small>专注度</small></div>
+  <div class="cell"><b>${s.pauses}</b><small>暂停次数</small></div>
+  <div class="cell"><b>${s.items}</b><small>完成项目</small></div>
+  <div class="cell"><b>${Math.floor(s.best/60000)} 分</b><small>最长连续</small></div>
+  <div class="cell"><b>+${m+s.items*10}</b><small>本次积分</small></div></div>
+  <p class="note">${msg}</p><button class="btn" id="close" style="width:100%;margin-top:14px">关闭</button>`;
+  $("#veil").classList.add("on")}
+
+/* ---- render ---- */
+function renderGoals(){
+  $("#goals").innerHTML=S.goals.length?S.goals.map(g=>{
+    const p=Math.min(100,Math.round(g.done/g.total*100)),fin=g.done>=g.total,on=g.id===S.activeId;
+    return `<article class="goal${on?" on":""}" data-id="${g.id}">
+    <header><button class="pick" data-a="pick">${esc(g.name)}</button><span class="cnt">${g.done}/${g.total}</span></header>
+    <div class="bar"><i style="width:${p}%"></i></div>
+    <footer><span class="meta">${on?"当前计时目标 · ":""}累计 ${Math.floor((g.ms||0)/60000)} 分钟</span>
+    <button class="ghost" data-a="undo" ${g.done?"":"disabled"}>撤销</button>
+    <button class="ghost" data-a="del">${pendDel===g.id?"再点确认删除":"删除"}</button></footer>
+    <button class="tap" data-a="inc" ${fin?"disabled":""}>${fin?"目标已达成":"完成一项　+10 分"}</button></article>`}).join(""):
+    `<p class="empty">先添加一个目标，例如「N3 单词」共 30 个项目。完成一个就点一下，进度和积分会自动增加。</p>`}
+
+function renderDash(){
+  const t=dk(),x=ds(t),f=focus(x),tot=totalPts(),lv=Math.floor(Math.sqrt(tot/40))+1,base=40*(lv-1)**2,next=40*lv*lv;
+  const titles=["见习生","初学者","修行者","熟练者","达人","师范","名人","仙人"];
+  $("#hud").innerHTML=`<div class="lv">Lv.${lv}</div><div class="xp"><b>${titles[Math.min(lv-1,titles.length-1)]}</b><div class="track"><i style="width:${Math.min(100,(tot-base)/(next-base)*100)}%"></i></div><small>距下一级还差 ${next-tot} 分</small></div><div class="pts"><b>${x.pts}</b><small>今日积分</small></div>`;
+
+  const wk=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);wk.push({k:dk(d),w:"日一二三四五六"[d.getDay()]})}
+  const mx=Math.max(30,...wk.map(o=>ds(o.k).ms/60000)),fs=wk.map(o=>focus(ds(o.k))).filter(v=>v!==null),avg=fs.length?Math.round(fs.reduce((a,b)=>a+b,0)/fs.length):null;
+  const tip=avg===null?"开始第一次计时后，这里会显示每天的专注度。":avg>=85?"近七天专注度 "+avg+"%，状态很稳。":avg>=65?"近七天专注度 "+avg+"%，暂停略多，试试缩短单次时长。":"近七天专注度 "+avg+"%，容易被打断。每次只设 15 分钟的小目标。";
+
+  const rows=allKeys().map(k=>({k,...ds(k)})).filter(r=>r.pts>0).sort((a,b)=>b.pts-a.pts||b.k.localeCompare(a.k));
+  const idx=rows.findIndex(r=>r.k===t),lab=k=>k===t?"今天":k.slice(5);
+  const li=r=>`<li class="${r.k===t?"me":""}"><span class="no">${rows.indexOf(r)+1}</span><span class="d"><b>${lab(r.k)}</b><small>${mins(r.ms)} · 专注度 ${focus(r)===null?"—":focus(r)+"%"} · ${r.items} 项</small></span><span class="p">${r.pts}</span></li>`;
+  let list=rows.slice(0,7).map(li).join("");if(idx>=7)list+=li(rows[idx]);
+  const head=!rows.length?"完成第一个项目，榜单就开始了。":idx===0?(rows.length>1?"今天是历史最高分，继续保持。":"今天暂列第 1。"):idx<0?"今天还没有积分，点一下完成项目就能上榜。":`今天排第 ${idx+1} 名，再得 ${rows[0].pts-rows[idx].pts+1} 分就能刷新最高纪录。`;
+
+  $("#dash").innerHTML=`<h2>今日数据</h2><div class="grid">
+  <div class="cell"><b>${mins(x.ms)}</b><small>专注时长</small></div>
+  <div class="cell"><b>${f===null?"—":f+"%"}</b><small>专注度</small></div>
+  <div class="cell"><b>${x.items}</b><small>完成项目</small></div>
+  <div class="cell"><b>${x.pauses}</b><small>暂停次数</small></div>
+  <div class="cell"><b>${Math.floor(x.best/60000)} 分</b><small>最长连续</small></div>
+  <div class="cell"><b>${streak()} 天</b><small>连续学习</small></div></div>
+  <h2>近七天专注时长</h2><div class="week">${wk.map(o=>{const v=ds(o.k),h=Math.round(v.ms/60000/mx*80);return `<div class="col${o.k===t?" today":""}"><span>${focus(v)===null?"":focus(v)+"%"}</span><div class="b" style="height:${h}px"></div><span>${o.w}</span></div>`}).join("")}</div>
+  <p class="note">${tip}</p>
+  <h2>每日成就排行榜</h2><p class="note" style="margin:0 0 8px">${head}</p><ol class="rank">${list}</ol>
+  <h2>成就奖励（每个 +30 分）</h2><div class="badges">${BADGES.map(b=>`<div class="bd ${S.badges[b.id]?"got":"lock"}"><b>${b.n}</b><small>${b.d}</small></div>`).join("")}</div>`}
+
+function renderBar(){
+  const s=S.session,l=live(),g=goal(S.activeId);
+  $("#clk").textContent=clock(l.act);
+  $("#sub").textContent=!s?(g?"目标：" + g.name:"选择目标后点击开始"):(s.run?"计时中":"已暂停")+" · "+(g?g.name:"");
+  const b=$("#go");b.textContent=!s?"开始":s.run?"暂停":"继续";b.classList.toggle("run",!!(s&&s.run));
+  $("#end").hidden=!s;
+  const bl=s&&s.run?Math.min(1,(Date.now()-s.blockStart)/BLOCK):0;$("#strip").style.width=(bl*100)+"%"}
+
+function render(){renderGoals();renderDash();renderBar()}
+
+/* ---- events ---- */
+$("#gadd").onclick=addGoal;
+$("#gname").onkeydown=$("#gtotal").onkeydown=e=>{if(e.key==="Enter")addGoal()};
+$("#goals").onclick=e=>{const b=e.target.closest("button[data-a]");if(!b)return;const g=goal(b.closest(".goal").dataset.id);if(!g)return;
+  ({pick,inc,undo,del})[b.dataset.a](g)};
+$("#go").onclick=toggle;
+$("#end").onclick=endSession;
+$("#veil").onclick=e=>{if(lock)return;if(e.target.id==="veil"||e.target.id==="close")unmodal()};
+
+setInterval(()=>{
+  tickN++;const s=S.session;
+  if(s&&s.run){const n=Date.now(),b=n-s.blockStart;s.best=Math.max(s.best,b);const a=Math.floor(b/BLOCK);
+    if(a>s.blockAwarded){const add=a-s.blockAwarded;s.blockAwarded=a;day(dk()).pts+=20*add;toast("连续专注 25 分钟 +"+20*add+" 分");checkBadges();save();renderDash()}}
+  renderBar();
+  if(tickN%10===0){if(S.session)flush();renderDash()}
+  if(tickN%60===0&&S.session&&loaded)save();
+},1000);
+render();
+boot();
+document.addEventListener("visibilitychange",()=>{
+  if(!loaded)return;
+  if(document.hidden){if(dirty.size||pushT||S.session)push(true)}
+  else pull().catch(()=>setSync("同步失败"));
+});
+addEventListener("pagehide",()=>{if(loaded&&(dirty.size||pushT))push(true)});
+</script>
+</body>
+</html>
