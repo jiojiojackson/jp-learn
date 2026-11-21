@@ -3,128 +3,279 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#EEF1F8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E1430" media="(prefers-color-scheme: dark)">
 <title>日语专注修行</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23F2B93B'/%3E%3Ctext x='32' y='47' font-size='40' font-weight='700' text-anchor='middle' fill='%233A2A00' font-family='sans-serif'%3E日%3C/text%3E%3C/svg%3E">
 <style>
-:root{--bg:#EEF1F8;--surface:#fff;--ink:#16204A;--muted:#5C6690;--line:#D5DBEC;--gold:#F2B93B;--goldink:#3A2A00;--pink:#D6456B;--pri:#243B8F;--priink:#fff;--ok:#2E8B6E;
---disp:"Dela Gothic One","Zen Kaku Gothic New",sans-serif;--body:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1430;--surface:#18204A;--ink:#EAEFFF;--muted:#9AA6D6;--line:#2A3566;--pri:#6F8CFF;--priink:#0E1430;--ok:#52C9A2;--pink:#F27C9B;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0E1430;--surface:#18204A;--ink:#EAEFFF;--muted:#9AA6D6;--line:#2A3566;--pri:#6F8CFF;--priink:#0E1430;--ok:#52C9A2;--pink:#F27C9B;color-scheme:dark}
-*,*::before,*::after{box-sizing:inherit}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.6;padding:0 16px 150px}
-main{max-width:560px;margin:0 auto}
-button{font:inherit;color:inherit;cursor:pointer}
+/* ============ 设计变量 ============ */
+:root{
+  --bg:#EEF1F8;--surface:#fff;--ink:#16204A;--muted:#5C6690;--line:#D5DBEC;--track:#E3E8F5;
+  --gold:#F2B93B;--goldink:#3A2A00;--pink:#D6456B;--pri:#243B8F;--priink:#fff;--ok:#2E8B6E;
+  --shadow:0 1px 2px rgba(22,32,74,.05),0 8px 24px -12px rgba(22,32,74,.18);
+  --r:16px;
+  /* 只用系统字体：中日英文统一风格，不依赖外部字体服务 */
+  --sans:system-ui,-apple-system,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei UI","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC","Source Han Sans SC","WenQuanYi Micro Hei","Hiragino Sans","Yu Gothic UI",sans-serif;
+  color-scheme:light;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1430;--surface:#18204A;--ink:#EAEFFF;--muted:#9AA6D6;--line:#2A3566;--track:#232D5E;
+  --pri:#6F8CFF;--priink:#0E1430;--ok:#52C9A2;--pink:#F27C9B;--shadow:none;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1430;--surface:#18204A;--ink:#EAEFFF;--muted:#9AA6D6;--line:#2A3566;--track:#232D5E;
+  --pri:#6F8CFF;--priink:#0E1430;--ok:#52C9A2;--pink:#F27C9B;--shadow:none;color-scheme:dark}
+
+/* ============ 基础 ============ */
+*,*::before,*::after{box-sizing:border-box}
+html{background:var(--bg);-webkit-text-size-adjust:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;
+  font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;
+  padding-top:env(safe-area-inset-top,0px)}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-appearance:none;appearance:none}
 button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
-h1,h2{margin:0;font-weight:700}
-h2{font-size:1.05rem;margin:28px 0 10px}
-.top{padding:22px 0 6px}
-.top h1{font-family:var(--disp);font-size:1.5rem;font-weight:400;letter-spacing:.02em}
-.hud{display:flex;align-items:center;gap:14px;margin-top:12px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
-.lv{font-family:var(--disp);font-size:1.6rem;color:var(--pri);min-width:3.4ch}
-.xp{flex:1}
-.xp small{color:var(--muted)}
-.track{height:10px;border-radius:6px;background:var(--line);overflow:hidden;margin-top:4px}
-.track i{display:block;height:100%;background:var(--gold);transition:width .4s}
-.pts{text-align:right}
-.pts b{display:block;font-family:var(--disp);font-weight:400;font-size:1.7rem;line-height:1.1}
-.pts small{color:var(--muted)}
-.goal{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:12px}
-.goal.on{border-color:var(--pri)}
-.goal header{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
-.pick{background:none;border:0;padding:0;font-weight:700;font-size:1.05rem;text-align:left}
-.cnt{font-family:var(--disp);font-size:1.2rem}
-.bar{height:12px;border-radius:7px;background:var(--line);margin:10px 0 8px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--ok);transition:width .35s}
-.goal footer{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:.85rem}
-.goal .meta{flex:1}
-.ghost{background:none;border:0;color:var(--muted);padding:4px 6px;font-size:.85rem;text-decoration:underline}
-.ghost:disabled{opacity:.4;cursor:default}
-.tap{width:100%;margin-top:10px;min-height:52px;border:0;border-radius:12px;background:var(--gold);color:var(--goldink);font-weight:700;font-size:1.05rem}
-.tap:active{transform:scale(.98)}
-.tap:disabled{background:var(--line);color:var(--muted);cursor:default}
-.add{display:flex;gap:8px;flex-wrap:wrap}
-.add input{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-height:44px}
-.add .nm{flex:1 1 170px}.add .num{width:92px}
-.btn{min-height:44px;padding:0 16px;border-radius:10px;border:0;background:var(--pri);color:var(--priink);font-weight:700}
-.empty{color:var(--muted);margin:4px 0 12px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.cell{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
-.cell b{display:block;font-family:var(--disp);font-weight:400;font-size:1.25rem}
-.cell small{color:var(--muted)}
-.week{display:flex;gap:6px;align-items:flex-end;height:130px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 10px 8px}
-.col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:.72rem;color:var(--muted)}
-.col .b{width:100%;max-width:30px;border-radius:5px 5px 0 0;background:var(--pri);min-height:2px}
-.col.today .b{background:var(--gold)}
+h1,h2{margin:0}
+h2{font-size:1.02rem;font-weight:700;margin-bottom:10px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+h2 small{font-weight:400;color:var(--muted);font-size:.8rem}
+small{font-size:.82rem}
 .note{color:var(--muted);font-size:.9rem;margin:8px 0 0}
+.sec+.sec,.sec+.sec-gap{margin-top:28px}
+
+/* ============ 页面骨架 ============ */
+.app{max-width:640px;margin:0 auto;padding:0 16px calc(150px + env(safe-area-inset-bottom,0px))}
+.top{display:flex;align-items:center;gap:12px;padding:18px 0 14px}
+.logo{flex:none;width:40px;height:40px;border-radius:12px;background:var(--gold);color:var(--goldink);display:grid;place-items:center;font-weight:800;font-size:1.3rem;line-height:1}
+.top h1{flex:1;font-size:1.3rem;font-weight:800;letter-spacing:.02em;line-height:1.2}
+.sync{flex:none;display:inline-flex;align-items:center;gap:6px;font-size:.78rem;color:var(--muted);padding:4px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line)}
+.sync::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok)}
+.sync[data-s="wait"]::before{background:var(--gold)}
+.sync[data-s="err"]::before{background:var(--pink)}
+.layout{margin-top:16px}
+.layout>main{margin-top:28px}
+
+/* ============ 等级卡 ============ */
+.hud{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow)}
+.lv{flex:none;width:56px;height:56px;border-radius:16px;background:var(--pri);color:var(--priink);display:grid;place-items:center;text-align:center;line-height:1}
+.lv small{display:block;font-size:.58rem;letter-spacing:.12em;opacity:.8;margin-bottom:3px}
+.lv b{font-size:1.5rem;font-weight:800}
+.xp{flex:1;min-width:0}
+.xp>b{font-weight:700}
+.xp small{color:var(--muted)}
+.track{height:10px;border-radius:6px;background:var(--track);overflow:hidden;margin:5px 0 4px}
+.track i{display:block;height:100%;background:var(--gold);border-radius:6px;transition:width .4s}
+.pts{flex:none;text-align:right}
+.pts b{display:block;font-size:1.9rem;font-weight:800;line-height:1.1}
+.pts small{color:var(--muted)}
+
+/* ============ 学习目标 ============ */
+.goal{background:var(--surface);border:2px solid var(--line);border-radius:var(--r);padding:14px 16px;margin-bottom:12px;box-shadow:var(--shadow);transition:border-color .2s}
+.goal.on{border-color:var(--pri)}
+.goal header{display:flex;align-items:center;gap:10px}
+.pick{flex:1;min-width:0;display:flex;align-items:center;gap:10px;background:none;border:0;padding:4px 0;min-height:36px;font-weight:700;font-size:1.02rem;text-align:left}
+.pick .dot{flex:none;width:18px;height:18px;border-radius:50%;border:2px solid var(--line);transition:border-color .2s,background .2s}
+.goal.on .pick .dot{border-color:var(--pri);background:radial-gradient(circle,var(--pri) 0 4.5px,transparent 5.5px)}
+.pick .nm{overflow-wrap:anywhere}
+.cnt{flex:none;font-weight:800;font-size:1.1rem}
+.cnt i{font-style:normal;font-weight:500;color:var(--muted);font-size:.9rem}
+.bar{height:10px;border-radius:6px;background:var(--track);margin:10px 0 8px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);border-radius:6px;transition:width .35s}
+.goal footer{display:flex;align-items:center;flex-wrap:wrap;gap:2px 4px;color:var(--muted);font-size:.85rem}
+.goal .meta{flex:1;min-width:0}
+.chip{font-style:normal;font-size:.72rem;font-weight:700;color:var(--priink);background:var(--pri);border-radius:999px;padding:1px 8px;margin-right:6px;white-space:nowrap}
+.ghost{background:none;border:0;border-radius:8px;color:var(--muted);padding:6px 10px;min-height:36px;font-size:.85rem}
+.ghost:disabled{opacity:.35;cursor:default}
+.ghost.warn{color:var(--pink);font-weight:700}
+.tap{width:100%;margin-top:6px;min-height:52px;border:0;border-radius:12px;background:var(--gold);color:var(--goldink);font-weight:700;font-size:1.05rem;transition:transform .08s,filter .15s}
+.tap:active:not(:disabled){transform:scale(.98)}
+.tap:disabled{background:var(--track);color:var(--muted);cursor:default}
+.cnt .done{font-style:normal;font-size:.72rem;font-weight:700;color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,transparent);border-radius:999px;padding:2px 9px;margin-right:8px;vertical-align:2px}
+.goal.fin footer{margin-top:-2px}
+.empty{color:var(--muted);margin:0 0 12px;padding:16px;border:2px dashed var(--line);border-radius:var(--r);text-align:center;font-size:.95rem;text-wrap:balance}
+
+/* 添加目标 */
+.add{display:grid;grid-template-columns:112px 1fr;gap:8px;margin-top:4px}
+.add .nm{grid-column:1/-1}
+.field{font:inherit;font-size:16px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 14px;min-height:48px;width:100%;min-width:0}
+.field::placeholder{color:var(--muted);opacity:.75}
+.btn{min-height:48px;padding:0 18px;border-radius:12px;border:0;background:var(--pri);color:var(--priink);font-weight:700}
+.btn:active{filter:brightness(.92)}
+.btn.block{width:100%;margin-top:14px}
+
+/* ============ 统计 ============ */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.cell{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow);min-width:0}
+.cell b{display:block;font-size:1.4rem;font-weight:800;line-height:1.2;white-space:nowrap}
+.cell b .u{font-size:.78rem;font-weight:600;color:var(--muted);margin:0 3px 0 2px}
+.cell small{color:var(--muted)}
+
+/* 近七天 */
+.week{--ch:112px;display:grid;grid-template-columns:repeat(7,1fr);gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 10px 10px;box-shadow:var(--shadow)}
+.col{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0;font-size:.74rem;color:var(--muted)}
+.col .v{height:1.1em;line-height:1.1;font-weight:700;color:var(--ink)}
+.col .t{width:100%;max-width:38px;height:var(--ch);background:var(--track);border-radius:8px;display:flex;align-items:flex-end;overflow:hidden}
+.col .b{width:100%;background:var(--pri);border-radius:8px}
+.col.today .b{background:var(--gold)}
+.col.today .w{color:var(--ink);font-weight:700}
+.col .f{height:1.1em;font-size:.68rem}
+
+/* 排行榜 */
 .rank{list-style:none;margin:0;padding:0}
-.rank li{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:6px}
-.rank li.me{border-color:var(--gold);border-width:2px}
-.no{font-family:var(--disp);width:2.1rem;height:2.1rem;border-radius:50%;display:grid;place-items:center;background:var(--line)}
+.rank li{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin-bottom:8px;box-shadow:var(--shadow)}
+.rank li.me{border:2px solid var(--gold);padding:9px 13px}
+.no{flex:none;width:2.1rem;height:2.1rem;border-radius:50%;display:grid;place-items:center;background:var(--track);font-weight:800;font-size:.95rem}
 .rank li:nth-child(1) .no{background:var(--gold);color:var(--goldink)}
 .rank li:nth-child(2) .no{background:#B9C2DA;color:#1d2540}
 .rank li:nth-child(3) .no{background:#D79B6B;color:#2c1500}
-.rank .d{flex:1}.rank .d small{display:block;color:var(--muted)}
-.rank .p{font-family:var(--disp);font-size:1.2rem}
-.badges{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.bd{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
-.bd.lock{opacity:.5}
-.bd b{display:block}.bd small{color:var(--muted)}
+.rank .d{flex:1;min-width:0}
+.rank .d b{font-weight:700}
+.rank .d small{display:block;color:var(--muted)}
+.rank .p{flex:none;font-size:1.3rem;font-weight:800}
+.rank .p i{font-style:normal;font-size:.75rem;font-weight:600;color:var(--muted);margin-left:2px}
+
+/* 成就 */
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.bd{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow)}
+.bd .ic{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--track);color:var(--muted)}
+.bd .tx{min-width:0}
+.bd b{display:block;line-height:1.3}
+.bd small{display:block;color:var(--muted);line-height:1.35}
+.bd.lock b{color:var(--muted)}
+.bd.got .ic{background:var(--gold);color:var(--goldink)}
 .bd.got b{color:var(--pink)}
-.dock{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:0 16px calc(12px + env(safe-area-inset-bottom,0px));z-index:5}
-.dock .strip{height:5px;background:var(--line);margin:0 -16px 10px}
-.dock .strip i{display:block;height:100%;width:0;background:var(--gold);transition:width 1s linear}
-.dockin{max-width:560px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.bd .when{margin-top:2px;font-size:.72rem}
+
+/* ============ 计时器（手机：底部固定条） ============ */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--surface);border-top:1px solid var(--line);
+  padding:0 16px calc(12px + env(safe-area-inset-bottom,0px));box-shadow:0 -10px 28px -14px rgba(22,32,74,.35)}
+.strip{height:4px;background:var(--track);margin:0 -16px 10px;overflow:hidden}
+.strip i{display:block;height:100%;width:0;background:var(--gold);transition:width 1s linear}
+.dockin{max-width:640px;margin:0 auto;display:flex;align-items:center;gap:10px}
 .clock{flex:1;min-width:0}
-.clock b{display:block;font-family:var(--disp);font-weight:400;font-size:1.9rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.clock b{display:block;font-size:2.1rem;font-weight:800;line-height:1.1;letter-spacing:.01em}
 .clock small{display:block;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.go{min-width:112px;min-height:56px;border:0;border-radius:28px;background:var(--pri);color:var(--priink);font-weight:700;font-size:1.1rem;padding:0 22px}
+.btns{flex:none;display:flex;align-items:center;gap:8px}
+.go{min-width:108px;min-height:54px;border:0;border-radius:999px;background:var(--pri);color:var(--priink);font-weight:700;font-size:1.1rem;padding:0 24px;transition:background .2s,transform .08s}
+.go:active{transform:scale(.97)}
 .go.run{background:var(--pink);color:#fff}
-.fin{min-height:44px;padding:0 6px;background:none;border:0;color:var(--muted);text-decoration:underline}
-.toast{position:fixed;left:50%;bottom:calc(110px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:20px;font-weight:700;font-size:.9rem;opacity:0;pointer-events:none;transition:opacity .25s;z-index:9;max-width:90%;text-align:center}
-.toast.on{opacity:1}
-.veil{position:fixed;inset:0;background:rgba(10,14,36,.6);display:none;align-items:center;justify-content:center;padding:16px;z-index:20}
+.fin{min-height:44px;padding:0 14px;border-radius:999px;background:none;border:1px solid var(--line);color:var(--muted);font-size:.92rem}
+.fin[hidden]{display:none}
+.kbd{display:none;margin:12px 0 0;text-align:center;font-size:.8rem;color:var(--muted)}
+.kbd kbd{font:inherit;font-size:.75rem;padding:1px 8px;border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;background:var(--bg);color:var(--ink)}
+
+/* 提示条 */
+.toast{position:fixed;left:50%;bottom:calc(112px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(6px);background:var(--ink);color:var(--bg);padding:9px 18px;border-radius:999px;font-weight:700;font-size:.9rem;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:30;width:max-content;max-width:calc(100vw - 32px);text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%)}
+
+/* 弹窗：手机为底部抽屉 */
+.veil{position:fixed;inset:0;background:rgba(10,14,36,.6);display:none;align-items:flex-end;justify-content:center;z-index:20}
 .veil.on{display:flex}
-.card{background:var(--surface);border-radius:20px;padding:20px;max-width:420px;width:100%;max-height:90%;overflow:auto}
-.card h2{margin-top:0;font-family:var(--disp);font-weight:400;font-size:1.35rem}
-.card .grid{margin:12px 0}
-@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+.card{background:var(--surface);border-radius:24px 24px 0 0;padding:22px 20px calc(20px + env(safe-area-inset-bottom,0px));width:100%;max-width:560px;max-height:90%;overflow:auto;animation:up .25s ease-out}
+.card h2{margin:0 0 4px;font-size:1.3rem;font-weight:800}
+.card .grid{margin:14px 0}
+@keyframes up{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+
+@media(max-width:360px){
+  .app{padding-left:12px;padding-right:12px}
+  .cell{padding:10px}.cell b{font-size:1.2rem}
+  .go{min-width:92px;padding:0 18px}
+}
+
+/* ============ 平板 / 小窗口：统计放宽 ============ */
+@media(min-width:640px){
+  .veil{align-items:center;padding:16px}
+  .card{border-radius:24px;max-width:440px;padding:24px}
+  .toast{bottom:calc(120px + env(safe-area-inset-bottom,0px))}
+}
+
+/* ============ 电脑：双栏布局 ============ */
+@media(min-width:960px){
+  .app{max-width:1160px;padding:0 32px 56px}
+  .top{padding:28px 0 18px}
+  .top h1{font-size:1.6rem}
+  .layout{display:grid;grid-template-columns:400px minmax(0,1fr);gap:32px;align-items:start;margin-top:20px}
+  .layout>main{margin-top:0}
+  /* 左栏：计时器 + 目标，随页面滚动保持可见 */
+  .side{position:sticky;top:20px;display:flex;flex-direction:column;gap:20px;max-height:calc(100vh - 40px)}
+  .goals-sec{overflow-y:auto;min-height:0;padding:3px;margin:-3px;overscroll-behavior:contain;scrollbar-width:thin}
+  .dock{position:relative;left:auto;right:auto;bottom:auto;flex:none;border:1px solid var(--line);border-radius:20px;padding:0 22px 22px;box-shadow:var(--shadow);overflow:hidden}
+  .strip{margin:0 -22px 20px;height:5px}
+  .dockin{display:grid;gap:16px;max-width:none}
+  .clock b{font-size:3.6rem;letter-spacing:.02em}
+  .clock small{font-size:.9rem;margin-top:2px}
+  .btns{width:100%}
+  .go{flex:1;min-height:56px;font-size:1.15rem}
+  .fin{min-height:56px;padding:0 22px}
+  .go:hover{filter:brightness(1.08)}
+  .kbd{display:block}
+  .toast{bottom:32px}
+  /* 右栏 */
+  .cell{padding:16px 18px}
+  .cell b{font-size:1.75rem}
+  .week{--ch:168px;gap:12px;padding:18px 18px 14px}
+  .col{font-size:.82rem}
+  .col .t{max-width:56px}
+  .col .f{font-size:.74rem}
+  .hud{padding:18px 24px;gap:20px}
+  .lv{width:64px;height:64px}
+  .lv b{font-size:1.7rem}
+  .track{height:12px}
+  .pts b{font-size:2.3rem}
+}
+@media(hover:hover){
+  .tap:hover:not(:disabled){filter:brightness(1.06)}
+  .btn:hover{filter:brightness(1.1)}
+  .ghost:hover:not(:disabled){background:var(--track)}
+  .goal:not(.on):hover{border-color:var(--muted)}
+  .fin:hover{background:var(--track)}
+}
+@media(min-width:1280px){.badges{grid-template-columns:repeat(3,1fr)}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
-<main>
-<div class="top">
-  <h1>日语专注修行</h1>
-  <small class="note" id="sync" style="margin:0">连接中…</small>
-  <div class="hud" id="hud"></div>
-</div>
+<div class="app">
+  <header class="top">
+    <span class="logo" aria-hidden="true">日</span>
+    <h1>日语专注修行</h1>
+    <span class="sync" id="sync" data-s="wait" role="status" aria-live="polite">连接中…</span>
+  </header>
 
-<h2>学习目标</h2>
-<div id="goals"></div>
-<div class="add">
-  <input class="nm" id="gname" placeholder="目标，例如：N3 单词" maxlength="30">
-  <input class="num" id="gtotal" type="number" min="1" max="999" placeholder="项目数">
-  <button class="btn" id="gadd">添加目标</button>
-</div>
+  <section class="hud" id="hud" aria-label="等级与今日积分"></section>
 
-<div id="dash"></div>
-</main>
+  <div class="layout">
+    <aside class="side">
+      <!-- 计时器：手机为底部固定条，电脑为左栏卡片 -->
+      <section class="dock" aria-label="计时器">
+        <div class="strip"><i id="strip"></i></div>
+        <div class="dockin">
+          <div class="clock"><b id="clk">00:00</b><small id="sub">选择目标后点击开始</small></div>
+          <div class="btns">
+            <button class="fin" id="end" hidden>结束</button>
+            <button class="go" id="go">开始</button>
+          </div>
+        </div>
+        <p class="kbd">按 <kbd>空格</kbd> 开始 / 暂停</p>
+      </section>
 
-<div class="dock">
-  <div class="strip"><i id="strip"></i></div>
-  <div class="dockin">
-    <div class="clock"><b id="clk">00:00</b><small id="sub">选择目标后点击开始</small></div>
-    <button class="fin" id="end" hidden>结束</button>
-    <button class="go" id="go">开始</button>
+      <section class="goals-sec">
+        <h2>学习目标</h2>
+        <div id="goals"></div>
+        <form class="add" id="gform" autocomplete="off">
+          <input class="field nm" id="gname" placeholder="目标，例如：N3 单词" maxlength="30" aria-label="目标名称" enterkeyhint="next">
+          <input class="field num" id="gtotal" type="number" inputmode="numeric" min="1" max="999" placeholder="项目数" aria-label="项目数" enterkeyhint="done">
+          <button class="btn" id="gadd" type="submit">添加目标</button>
+        </form>
+      </section>
+    </aside>
+
+    <main id="dash"></main>
   </div>
 </div>
-<div class="toast" id="toast"></div>
-<div class="veil" id="veil"><div class="card" id="card"></div></div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="veil" id="veil" role="dialog" aria-modal="true"><div class="card" id="card"></div></div>
 
 <script>
-const TOKEN_KEY="jp-focus-token";
+const TOKEN_KEY="jp-focus-token",APP_TITLE="日语专注修行";
 let S={goals:[],activeId:null,days:{},session:null,badges:{},flags:{}},pendDel=null,tickN=0,toastT=null;
 let loaded=false,rev=0,pushT=null,pushing=false,again=false,lock=false;
 const dirty=new Set();
@@ -133,7 +284,7 @@ const dirty=new Set();
 const tok=()=>{try{return localStorage.getItem(TOKEN_KEY)||""}catch(e){return""}};
 function api(method,body,keep){const h={"content-type":"application/json"},t=tok();if(t)h.Authorization="Bearer "+t;
   return fetch("/api/state",{method,headers:h,body:body?JSON.stringify(body):undefined,keepalive:!!keep})}
-function setSync(t){const el=document.getElementById("sync");if(el)el.textContent=t}
+function setSync(t){const el=document.getElementById("sync");if(!el)return;el.textContent=t;el.dataset.s=t==="已同步"?"ok":/失败/.test(t)?"err":"wait"}
 function modal(html,locked){lock=!!locked;document.getElementById("card").innerHTML=html;document.getElementById("veil").classList.add("on")}
 function unmodal(){lock=false;document.getElementById("veil").classList.remove("on")}
 function save(){if(!loaded)return;setSync("待同步");clearTimeout(pushT);pushT=setTimeout(push,800)}
@@ -165,16 +316,16 @@ async function pull(force){
 }
 function askToken(){
   modal(`<h2>需要访问口令</h2><p class="note">请输入部署时设置的 ACCESS_TOKEN。</p>
-  <input id="tk" type="password" autocomplete="current-password" style="width:100%;font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);min-height:44px;margin-top:10px">
-  <button class="btn" id="tkok" style="width:100%;margin-top:12px">确认</button>`,true);
+  <input class="field" id="tk" type="password" autocomplete="current-password" style="margin-top:12px" aria-label="访问口令">
+  <button class="btn block" id="tkok">确认</button>`,true);
   const go=()=>{try{localStorage.setItem(TOKEN_KEY,document.getElementById("tk").value.trim())}catch(e){}boot()};
   document.getElementById("tkok").onclick=go;
   document.getElementById("tk").onkeydown=e=>{if(e.key==="Enter")go()};
 }
 async function boot(){
-  modal('<p class="note">正在加载数据…</p>',true);
+  modal('<p class="note" style="margin:0">正在加载数据…</p>',true);
   try{if(await pull(true))unmodal()}
-  catch(e){modal('<h2>无法连接服务器</h2><p class="note">请检查网络后重试。</p><button class="btn" id="retry" style="width:100%;margin-top:12px">重试</button>',true);document.getElementById("retry").onclick=boot}
+  catch(e){modal('<h2>无法连接服务器</h2><p class="note">请检查网络后重试。</p><button class="btn block" id="retry">重试</button>',true);document.getElementById("retry").onclick=boot}
 }
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -184,6 +335,9 @@ const day=k=>{dirty.add(k);return S.days[k]||(S.days[k]={ms:0,pauseMs:0,items:0,
 const goal=id=>S.goals.find(g=>g.id===id);
 const clock=ms=>{const t=Math.floor(ms/1000),h=Math.floor(t/3600),m=Math.floor(t%3600/60),s=t%60;return(h?h+":"+pad(m):pad(m))+":"+pad(s)};
 const mins=ms=>{const m=Math.round(ms/60000);return m>=60?Math.floor(m/60)+" 小时 "+(m%60)+" 分":m+" 分钟"};
+/* 数值 + 小号单位（统一字体，避免数字和单位大小混乱） */
+const u=(n,unit)=>`${n}<span class="u">${unit}</span>`;
+const minsH=ms=>{const m=Math.round(ms/60000);return m>=60?u(Math.floor(m/60),"时")+u(m%60,"分"):u(m,"分钟")};
 const BLOCK=25*60000;
 
 function live(){const s=S.session;if(!s)return{act:0,pau:0};const d=Date.now()-s.since;return{act:s.act+(s.run?d:0),pau:s.pau+(s.run?0:d)}}
@@ -233,32 +387,38 @@ function endSession(){const s=S.session;if(!s)return;
   S.session=null;checkBadges();save();render();
   const msg=s.act<60000?"这次时间太短，先坐稳再开始。":f>=90?"专注度极高，几乎没有被打断。":f>=70?"不错，再减少几次暂停会更稳。":"暂停偏多。下次把单次学习缩短到 15 分钟，完成后再休息。";
   $("#card").innerHTML=`<h2>本次学习结束</h2><div class="grid">
-  <div class="cell"><b>${mins(s.act)}</b><small>专注时长</small></div>
-  <div class="cell"><b>${f}%</b><small>专注度</small></div>
+  <div class="cell"><b>${minsH(s.act)}</b><small>专注时长</small></div>
+  <div class="cell"><b>${u(f,"%")}</b><small>专注度</small></div>
   <div class="cell"><b>${s.pauses}</b><small>暂停次数</small></div>
   <div class="cell"><b>${s.items}</b><small>完成项目</small></div>
-  <div class="cell"><b>${Math.floor(s.best/60000)} 分</b><small>最长连续</small></div>
+  <div class="cell"><b>${u(Math.floor(s.best/60000),"分")}</b><small>最长连续</small></div>
   <div class="cell"><b>+${m+s.items*10}</b><small>本次积分</small></div></div>
-  <p class="note">${msg}</p><button class="btn" id="close" style="width:100%;margin-top:14px">关闭</button>`;
+  <p class="note" style="margin-top:0">${msg}</p><button class="btn block" id="close">关闭</button>`;
   $("#veil").classList.add("on")}
 
 /* ---- render ---- */
+const ICON_STAR='<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>';
+const ICON_LOCK='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+
 function renderGoals(){
   $("#goals").innerHTML=S.goals.length?S.goals.map(g=>{
     const p=Math.min(100,Math.round(g.done/g.total*100)),fin=g.done>=g.total,on=g.id===S.activeId;
     return `<article class="goal${on?" on":""}" data-id="${g.id}">
-    <header><button class="pick" data-a="pick">${esc(g.name)}</button><span class="cnt">${g.done}/${g.total}</span></header>
-    <div class="bar"><i style="width:${p}%"></i></div>
-    <footer><span class="meta">${on?"当前计时目标 · ":""}累计 ${Math.floor((g.ms||0)/60000)} 分钟</span>
+    <header><button class="pick" data-a="pick" aria-pressed="${on}"><span class="dot"></span><span class="nm">${esc(g.name)}</span></button><span class="cnt">${fin?'<em class="done">✓ 已达成</em>':""}${g.done}<i>/${g.total}</i></span></header>
+    <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${p}"><i style="width:${p}%"></i></div>
+    <footer><span class="meta">${on?'<em class="chip">计时目标</em>':""}累计 ${Math.floor((g.ms||0)/60000)} 分钟</span>
     <button class="ghost" data-a="undo" ${g.done?"":"disabled"}>撤销</button>
-    <button class="ghost" data-a="del">${pendDel===g.id?"再点确认删除":"删除"}</button></footer>
-    <button class="tap" data-a="inc" ${fin?"disabled":""}>${fin?"目标已达成":"完成一项　+10 分"}</button></article>`}).join(""):
-    `<p class="empty">先添加一个目标，例如「N3 单词」共 30 个项目。完成一个就点一下，进度和积分会自动增加。</p>`}
+    <button class="ghost${pendDel===g.id?" warn":""}" data-a="del">${pendDel===g.id?"再点确认删除":"删除"}</button></footer>
+    ${fin?"":'<button class="tap" data-a="inc">完成一项　+10 分</button>'}</article>`}).join(""):
+    `<p class="empty">先添加一个目标，例如「N3 单词」共 30 个项目。<br>完成一个就点一下，进度和积分会自动增加。</p>`}
 
 function renderDash(){
   const t=dk(),x=ds(t),f=focus(x),tot=totalPts(),lv=Math.floor(Math.sqrt(tot/40))+1,base=40*(lv-1)**2,next=40*lv*lv;
   const titles=["见习生","初学者","修行者","熟练者","达人","师范","名人","仙人"];
-  $("#hud").innerHTML=`<div class="lv">Lv.${lv}</div><div class="xp"><b>${titles[Math.min(lv-1,titles.length-1)]}</b><div class="track"><i style="width:${Math.min(100,(tot-base)/(next-base)*100)}%"></i></div><small>距下一级还差 ${next-tot} 分</small></div><div class="pts"><b>${x.pts}</b><small>今日积分</small></div>`;
+  const pct=Math.round(Math.min(100,(tot-base)/(next-base)*100));
+  $("#hud").innerHTML=`<div class="lv"><span><small>LEVEL</small><b>${lv}</b></span></div>
+  <div class="xp"><b>${titles[Math.min(lv-1,titles.length-1)]}</b><div class="track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><i style="width:${pct}%"></i></div><small>距下一级还差 ${next-tot} 分</small></div>
+  <div class="pts"><b>${x.pts}</b><small>今日积分</small></div>`;
 
   const wk=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);wk.push({k:dk(d),w:"日一二三四五六"[d.getDay()]})}
   const mx=Math.max(30,...wk.map(o=>ds(o.k).ms/60000)),fs=wk.map(o=>focus(ds(o.k))).filter(v=>v!==null),avg=fs.length?Math.round(fs.reduce((a,b)=>a+b,0)/fs.length):null;
@@ -266,21 +426,27 @@ function renderDash(){
 
   const rows=allKeys().map(k=>({k,...ds(k)})).filter(r=>r.pts>0).sort((a,b)=>b.pts-a.pts||b.k.localeCompare(a.k));
   const idx=rows.findIndex(r=>r.k===t),lab=k=>k===t?"今天":k.slice(5);
-  const li=r=>`<li class="${r.k===t?"me":""}"><span class="no">${rows.indexOf(r)+1}</span><span class="d"><b>${lab(r.k)}</b><small>${mins(r.ms)} · 专注度 ${focus(r)===null?"—":focus(r)+"%"} · ${r.items} 项</small></span><span class="p">${r.pts}</span></li>`;
+  const li=r=>`<li class="${r.k===t?"me":""}"><span class="no">${rows.indexOf(r)+1}</span><span class="d"><b>${lab(r.k)}</b><small>${mins(r.ms)} · 专注度 ${focus(r)===null?"—":focus(r)+"%"} · ${r.items} 项</small></span><span class="p">${r.pts}<i>分</i></span></li>`;
   let list=rows.slice(0,7).map(li).join("");if(idx>=7)list+=li(rows[idx]);
   const head=!rows.length?"完成第一个项目，榜单就开始了。":idx===0?(rows.length>1?"今天是历史最高分，继续保持。":"今天暂列第 1。"):idx<0?"今天还没有积分，点一下完成项目就能上榜。":`今天排第 ${idx+1} 名，再得 ${rows[0].pts-rows[idx].pts+1} 分就能刷新最高纪录。`;
 
-  $("#dash").innerHTML=`<h2>今日数据</h2><div class="grid">
-  <div class="cell"><b>${mins(x.ms)}</b><small>专注时长</small></div>
-  <div class="cell"><b>${f===null?"—":f+"%"}</b><small>专注度</small></div>
+  $("#dash").innerHTML=`<section class="sec"><h2>今日数据</h2><div class="grid">
+  <div class="cell"><b>${minsH(x.ms)}</b><small>专注时长</small></div>
+  <div class="cell"><b>${f===null?"—":u(f,"%")}</b><small>专注度</small></div>
   <div class="cell"><b>${x.items}</b><small>完成项目</small></div>
   <div class="cell"><b>${x.pauses}</b><small>暂停次数</small></div>
-  <div class="cell"><b>${Math.floor(x.best/60000)} 分</b><small>最长连续</small></div>
-  <div class="cell"><b>${streak()} 天</b><small>连续学习</small></div></div>
-  <h2>近七天专注时长</h2><div class="week">${wk.map(o=>{const v=ds(o.k),h=Math.round(v.ms/60000/mx*80);return `<div class="col${o.k===t?" today":""}"><span>${focus(v)===null?"":focus(v)+"%"}</span><div class="b" style="height:${h}px"></div><span>${o.w}</span></div>`}).join("")}</div>
-  <p class="note">${tip}</p>
-  <h2>每日成就排行榜</h2><p class="note" style="margin:0 0 8px">${head}</p><ol class="rank">${list}</ol>
-  <h2>成就奖励（每个 +30 分）</h2><div class="badges">${BADGES.map(b=>`<div class="bd ${S.badges[b.id]?"got":"lock"}"><b>${b.n}</b><small>${b.d}</small></div>`).join("")}</div>`}
+  <div class="cell"><b>${u(Math.floor(x.best/60000),"分")}</b><small>最长连续</small></div>
+  <div class="cell"><b>${u(streak(),"天")}</b><small>连续学习</small></div></div></section>
+
+  <section class="sec"><h2>近七天专注时长<small>柱：分钟 · 底部：专注度</small></h2><div class="week">${wk.map(o=>{
+    const v=ds(o.k),m=v.ms/60000,h=m>0?Math.max(6,Math.round(m/mx*100)):0,fc=focus(v),td=o.k===t;
+    return `<div class="col${td?" today":""}" title="${o.k}：${Math.round(m)} 分钟${fc===null?"":"，专注度 "+fc+"%"}"><span class="v">${m>0?Math.round(m):""}</span><div class="t"><div class="b" style="height:${h}%"></div></div><span class="w">${td?"今天":"周"+o.w}</span><span class="f">${fc===null?"":fc+"%"}</span></div>`}).join("")}</div>
+  <p class="note">${tip}</p></section>
+
+  <section class="sec"><h2>每日成就排行榜</h2><p class="note" style="margin:0 0 10px">${head}</p>${list?`<ol class="rank">${list}</ol>`:""}</section>
+
+  <section class="sec"><h2>成就奖励<small>每个 +30 分</small></h2><div class="badges">${BADGES.map(b=>{const got=S.badges[b.id];
+    return `<div class="bd ${got?"got":"lock"}"><span class="ic">${got?ICON_STAR:ICON_LOCK}</span><span class="tx"><b>${b.n}</b><small>${b.d}</small>${got?`<small class="when">${esc(String(got).slice(5))} 解锁</small>`:""}</span></div>`}).join("")}</div></section>`}
 
 function renderBar(){
   const s=S.session,l=live(),g=goal(S.activeId);
@@ -288,18 +454,24 @@ function renderBar(){
   $("#sub").textContent=!s?(g?"目标：" + g.name:"选择目标后点击开始"):(s.run?"计时中":"已暂停")+" · "+(g?g.name:"");
   const b=$("#go");b.textContent=!s?"开始":s.run?"暂停":"继续";b.classList.toggle("run",!!(s&&s.run));
   $("#end").hidden=!s;
-  const bl=s&&s.run?Math.min(1,(Date.now()-s.blockStart)/BLOCK):0;$("#strip").style.width=(bl*100)+"%"}
+  const bl=s&&s.run?Math.min(1,(Date.now()-s.blockStart)/BLOCK):0;$("#strip").style.width=(bl*100)+"%";
+  /* 标签页标题显示计时，PC 上切到别的标签也能看到 */
+  document.title=s&&s.run?clock(l.act)+" · "+APP_TITLE:APP_TITLE}
 
 function render(){renderGoals();renderDash();renderBar()}
 
 /* ---- events ---- */
-$("#gadd").onclick=addGoal;
-$("#gname").onkeydown=$("#gtotal").onkeydown=e=>{if(e.key==="Enter")addGoal()};
+$("#gform").onsubmit=e=>{e.preventDefault();addGoal()};
 $("#goals").onclick=e=>{const b=e.target.closest("button[data-a]");if(!b)return;const g=goal(b.closest(".goal").dataset.id);if(!g)return;
   ({pick,inc,undo,del})[b.dataset.a](g)};
 $("#go").onclick=toggle;
 $("#end").onclick=endSession;
 $("#veil").onclick=e=>{if(lock)return;if(e.target.id==="veil"||e.target.id==="close")unmodal()};
+/* 键盘：空格 开始/暂停，Esc 关闭弹窗（仅电脑端有意义） */
+addEventListener("keydown",e=>{
+  if(e.key==="Escape"&&!lock&&$("#veil").classList.contains("on")){unmodal();return}
+  if(e.code==="Space"&&!e.repeat&&e.target instanceof Element&&!e.target.closest("input,button,textarea,select,a,[contenteditable]")&&!$("#veil").classList.contains("on")){e.preventDefault();toggle()}
+});
 
 setInterval(()=>{
   tickN++;const s=S.session;
