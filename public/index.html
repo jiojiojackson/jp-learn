@@ -248,6 +248,46 @@ small{font-size:.82rem}
 .conf{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .conf i{position:absolute;top:-30px;font-style:normal;animation:fall 1.9s ease-in forwards}
 @keyframes fall{to{transform:translateY(460px) rotate(360deg);opacity:0}}
+
+/* ============ 分页 UI：底部悬浮标签栏 + 圆环计时器 ============ */
+.app{padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))}
+.views{margin-top:16px}
+.view{animation:vin .28s ease-out}.view[hidden]{display:none!important}
+@keyframes vin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+#v-focus>*+*{margin-top:24px}
+.tabs{position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:6;max-width:440px;margin:0 auto;display:flex;gap:4px;padding:6px;border-radius:24px;
+  background:color-mix(in srgb,var(--surface) 88%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--line);box-shadow:0 14px 34px -14px rgba(22,32,74,.45)}
+.tabs button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;border:0;background:none;border-radius:18px;min-height:54px;padding:6px 4px;color:var(--muted);font-size:.74rem;font-weight:700;transition:background .2s,color .2s}
+.tabs button.on{background:var(--pri);color:var(--priink)}
+.tabs svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tabs small{font-size:.62rem;font-weight:600;opacity:.85;line-height:1}
+.mini{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:6;border:0;border-radius:999px;background:var(--pink);color:#fff;font-weight:700;
+  padding:10px 18px;box-shadow:0 10px 24px -10px rgba(0,0,0,.5);max-width:calc(100vw - 32px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mini[hidden]{display:none}
+.toast{bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+.dock{position:relative;left:auto;right:auto;bottom:auto;z-index:auto;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:22px 20px 18px;box-shadow:var(--shadow);text-align:center;overflow:visible}
+.strip{display:none}
+.ringw{position:relative;width:min(250px,68vw);aspect-ratio:1;margin:0 auto}
+.ringw svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ringw circle{fill:none;stroke-width:7}
+.ringw .rt{stroke:var(--track)}
+.ringw .rp{stroke:var(--gold);stroke-linecap:round;stroke-dasharray:339.3;stroke-dashoffset:339.3;transition:stroke-dashoffset 1s linear}
+.ringw .clock{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 20%}
+.ringw .clock b{font-size:clamp(2rem,9vw,2.7rem)}
+.ringw .clock small{max-width:100%}
+.dock .btns{justify-content:center;margin-top:18px}
+.dock .go{min-width:150px;flex:none}
+.dock .note{margin-top:12px;font-size:.8rem}
+.goals-sec{overflow:visible;margin:0;padding:0}
+@media(min-width:960px){
+  .views{margin-top:24px}
+  #v-focus{display:grid;grid-template-columns:400px minmax(0,1fr);grid-template-rows:auto 1fr;gap:24px 32px;align-items:start}
+  #v-focus>*+*{margin-top:0}
+  #v-focus .dock{grid-row:1/3;position:sticky;top:20px;padding:28px 24px 22px}
+  #dash{display:grid;grid-template-columns:1fr 1fr;gap:28px 32px;align-items:start}
+  #dash .sec{margin:0}
+  .toast{bottom:100px}
+}
 </style>
 </head>
 <body>
@@ -261,21 +301,19 @@ small{font-size:.82rem}
 
   <section class="hud" id="hud" aria-label="等级与今日积分"></section>
 
-  <div class="layout">
-    <aside class="side">
-      <!-- 计时器：手机为底部固定条，电脑为左栏卡片 -->
+  <div class="views">
+    <div class="view" id="v-focus">
       <section class="dock" aria-label="计时器">
         <div class="strip"><i id="strip"></i></div>
-        <div class="dockin">
+        <div class="ringw">
+          <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="rt" cx="60" cy="60" r="54"/><circle class="rp" id="ring" cx="60" cy="60" r="54"/></svg>
           <div class="clock"><b id="clk">00:00</b><small id="sub">选择目标后点击开始</small></div>
-          <div class="btns">
-            <button class="fin" id="end" hidden>结束</button>
-            <button class="go" id="go">开始</button>
-          </div>
         </div>
+        <div class="btns"><button class="fin" id="end" hidden>结束</button><button class="go" id="go">开始</button></div>
+        <p class="note">圆环 = 25 分钟连续专注进度，暂停会重置</p>
         <p class="kbd">按 <kbd>空格</kbd> 开始 / 暂停</p>
       </section>
-
+      <div id="quests"></div>
       <section class="goals-sec">
         <h2>学习目标</h2>
         <div id="goals"></div>
@@ -285,10 +323,16 @@ small{font-size:.82rem}
           <button class="btn" id="gadd" type="submit">添加目标</button>
         </form>
       </section>
-    </aside>
-
-    <main id="dash"></main>
+    </div>
+    <div class="view" id="v-stats" hidden><main id="dash"></main></div>
+    <div class="view" id="v-badges" hidden><div id="bdg"></div></div>
   </div>
+  <nav class="tabs" aria-label="页面导航">
+    <button data-t="focus" class="on" aria-current="page"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg>专注</button>
+    <button data-t="stats"><svg viewBox="0 0 24 24"><path d="M4 20V11M10 20V4M16 20v-6M22 20H2"/></svg>数据</button>
+    <button data-t="badges"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="M8.5 14L7 22l5-3 5 3-1.5-8"/></svg>成就<small id="bc"></small></button>
+  </nav>
+  <button class="mini" id="mini" hidden></button>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -539,7 +583,7 @@ function renderDash(){
   let list=rows.slice(0,7).map(li).join("");if(idx>=7)list+=li(rows[idx]);
   const head=!rows.length?"完成第一个项目，榜单就开始了。":idx===0?(rows.length>1?"今天是历史最高分，继续保持。":"今天暂列第 1。"):idx<0?"今天还没有积分，点一下完成项目就能上榜。":`今天排第 ${idx+1} 名，再得 ${rows[0].pts-rows[idx].pts+1} 分就能刷新最高纪录。`;
 
-  $("#dash").innerHTML=`${questsHTML()}<section class="sec"><h2>今日数据</h2><div class="grid">
+  $("#dash").innerHTML=`<section class="sec"><h2>今日数据</h2><div class="grid">
   <div class="cell"><b>${minsH(x.ms)}</b><small>专注时长</small></div>
   <div class="cell"><b>${f===null?"—":u(f,"%")}</b><small>专注度</small></div>
   <div class="cell"><b>${x.items}</b><small>完成项目</small></div>
@@ -555,19 +599,29 @@ function renderDash(){
 
   <section class="sec"><h2>每日成就排行榜</h2><p class="note" style="margin:0 0 10px">${head}</p>${list?`<ol class="rank">${list}</ol>`:""}</section>
 
-  ${badgesHTML()}`}
+  `;
+  $("#quests").innerHTML=questsHTML();$("#bdg").innerHTML=badgesHTML();
+  $("#bc").textContent=BADGES.filter(b=>S.badges[b.id]).length+"/"+BADGES.length}
 
 function renderBar(){
   const s=S.session,l=live(),g=goal(S.activeId);
   $("#clk").textContent=clock(l.act);
   $("#sub").textContent=!s?(g?"目标：" + g.name:"选择目标后点击开始"):(s.run?"计时中":"已暂停")+" · "+(g?g.name:"");
   const b=$("#go");b.textContent=!s?"开始":s.run?"暂停":"继续";b.classList.toggle("run",!!(s&&s.run));
-  $("#end").hidden=!s;
-  const bl=s&&s.run?Math.min(1,(Date.now()-s.blockStart)/BLOCK):0;$("#strip").style.width=(bl*100)+"%";
+  $("#end").hidden=!s;const mn=$("#mini");mn.hidden=!(s&&TAB!=="focus");if(s)mn.textContent=(s.run?"⏱ ":"⏸ ")+clock(l.act)+(g?" · "+g.name:"");
+  const bl=s&&s.run?Math.min(1,(Date.now()-s.blockStart)/BLOCK):0;$("#strip").style.width=(bl*100)+"%";$("#ring").style.strokeDashoffset=339.3*(1-bl);
   /* 标签页标题显示计时，PC 上切到别的标签也能看到 */
   document.title=s&&s.run?clock(l.act)+" · "+APP_TITLE:APP_TITLE}
 
 function render(){renderGoals();renderDash();renderBar()}
+
+/* ---- tabs ---- */
+let TAB="focus";
+function setTab(t){TAB=t;document.querySelectorAll(".view").forEach(v=>v.hidden=v.id!=="v-"+t);
+  document.querySelectorAll(".tabs button").forEach(b=>{const on=b.dataset.t===t;b.classList.toggle("on",on);b.setAttribute("aria-current",on?"page":"false")});
+  scrollTo(0,0);renderBar()}
+$(".tabs").onclick=e=>{const b=e.target.closest("button[data-t]");if(b)setTab(b.dataset.t)};
+$("#mini").onclick=()=>setTab("focus");
 
 /* ---- events ---- */
 $("#gform").onsubmit=e=>{e.preventDefault();addGoal()};
