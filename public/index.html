@@ -292,9 +292,9 @@ small{font-size:.82rem}
 /* ============ 已完成目标自动折叠 ============ */
 .fold{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--surface);border:1px dashed var(--line);border-radius:14px;padding:11px 14px;margin:4px 0 12px;color:var(--muted);font-weight:700;font-size:.9rem;text-align:left}
 .fold i{font-style:normal;transition:transform .2s}.fold[aria-expanded=true] i{transform:rotate(180deg)}
-.goal.mini{display:flex;align-items:center;gap:6px;padding:6px 8px 6px 12px;margin-bottom:8px;border-width:1px;box-shadow:none}
-.goal.mini .pick{font-size:.95rem;font-weight:600;min-height:32px}
-.goal.mini .cnt{font-size:.95rem}.goal.mini .ghost{padding:4px 8px;min-height:32px}
+.goal.gm{display:flex;align-items:center;gap:6px;padding:6px 8px 6px 12px;margin-bottom:8px;border-width:1px;box-shadow:none}
+.goal.gm .pick{font-size:.95rem;font-weight:600;min-height:32px}
+.goal.gm .cnt{font-size:.95rem}.goal.gm .ghost{padding:4px 8px;min-height:32px}
 </style>
 </head>
 <body>
@@ -571,7 +571,7 @@ function goalHTML(g){
     <button class="ghost${pendDel===g.id?" warn":""}" data-a="del">${pendDel===g.id?"再点确认删除":"删除"}</button></footer>
     ${fin?"":'<button class="tap" data-a="inc">完成一项　+10 分</button>'}</article>`}
 function miniHTML(g){
-    return `<article class="goal mini" data-id="${g.id}"><button class="pick" data-a="pick" title="设为计时目标"><span class="dot"></span><span class="nm">${esc(g.name)}</span></button>
+    return `<article class="goal gm" data-id="${g.id}"><button class="pick" data-a="pick" title="设为计时目标"><span class="dot"></span><span class="nm">${esc(g.name)}</span></button>
     <span class="cnt"><em class="done">✓</em>${g.done}<i>/${g.total}</i></span>
     <button class="ghost" data-a="undo">撤销</button><button class="ghost${pendDel===g.id?" warn":""}" data-a="del">${pendDel===g.id?"确认删除":"删除"}</button></article>`}
 function renderGoals(){
