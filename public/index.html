@@ -288,6 +288,13 @@ small{font-size:.82rem}
   #dash .sec{margin:0}
   .toast{bottom:100px}
 }
+
+/* ============ 已完成目标自动折叠 ============ */
+.fold{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--surface);border:1px dashed var(--line);border-radius:14px;padding:11px 14px;margin:4px 0 12px;color:var(--muted);font-weight:700;font-size:.9rem;text-align:left}
+.fold i{font-style:normal;transition:transform .2s}.fold[aria-expanded=true] i{transform:rotate(180deg)}
+.goal.mini{display:flex;align-items:center;gap:6px;padding:6px 8px 6px 12px;margin-bottom:8px;border-width:1px;box-shadow:none}
+.goal.mini .pick{font-size:.95rem;font-weight:600;min-height:32px}
+.goal.mini .cnt{font-size:.95rem}.goal.mini .ghost{padding:4px 8px;min-height:32px}
 </style>
 </head>
 <body>
@@ -553,8 +560,8 @@ function endSession(){const s=S.session;if(!s)return;
 const ICON_STAR='<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>';
 const ICON_LOCK='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
 
-function renderGoals(){
-  $("#goals").innerHTML=S.goals.length?S.goals.map(g=>{
+let FOLD=true;
+function goalHTML(g){
     const p=Math.min(100,Math.round(g.done/g.total*100)),fin=g.done>=g.total,on=g.id===S.activeId;
     return `<article class="goal${on?" on":""}" data-id="${g.id}">
     <header><button class="pick" data-a="pick" aria-pressed="${on}"><span class="dot"></span><span class="nm">${esc(g.name)}</span></button><span class="cnt">${fin?'<em class="done">✓ 已达成</em>':""}${g.done}<i>/${g.total}</i></span></header>
@@ -562,7 +569,17 @@ function renderGoals(){
     <footer><span class="meta">${on?'<em class="chip">计时目标</em>':""}累计 ${Math.floor((g.ms||0)/60000)} 分钟</span>
     <button class="ghost" data-a="undo" ${g.done?"":"disabled"}>撤销</button>
     <button class="ghost${pendDel===g.id?" warn":""}" data-a="del">${pendDel===g.id?"再点确认删除":"删除"}</button></footer>
-    ${fin?"":'<button class="tap" data-a="inc">完成一项　+10 分</button>'}</article>`}).join(""):
+    ${fin?"":'<button class="tap" data-a="inc">完成一项　+10 分</button>'}</article>`}
+function miniHTML(g){
+    return `<article class="goal mini" data-id="${g.id}"><button class="pick" data-a="pick" title="设为计时目标"><span class="dot"></span><span class="nm">${esc(g.name)}</span></button>
+    <span class="cnt"><em class="done">✓</em>${g.done}<i>/${g.total}</i></span>
+    <button class="ghost" data-a="undo">撤销</button><button class="ghost${pendDel===g.id?" warn":""}" data-a="del">${pendDel===g.id?"确认删除":"删除"}</button></article>`}
+function renderGoals(){
+  /* 已完成且不是当前计时目标的，自动归入折叠区；最近完成的排最前 */
+  const old=S.goals.filter(g=>g.done>=g.total&&g.id!==S.activeId).reverse(),cur=S.goals.filter(g=>!old.includes(g));
+  const fold=old.length?`<button class="fold" data-fold aria-expanded="${!FOLD}"><span>已完成 ${old.length} 个目标 · 累计 ${Math.floor(old.reduce((n,g)=>n+(g.ms||0),0)/60000)} 分钟</span><i>▾</i></button>${FOLD?"":old.map(miniHTML).join("")}`:"";
+  const hint=!cur.length&&S.goals.length?`<p class="empty">所有目标都完成了 🎉<br>添加一个新目标，继续冲。</p>`:"";
+  $("#goals").innerHTML=S.goals.length?cur.map(goalHTML).join("")+hint+fold:
     `<p class="empty">先添加一个目标，例如「N3 单词」共 30 个项目。<br>完成一个就点一下，进度和积分会自动增加。</p>`}
 
 function renderDash(){
@@ -625,7 +642,7 @@ $("#mini").onclick=()=>setTab("focus");
 
 /* ---- events ---- */
 $("#gform").onsubmit=e=>{e.preventDefault();addGoal()};
-$("#goals").onclick=e=>{const b=e.target.closest("button[data-a]");if(!b)return;const g=goal(b.closest(".goal").dataset.id);if(!g)return;
+$("#goals").onclick=e=>{if(e.target.closest("[data-fold]")){FOLD=!FOLD;renderGoals();return}const b=e.target.closest("button[data-a]");if(!b)return;const g=goal(b.closest(".goal").dataset.id);if(!g)return;
   ({pick,inc,undo,del})[b.dataset.a](g)};
 $("#go").onclick=toggle;
 $("#end").onclick=endSession;
