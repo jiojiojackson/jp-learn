@@ -229,6 +229,25 @@ small{font-size:.82rem}
 }
 @media(min-width:1280px){.badges{grid-template-columns:repeat(3,1fr)}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+
+/* ============ 升级：任务 / 热力图 / 成就稀有度 / 庆祝 ============ */
+.mute{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;width:34px;height:28px;font-size:.9rem;padding:0}
+.pts .fl{display:block;color:var(--pink);font-weight:700}
+.qs{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin-bottom:8px;box-shadow:var(--shadow)}
+.qs.ok{border-color:var(--ok)}.qs .qi{font-size:1.3rem}.qs .qt{flex:1;min-width:0}.qs .qt .bar{margin:6px 0 0;height:8px}.qs small{flex:none;color:var(--muted)}
+.heat{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;box-shadow:var(--shadow)}
+.heat i{aspect-ratio:1;border-radius:6px;background:var(--track)}
+.heat .l1{background:color-mix(in srgb,var(--ok) 30%,var(--track))}.heat .l2{background:color-mix(in srgb,var(--ok) 55%,var(--track))}
+.heat .l3{background:color-mix(in srgb,var(--ok) 80%,var(--track))}.heat .l4{background:var(--ok)}.heat .td{outline:2px solid var(--gold);outline-offset:1px}
+.bd .ic{font-size:1.25rem}.bd.lock .ic{filter:grayscale(1);opacity:.5}
+.bd.got.r1 .ic{background:#D79B6B}.bd.got.r2 .ic{background:#B9C2DA}.bd.got.r3 .ic{background:var(--gold)}
+.bd.got.r4 .ic{background:linear-gradient(135deg,#7AE0FF,#B38BFF)}.bd.got.r4{border-color:#9C8CFF}
+.bd .rt{font-style:normal;font-size:.66rem;font-weight:700;border-radius:999px;padding:0 7px;background:var(--track);color:var(--muted);vertical-align:2px}
+.bd .pg{height:6px;border-radius:4px;background:var(--track);margin-top:5px;overflow:hidden}.bd .pg i{display:block;height:100%;background:var(--pri)}
+.card.cele{position:relative;overflow:hidden;text-align:center}.card .big{font-size:3.4rem;line-height:1.2;margin-top:6px}
+.conf{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.conf i{position:absolute;top:-30px;font-style:normal;animation:fall 1.9s ease-in forwards}
+@keyframes fall{to{transform:translateY(460px) rotate(360deg);opacity:0}}
 </style>
 </head>
 <body>
@@ -237,6 +256,7 @@ small{font-size:.82rem}
     <span class="logo" aria-hidden="true">日</span>
     <h1>日语专注修行</h1>
     <span class="sync" id="sync" data-s="wait" role="status" aria-live="polite">连接中…</span>
+  <button class="mute" id="mute" aria-label="音效开关"></button>
   </header>
 
   <section class="hud" id="hud" aria-label="等级与今日积分"></section>
@@ -286,7 +306,7 @@ function api(method,body,keep){const h={"content-type":"application/json"},t=tok
   return fetch("/api/state",{method,headers:h,body:body?JSON.stringify(body):undefined,keepalive:!!keep})}
 function setSync(t){const el=document.getElementById("sync");if(!el)return;el.textContent=t;el.dataset.s=t==="已同步"?"ok":/失败/.test(t)?"err":"wait"}
 function modal(html,locked){lock=!!locked;document.getElementById("card").innerHTML=html;document.getElementById("veil").classList.add("on")}
-function unmodal(){lock=false;document.getElementById("veil").classList.remove("on")}
+function unmodal(){lock=false;document.getElementById("veil").classList.remove("on");document.getElementById("card").classList.remove("cele");if(pendC.length){const a=pendC.shift();setTimeout(()=>celebrate(...a),300)}}
 function save(){if(!loaded)return;setSync("待同步");clearTimeout(pushT);pushT=setTimeout(push,800)}
 async function push(keep){
   if(!loaded)return;
@@ -349,14 +369,99 @@ function allKeys(){const a=Object.keys(S.days);if(!a.includes(dk()))a.push(dk())
 function totalPts(){return allKeys().reduce((n,k)=>n+ds(k).pts,0)}
 function streak(){let n=0;const d=new Date();for(let i=0;i<400;i++){const x=ds(dk(d));if(x.ms>0||x.items>0)n++;else if(i>0)break;d.setDate(d.getDate()-1)}return n}
 
+const TITLES=["见习生","初学者","修行者","熟练者","达人","师范","名人","仙人","宗师","大贤者","传说"];
+const lvOf=t=>Math.floor(Math.sqrt(t/40))+1;
+const RP=[0,20,40,80,150],RN=["","铜","银","金","钻"];
+const newSt=()=>({crit:0,combo:0,gd:0,night:0,early:0,back:0,qd:0});
+const ST=()=>S.flags.st||newSt(),stw=()=>S.flags.st||(S.flags.st=newSt());
+let combo=0,lastInc=0,pendC=[];
+const sumD=f=>allKeys().reduce((n,k)=>n+f(ds(k)),0),maxD=f=>Math.max(0,...allKeys().map(k=>f(ds(k))));
+const IT=()=>sumD(x=>x.items),MN=()=>sumD(x=>x.ms)/60000;
+const P=(id,n,d,e,r,cur,max)=>({id,n,d,e,r,p:()=>[Math.min(max,Math.floor(cur())),max],f:()=>cur()>=max});
+const Bf=(id,n,d,e,r,f)=>({id,n,d,e,r,f});
 const BADGES=[
-{id:"first",n:"初次出击",d:"完成第 1 个项目",f:()=>allKeys().some(k=>ds(k).items>0)},
-{id:"block",n:"二十五分钟",d:"连续专注 25 分钟不暂停",f:()=>allKeys().some(k=>ds(k).best>=BLOCK)},
-{id:"p100",n:"百分日",d:"单日积分达到 100",f:()=>allKeys().some(k=>ds(k).pts>=100)},
-{id:"streak",n:"三日连击",d:"连续 3 天学习",f:()=>streak()>=3},
-{id:"goal",n:"目标达成",d:"完成一个学习目标",f:()=>!!S.flags.goal},
-{id:"calm",n:"心如止水",d:"一次学习专注度 90% 以上（至少 10 分钟）",f:()=>!!S.flags.calm}];
-function checkBadges(){BADGES.forEach(b=>{if(!S.badges[b.id]&&b.f()){S.badges[b.id]=dk();day(dk()).pts+=30;toast("解锁成就「"+b.n+"」 +30 分")}})}
+P("first","初次出击","完成第 1 个项目","🎯",1,IT,1),
+P("i10","小试牛刀","累计完成 10 个项目","📘",1,IT,10),
+P("i50","积少成多","累计完成 50 个项目","📚",2,IT,50),
+P("i200","词海行舟","累计完成 200 个项目","🌊",3,IT,200),
+P("i500","百炼成钢","累计完成 500 个项目","⚔️",4,IT,500),
+P("block","二十五分钟","连续专注 25 分钟不暂停","🍅",1,()=>maxD(x=>x.best)/60000,25),
+P("long","深度沉浸","连续专注 60 分钟不暂停","🧘",3,()=>maxD(x=>x.best)/60000,60),
+P("m60","第一个小时","累计专注 1 小时","⏱️",1,MN,60),
+P("m600","十小时修行","累计专注 10 小时","🏯",3,MN,600),
+P("m3000","五十小时","累计专注 50 小时","🗻",4,MN,3000),
+P("p100","百分日","单日积分达到 100","💯",1,()=>maxD(x=>x.pts),100),
+P("p300","三百分日","单日积分达到 300","🚀",3,()=>maxD(x=>x.pts),300),
+P("streak","三日连击","连续 3 天学习","🔥",1,streak,3),
+P("s7","七日不断","连续 7 天学习","🌟",2,streak,7),
+P("s14","两周坚持","连续 14 天学习","💎",3,streak,14),
+P("s30","三十日传说","连续 30 天学习","🏆",4,streak,30),
+Bf("goal","目标达成","完成一个学习目标","🏁",1,()=>!!S.flags.goal),
+P("g3","三冠王","累计完成 3 个学习目标","👑",3,()=>ST().gd,3),
+Bf("calm","心如止水","一次学习专注度 90% 以上（至少 10 分钟）","🌸",2,()=>!!S.flags.calm),
+P("combo","连击高手","2 分钟内连续完成 5 项","⚡",2,()=>ST().combo,5),
+P("crit","幸运之星","触发 3 次幸运暴击","🍀",2,()=>ST().crit,3),
+P("night","夜猫子","22 点后学习满 5 分钟","🦉",1,()=>ST().night,1),
+P("early","早起鸟","5–8 点学习满 5 分钟","🌅",1,()=>ST().early,1),
+P("back","王者归来","中断 3 天以上后重新开始","🔙",2,()=>ST().back,1),
+P("q1","任务达人","一天内完成全部 3 个任务","📜",1,()=>ST().qd,1),
+P("q7","七日全勤","累计 7 天完成全部任务","🎁",3,()=>ST().qd,7),
+P("lv5","修行有成","升到 Lv.5","🥋",2,()=>lvOf(totalPts()),5),
+P("lv10","一代宗师","升到 Lv.10","🐉",4,()=>lvOf(totalPts()),10)];
+
+/* ---- 每日任务：按日期固定抽 3 个，每个 +15，全部完成开宝箱 ---- */
+const POOL=[
+{id:"i5",t:"完成 5 个项目",g:5,f:x=>x.items},
+{id:"i10",t:"完成 10 个项目",g:10,f:x=>x.items},
+{id:"m25",t:"今日专注 25 分钟",g:25,f:x=>Math.floor(x.ms/60000)},
+{id:"m45",t:"今日专注 45 分钟",g:45,f:x=>Math.floor(x.ms/60000)},
+{id:"b25",t:"连续专注 25 分钟不暂停",g:25,f:x=>Math.floor(x.best/60000)},
+{id:"f90",t:"一次专注度 90% 以上（≥10 分钟）",g:1,f:x=>x.ms>=600000&&focus(x)>=90?1:0},
+{id:"p60",t:"今日积分达到 60",g:60,f:x=>x.pts},
+{id:"s2",t:"完成 2 次学习（点结束）",g:2,f:()=>(S.days[dk()]||{}).sessions||0}];
+function todayQuests(){let h=[...dk()].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,7);const r=[];while(r.length<3){h=(h*69069+1)>>>0;const q=POOL[(h>>>8)%POOL.length];if(!r.includes(q))r.push(q)}return r}
+function checkQuests(){const t=dk(),Q=S.flags.q&&S.flags.q.d===t?S.flags.q:(S.flags.q={d:t,c:[],box:0}),x=ds(t),m=[];let box=false;
+  todayQuests().forEach(q=>{if(!Q.c.includes(q.id)&&q.f(x)>=q.g){Q.c.push(q.id);day(t).pts+=15;m.push("任务「"+q.t+"」+15")}});
+  if(Q.c.length>=3&&!Q.box){Q.box=1;const r=20+Math.floor(Math.random()*61);day(t).pts+=r;stw().qd++;m.push("🎁 宝箱 +"+r);box=true}
+  return{msgs:m,box}}
+function questsHTML(){const t=dk(),Q=S.flags.q&&S.flags.q.d===t?S.flags.q:{c:[],box:0},x=ds(t);
+  return `<section class="sec"><h2>今日任务<small>每个 +15 · 全部完成开宝箱 🎁${Q.box?" ✓":""}</small></h2>${todayQuests().map(q=>{const v=Math.min(q.g,q.f(x)),ok=Q.c.includes(q.id);
+  return `<div class="qs${ok?" ok":""}"><span class="qi">${ok?"✅":"🎯"}</span><span class="qt"><b>${q.t}</b><div class="bar"><i style="width:${v/q.g*100}%"></i></div></span><small>${v}/${q.g}</small></div>`}).join("")}</section>`}
+
+/* ---- 热力图 / 成就墙 ---- */
+function heatHTML(){const c=[];for(let i=34;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const k=dk(d),x=ds(k),m=x.ms/60000,l=m>0?(m<15?1:m<30?2:m<60?3:4):(x.items>0?1:0);
+  c.push(`<i class="l${l}${i?"":" td"}" title="${k}：${Math.round(m)} 分钟"></i>`)}
+  return `<section class="sec"><h2>学习热力图<small>近 5 周 · 越绿学得越多</small></h2><div class="heat">${c.join("")}</div></section>`}
+function badgesHTML(){const n=BADGES.filter(b=>S.badges[b.id]).length;
+  return `<section class="sec"><h2>成就奖励<small>${n}/${BADGES.length} · 铜 20 · 银 40 · 金 80 · 钻 150 分</small></h2><div class="badges">${BADGES.map(b=>{const got=S.badges[b.id],pr=!got&&b.p?b.p():null;
+  return `<div class="bd r${b.r} ${got?"got":"lock"}"><span class="ic">${b.e}</span><span class="tx"><b>${b.n} <em class="rt">${RN[b.r]}</em></b><small>${b.d}</small>${pr?`<div class="pg"><i style="width:${pr[0]/pr[1]*100}%"></i></div><small class="when">${pr[0]}/${pr[1]}</small>`:""}${got?`<small class="when">${esc(String(got).slice(5))} 解锁 · +${RP[b.r]}</small>`:""}</span></div>`}).join("")}</div></section>`}
+
+/* ---- 音效 / 震动 / 庆祝弹窗 ---- */
+const muted=()=>{try{return localStorage.getItem("jp-mute")==="1"}catch(e){return false}};
+function sfx(f){if(muted())return;try{const a=sfx.c||(sfx.c=new(window.AudioContext||window.webkitAudioContext)()),o=a.createOscillator(),g=a.createGain();o.type="triangle";o.frequency.value=f;o.connect(g);g.connect(a.destination);g.gain.setValueAtTime(.07,a.currentTime);g.gain.exponentialRampToValueAtTime(.0001,a.currentTime+.3);o.start();o.stop(a.currentTime+.3)}catch(e){}}
+function fx(f){if(!muted()){try{navigator.vibrate&&navigator.vibrate(18)}catch(e){}}sfx(f||660)}
+function celebrate(e,title,sub){
+  if($("#veil").classList.contains("on")){pendC.push([e,title,sub]);return}
+  fx(880);const em="🎉✨🌸⭐🎊".match(/./gu);
+  const c=Array.from({length:26},()=>`<i style="left:${Math.random()*100}%;animation-delay:${Math.random()*.7}s;font-size:${14+Math.random()*14}px">${em[Math.floor(Math.random()*em.length)]}</i>`).join("");
+  $("#card").innerHTML=`<div class="conf">${c}</div><div class="big">${e}</div><h2>${esc(title)}</h2><p class="note" style="margin:6px 0 0">${esc(sub).replace(/\n/g,"<br>")}</p><button class="btn block" id="close">太棒了</button>`;
+  $("#card").classList.add("cele");$("#veil").classList.add("on")}
+const mb=$("#mute"),um=()=>{mb.textContent=muted()?"🔕":"🔔"};um();
+mb.onclick=()=>{try{localStorage.setItem("jp-mute",muted()?"0":"1")}catch(e){}um();fx(660)};
+
+/* ---- 统计追踪 ---- */
+function trackSession(s){if(s.act<300000)return;const h=new Date().getHours(),st=stw();if(h>=22||h<4)st.night++;if(h>=5&&h<8)st.early++}
+function backCheck(){const t=dk(),ks=Object.keys(S.days).filter(k=>k<t&&(S.days[k].ms>0||S.days[k].items>0)).sort();if(!ks.length)return;
+  if((new Date(t+"T00:00:00")-new Date(ks[ks.length-1]+"T00:00:00"))/864e5>=3)stw().back=1}
+function checkBadges(){const g=[],q=checkQuests();
+  BADGES.forEach(b=>{if(!S.badges[b.id]&&b.f()){S.badges[b.id]=dk();day(dk()).pts+=RP[b.r];g.push(b)}});
+  const L=lvOf(totalPts()),old=S.flags.lv,up=old&&L>old,lines=[];S.flags.lv=L;
+  if(g.length)lines.push("成就："+g.map(b=>b.n).join("、")+" +"+g.reduce((n,b)=>n+RP[b.r],0));
+  if(up)lines.push("升到 Lv."+L+"「"+TITLES[Math.min(L-1,TITLES.length-1)]+"」");
+  lines.push(...q.msgs);
+  if(g.length||up||q.box)celebrate(g.length?g.map(b=>b.e).join(""):up?"⬆️":"🎁",g.length?"解锁成就！":up?"升级了！":"今日任务全部完成！",lines.join("\n"));
+  else if(lines.length)toast(lines.join(" · "));
+  if(lines.length){save();render()}}
 
 function toast(t){const el=$("#toast");el.textContent=t;el.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove("on"),2400)}
 
@@ -365,8 +470,12 @@ function addGoal(){const name=$("#gname").value.trim(),total=parseInt($("#gtotal
   if(!name||!(total>=1)){toast("请填写目标名称和项目数");return}
   const g={id:Date.now().toString(36),name,total:Math.min(total,999),done:0,ms:0};S.goals.push(g);if(!S.activeId)S.activeId=g.id;
   $("#gname").value="";$("#gtotal").value="";save();render()}
-function inc(g){if(g.done>=g.total)return;g.done++;const d=day(dk());d.pts+=10;d.items++;if(S.session)S.session.items++;
-  if(g.done>=g.total){d.pts+=50;S.flags.goal=1;toast("目标「"+g.name+"」达成！ +60 分")}else toast("+10 分");
+function inc(g){if(g.done>=g.total)return;g.done++;const d=day(dk()),st=stw(),n=Date.now(),pt=[];
+  combo=n-lastInc<120000?combo+1:1;lastInc=n;st.combo=Math.max(st.combo,combo);
+  let add=10;const cb=combo>=3?Math.min(combo-2,5):0;if(cb){add+=cb;pt.push("连击 ×"+combo+" +"+cb)}
+  if(Math.random()<.12){add+=10;st.crit++;pt.push("🍀 暴击 +10")}
+  d.pts+=add;d.items++;if(S.session)S.session.items++;fx(500+Math.min(combo,8)*50);
+  if(g.done>=g.total){d.pts+=50;st.gd++;S.flags.goal=1;toast("🏁 目标「"+g.name+"」达成！ +"+(add+50)+" 分")}else toast("+"+add+" 分"+(pt.length?" · "+pt.join(" · "):""));
   checkBadges();save();render()}
 function undo(g){if(g.done<=0)return;const d=day(dk());g.done--;d.items=Math.max(0,d.items-1);d.pts=Math.max(0,d.pts-10);save();render()}
 function del(g){if(pendDel!==g.id){pendDel=g.id;renderGoals();setTimeout(()=>{if(pendDel===g.id){pendDel=null;renderGoals()}},3000);return}
@@ -375,7 +484,7 @@ function pick(g){flush();S.activeId=g.id;save();render()}
 function toggle(){
   if(!goal(S.activeId)){toast("先添加并选择一个学习目标");return}
   const n=Date.now();let s=S.session;
-  if(!s)S.session={run:true,since:n,act:0,pau:0,pauses:0,items:0,best:0,blockStart:n,blockAwarded:0,startDay:dk()};
+  if(!s)backCheck(),S.session={run:true,since:n,act:0,pau:0,pauses:0,items:0,best:0,blockStart:n,blockAwarded:0,startDay:dk()};
   else if(s.run){flush();s.run=false;s.since=n;s.pauses++;s.blockStart=null;s.blockAwarded=0}
   else{s.pau+=n-s.since;s.run=true;s.since=n;s.blockStart=n;s.blockAwarded=0}
   save();render()}
@@ -384,7 +493,7 @@ function endSession(){const s=S.session;if(!s)return;
   const d=day(s.startDay),m=Math.floor(s.act/60000),f=s.act+s.pau>0?Math.round(s.act/(s.act+s.pau)*100):0;
   d.ms+=s.act;d.pauseMs+=s.pau;d.sessions++;d.pauses+=s.pauses;d.best=Math.max(d.best,s.best);d.pts+=m;
   if(f>=90&&s.act>=600000)S.flags.calm=1;
-  S.session=null;checkBadges();save();render();
+  S.session=null;trackSession(s);save();render();
   const msg=s.act<60000?"这次时间太短，先坐稳再开始。":f>=90?"专注度极高，几乎没有被打断。":f>=70?"不错，再减少几次暂停会更稳。":"暂停偏多。下次把单次学习缩短到 15 分钟，完成后再休息。";
   $("#card").innerHTML=`<h2>本次学习结束</h2><div class="grid">
   <div class="cell"><b>${minsH(s.act)}</b><small>专注时长</small></div>
@@ -394,7 +503,7 @@ function endSession(){const s=S.session;if(!s)return;
   <div class="cell"><b>${u(Math.floor(s.best/60000),"分")}</b><small>最长连续</small></div>
   <div class="cell"><b>+${m+s.items*10}</b><small>本次积分</small></div></div>
   <p class="note" style="margin-top:0">${msg}</p><button class="btn block" id="close">关闭</button>`;
-  $("#veil").classList.add("on")}
+  $("#card").classList.remove("cele");$("#veil").classList.add("on");checkBadges()}
 
 /* ---- render ---- */
 const ICON_STAR='<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>';
@@ -414,11 +523,11 @@ function renderGoals(){
 
 function renderDash(){
   const t=dk(),x=ds(t),f=focus(x),tot=totalPts(),lv=Math.floor(Math.sqrt(tot/40))+1,base=40*(lv-1)**2,next=40*lv*lv;
-  const titles=["见习生","初学者","修行者","熟练者","达人","师范","名人","仙人"];
+  const titles=TITLES;
   const pct=Math.round(Math.min(100,(tot-base)/(next-base)*100));
   $("#hud").innerHTML=`<div class="lv"><span><small>LEVEL</small><b>${lv}</b></span></div>
   <div class="xp"><b>${titles[Math.min(lv-1,titles.length-1)]}</b><div class="track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><i style="width:${pct}%"></i></div><small>距下一级还差 ${next-tot} 分</small></div>
-  <div class="pts"><b>${x.pts}</b><small>今日积分</small></div>`;
+  <div class="pts"><b>${x.pts}</b><small>今日积分</small><small class="fl">🔥 ${streak()} 天连击</small></div>`;
 
   const wk=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);wk.push({k:dk(d),w:"日一二三四五六"[d.getDay()]})}
   const mx=Math.max(30,...wk.map(o=>ds(o.k).ms/60000)),fs=wk.map(o=>focus(ds(o.k))).filter(v=>v!==null),avg=fs.length?Math.round(fs.reduce((a,b)=>a+b,0)/fs.length):null;
@@ -430,7 +539,7 @@ function renderDash(){
   let list=rows.slice(0,7).map(li).join("");if(idx>=7)list+=li(rows[idx]);
   const head=!rows.length?"完成第一个项目，榜单就开始了。":idx===0?(rows.length>1?"今天是历史最高分，继续保持。":"今天暂列第 1。"):idx<0?"今天还没有积分，点一下完成项目就能上榜。":`今天排第 ${idx+1} 名，再得 ${rows[0].pts-rows[idx].pts+1} 分就能刷新最高纪录。`;
 
-  $("#dash").innerHTML=`<section class="sec"><h2>今日数据</h2><div class="grid">
+  $("#dash").innerHTML=`${questsHTML()}<section class="sec"><h2>今日数据</h2><div class="grid">
   <div class="cell"><b>${minsH(x.ms)}</b><small>专注时长</small></div>
   <div class="cell"><b>${f===null?"—":u(f,"%")}</b><small>专注度</small></div>
   <div class="cell"><b>${x.items}</b><small>完成项目</small></div>
@@ -442,11 +551,11 @@ function renderDash(){
     const v=ds(o.k),m=v.ms/60000,h=m>0?Math.max(6,Math.round(m/mx*100)):0,fc=focus(v),td=o.k===t;
     return `<div class="col${td?" today":""}" title="${o.k}：${Math.round(m)} 分钟${fc===null?"":"，专注度 "+fc+"%"}"><span class="v">${m>0?Math.round(m):""}</span><div class="t"><div class="b" style="height:${h}%"></div></div><span class="w">${td?"今天":"周"+o.w}</span><span class="f">${fc===null?"":fc+"%"}</span></div>`}).join("")}</div>
   <p class="note">${tip}</p></section>
+  ${heatHTML()}
 
   <section class="sec"><h2>每日成就排行榜</h2><p class="note" style="margin:0 0 10px">${head}</p>${list?`<ol class="rank">${list}</ol>`:""}</section>
 
-  <section class="sec"><h2>成就奖励<small>每个 +30 分</small></h2><div class="badges">${BADGES.map(b=>{const got=S.badges[b.id];
-    return `<div class="bd ${got?"got":"lock"}"><span class="ic">${got?ICON_STAR:ICON_LOCK}</span><span class="tx"><b>${b.n}</b><small>${b.d}</small>${got?`<small class="when">${esc(String(got).slice(5))} 解锁</small>`:""}</span></div>`}).join("")}</div></section>`}
+  ${badgesHTML()}`}
 
 function renderBar(){
   const s=S.session,l=live(),g=goal(S.activeId);
@@ -478,7 +587,7 @@ setInterval(()=>{
   if(s&&s.run){const n=Date.now(),b=n-s.blockStart;s.best=Math.max(s.best,b);const a=Math.floor(b/BLOCK);
     if(a>s.blockAwarded){const add=a-s.blockAwarded;s.blockAwarded=a;day(dk()).pts+=20*add;toast("连续专注 25 分钟 +"+20*add+" 分");checkBadges();save();renderDash()}}
   renderBar();
-  if(tickN%10===0){if(S.session)flush();renderDash()}
+  if(tickN%10===0){if(S.session)flush();checkBadges();renderDash()}
   if(tickN%60===0&&S.session&&loaded)save();
 },1000);
 render();
