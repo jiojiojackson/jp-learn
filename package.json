@@ -1,6 +1,7 @@
 {
   "name": "jp-learn",
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "type": "module",
   "private": true,
   "description": "日语专注修行：游戏化学习计时器，部署在 Cloudflare Workers + D1",
   "scripts": {

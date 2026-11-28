@@ -82,12 +82,14 @@ async function putState(req, env) {
   b.goals.slice(0, 100).forEach((g, i) => {
     const id = String(g?.id || "").slice(0, 40);
     if (!id) return;
+    const total = int(g.total, 999) || 1;
+    const done = Math.min(total, int(g.done, 999));
     ids.push(id);
     stmts.push(
       db.prepare(
         `INSERT INTO goals (id, name, total, done, ms, pos) VALUES (?, ?, ?, ?, ?, ?)
          ON CONFLICT(id) DO UPDATE SET name=excluded.name, total=excluded.total, done=excluded.done, ms=excluded.ms, pos=excluded.pos`
-      ).bind(id, String(g.name || "").slice(0, 60), int(g.total, 999) || 1, int(g.done, 999), int(g.ms), i)
+      ).bind(id, String(g.name || "").slice(0, 60), total, done, int(g.ms), i)
     );
   });
   stmts.push(
@@ -107,15 +109,26 @@ async function putState(req, env) {
     );
   }
 
+  const MAX_KV_CHARS = 256000;
+  const encodeKv = (v) => {
+    const s = JSON.stringify(v ?? null);
+    return s.length > MAX_KV_CHARS ? null : s;
+  };
+  const sSession = encodeKv(b.session);
+  const sBadges = encodeKv(b.badges || {});
+  const sFlags = encodeKv(b.flags || {});
+  if (sSession === null || sBadges === null || sFlags === null) {
+    return json({ error: "payload too large" }, 413);
+  }
+
   const kvSet = (key, value) =>
     stmts.push(
       db.prepare("INSERT INTO kv (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value=excluded.value").bind(key, value)
     );
-  const small = (v) => { const s = JSON.stringify(v ?? null); return s.length > 20000 ? "null" : s; };
   kvSet("active_id", String(b.activeId || "").slice(0, 40));
-  kvSet("session", small(b.session));
-  kvSet("badges", small(b.badges || {}));
-  kvSet("flags", small(b.flags || {}));
+  kvSet("session", sSession);
+  kvSet("badges", sBadges);
+  kvSet("flags", sFlags);
   kvSet("rev", String(cur + 1));
 
   await db.batch(stmts);

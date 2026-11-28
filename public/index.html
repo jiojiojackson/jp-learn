@@ -10,20 +10,19 @@
 <style>
 /* ============ 设计变量 ============ */
 :root{
-  --bg:#EEF1F8;--surface:#fff;--ink:#16204A;--muted:#5C6690;--line:#D5DBEC;--track:#E3E8F5;
-  --gold:#F2B93B;--goldink:#3A2A00;--pink:#D6456B;--pri:#243B8F;--priink:#fff;--ok:#2E8B6E;
+  --bg:#EEF1F8;--surface:#fff;--surface2:#F6F8FC;--ink:#16204A;--muted:#5C6690;--line:#D5DBEC;--track:#E3E8F5;
+  --gold:#F2B93B;--goldink:#3A2A00;--pink:#D6456B;--pri:#243B8F;--priink:#fff;--ok:#2E8B6E;--ur:#8B5CF6;
   --shadow:0 1px 2px rgba(22,32,74,.05),0 8px 24px -12px rgba(22,32,74,.18);
   --r:16px;
-  /* 只用系统字体：中日英文统一风格，不依赖外部字体服务 */
   --sans:system-ui,-apple-system,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei UI","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC","Source Han Sans SC","WenQuanYi Micro Hei","Hiragino Sans","Yu Gothic UI",sans-serif;
   color-scheme:light;
 }
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0E1430;--surface:#18204A;--ink:#EAEFFF;--muted:#9AA6D6;--line:#2A3566;--track:#232D5E;
-  --pri:#6F8CFF;--priink:#0E1430;--ok:#52C9A2;--pink:#F27C9B;--shadow:none;color-scheme:dark}}
+  --bg:#0E1430;--surface:#18204A;--surface2:#131A3D;--ink:#EAEFFF;--muted:#9AA6D6;--line:#2A3566;--track:#232D5E;
+  --pri:#6F8CFF;--priink:#0E1430;--ok:#52C9A2;--pink:#F27C9B;--ur:#B38BFF;--shadow:none;color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0E1430;--surface:#18204A;--ink:#EAEFFF;--muted:#9AA6D6;--line:#2A3566;--track:#232D5E;
-  --pri:#6F8CFF;--priink:#0E1430;--ok:#52C9A2;--pink:#F27C9B;--shadow:none;color-scheme:dark}
+  --bg:#0E1430;--surface:#18204A;--surface2:#131A3D;--ink:#EAEFFF;--muted:#9AA6D6;--line:#2A3566;--track:#232D5E;
+  --pri:#6F8CFF;--priink:#0E1430;--ok:#52C9A2;--pink:#F27C9B;--ur:#B38BFF;--shadow:none;color-scheme:dark}
 
 /* ============ 基础 ============ */
 *,*::before,*::after{box-sizing:border-box}
@@ -32,82 +31,228 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font
   font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;
   padding-top:env(safe-area-inset-top,0px)}
 button{font:inherit;color:inherit;cursor:pointer;-webkit-appearance:none;appearance:none}
-button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
-h1,h2{margin:0}
-h2{font-size:1.02rem;font-weight:700;margin-bottom:10px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+h1,h2,h3,p{margin:0}
+h2{font-size:1.02rem;font-weight:700;margin-bottom:10px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 h2 small{font-weight:400;color:var(--muted);font-size:.8rem}
 small{font-size:.82rem}
-.note{color:var(--muted);font-size:.9rem;margin:8px 0 0}
-.sec+.sec,.sec+.sec-gap{margin-top:28px}
+.note{color:var(--muted);font-size:.88rem;margin:8px 0 0}
+.sec+.sec{margin-top:24px}
 
 /* ============ 页面骨架 ============ */
-.app{max-width:640px;margin:0 auto;padding:0 16px calc(150px + env(safe-area-inset-bottom,0px))}
-.top{display:flex;align-items:center;gap:12px;padding:18px 0 14px}
-.logo{flex:none;width:40px;height:40px;border-radius:12px;background:var(--gold);color:var(--goldink);display:grid;place-items:center;font-weight:800;font-size:1.3rem;line-height:1}
-.top h1{flex:1;font-size:1.3rem;font-weight:800;letter-spacing:.02em;line-height:1.2}
-.sync{flex:none;display:inline-flex;align-items:center;gap:6px;font-size:.78rem;color:var(--muted);padding:4px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line)}
+.app{max-width:680px;margin:0 auto;padding:0 16px calc(114px + env(safe-area-inset-bottom,0px))}
+.top{display:flex;align-items:center;gap:8px;padding:16px 0 12px;flex-wrap:wrap}
+.logo{flex:none;width:38px;height:38px;border-radius:12px;background:var(--gold);color:var(--goldink);display:grid;place-items:center;font-weight:800;font-size:1.25rem;line-height:1;box-shadow:0 4px 12px -4px rgba(242,185,59,.55)}
+.top h1{flex:1;min-width:110px;font-size:1.22rem;font-weight:800;letter-spacing:.02em;line-height:1.2}
+.koban-pill{flex:none;display:inline-flex;align-items:center;gap:4px;font-size:.82rem;font-weight:800;padding:4px 10px;border-radius:999px;background:color-mix(in srgb,var(--gold) 18%,var(--surface));border:1px solid color-mix(in srgb,var(--gold) 55%,var(--line));color:var(--ink)}
+.sync{flex:none;display:inline-flex;align-items:center;gap:6px;font-size:.75rem;color:var(--muted);padding:4px 9px;border-radius:999px;background:var(--surface);border:1px solid var(--line)}
 .sync::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok)}
 .sync[data-s="wait"]::before{background:var(--gold)}
 .sync[data-s="err"]::before{background:var(--pink)}
-.layout{margin-top:16px}
-.layout>main{margin-top:28px}
+.icbtn{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;width:32px;height:28px;font-size:.86rem;padding:0;display:grid;place-items:center}
 
-/* ============ 等级卡 ============ */
-.hud{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow)}
-.lv{flex:none;width:56px;height:56px;border-radius:16px;background:var(--pri);color:var(--priink);display:grid;place-items:center;text-align:center;line-height:1}
-.lv small{display:block;font-size:.58rem;letter-spacing:.12em;opacity:.8;margin-bottom:3px}
-.lv b{font-size:1.5rem;font-weight:800}
+/* ============ 等级 HUD 卡 ============ */
+.hud{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:13px 15px;box-shadow:var(--shadow)}
+.lv{flex:none;width:54px;height:54px;border-radius:15px;background:var(--pri);color:var(--priink);display:grid;place-items:center;text-align:center;line-height:1}
+.lv small{display:block;font-size:.55rem;letter-spacing:.1em;opacity:.82;margin-bottom:3px}
+.lv b{font-size:1.45rem;font-weight:800}
 .xp{flex:1;min-width:0}
-.xp>b{font-weight:700}
-.xp small{color:var(--muted)}
+.xp-top{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.xp-top>b{font-weight:800}
+.buff-tag{font-size:.68rem;font-weight:700;padding:1px 8px;border-radius:999px;background:color-mix(in srgb,var(--pink) 16%,var(--surface));color:var(--pink);border:1px solid color-mix(in srgb,var(--pink) 35%,transparent)}
+.frenzy-tag{font-size:.68rem;font-weight:700;padding:1px 8px;border-radius:999px;background:color-mix(in srgb,var(--gold) 25%,var(--surface));color:var(--goldink)}
+:root[data-theme="dark"] .frenzy-tag{color:var(--gold)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .frenzy-tag{color:var(--gold)}}
+.xp small{color:var(--muted);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .track{height:10px;border-radius:6px;background:var(--track);overflow:hidden;margin:5px 0 4px}
-.track i{display:block;height:100%;background:var(--gold);border-radius:6px;transition:width .4s}
+.track i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),#FF9F43);border-radius:6px;transition:width .4s}
 .pts{flex:none;text-align:right}
-.pts b{display:block;font-size:1.9rem;font-weight:800;line-height:1.1}
-.pts small{color:var(--muted)}
+.pts b{display:block;font-size:1.75rem;font-weight:800;line-height:1.1}
+.pts small{color:var(--muted);display:block}
+.pts .fl{color:var(--pink);font-weight:700;font-size:.78rem}
+
+/* ============ 视图切换与底部标签栏 ============ */
+.views{margin-top:16px}
+.view{animation:vin .24s ease-out}.view[hidden]{display:none!important}
+@keyframes vin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+#v-focus,.focus-main{display:flex;flex-direction:column;gap:20px}
+.tabs{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:10;max-width:500px;margin:0 auto;display:flex;gap:3px;padding:5px;border-radius:24px;
+  background:color-mix(in srgb,var(--surface) 90%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--line);box-shadow:0 14px 34px -14px rgba(22,32,74,.45)}
+.tabs button{flex:1;min-width:0;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;border:0;background:none;border-radius:18px;min-height:52px;padding:5px 2px;color:var(--muted);font-size:.72rem;font-weight:700;transition:background .2s,color .2s}
+.tabs button.on{background:var(--pri);color:var(--priink)}
+.tabs svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tabs small{font-size:.6rem;font-weight:600;opacity:.88;line-height:1}
+.tabs .dot-red{position:absolute;top:6px;right:calc(50% - 14px);width:7px;height:7px;border-radius:50%;background:var(--pink)}
+.mini{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(78px + env(safe-area-inset-bottom,0px));z-index:10;border:0;border-radius:999px;background:var(--pink);color:#fff;font-weight:700;font-size:.88rem;
+  padding:9px 18px;box-shadow:0 10px 24px -10px rgba(0,0,0,.5);max-width:calc(100vw - 32px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mini[hidden]{display:none}
+
+/* ============ 专注页：圆环计时器 + 伴学灵 + 白噪音 ============ */
+.dock{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:18px 18px 16px;box-shadow:var(--shadow);text-align:center}
+.modes{display:inline-flex;gap:4px;background:var(--surface2);padding:4px;border-radius:999px;border:1px solid var(--line);margin-bottom:12px}
+.modes button{border:0;background:none;border-radius:999px;padding:4px 11px;font-size:.78rem;font-weight:700;color:var(--muted);transition:all .18s}
+.modes button.on{background:var(--pri);color:var(--priink)}
+.modes button:disabled{opacity:.45;cursor:not-allowed}
+.pet-bar{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px}
+.pet-av{width:38px;height:38px;border-radius:50%;background:var(--surface2);border:1px solid var(--line);display:grid;place-items:center;font-size:1.35rem;transition:transform .15s}
+.pet-av:active{transform:scale(1.16) rotate(-6deg)}
+.pet-say{background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:5px 11px;font-size:.8rem;color:var(--ink);max-width:250px;text-align:left;line-height:1.35}
+.pet-say small{display:block;color:var(--muted);font-size:.7rem}
+.ringw{position:relative;width:min(236px,64vw);aspect-ratio:1;margin:0 auto}
+.ringw svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ringw circle{fill:none;stroke-width:7.5}
+.ringw .rt{stroke:var(--track)}
+.ringw .rp{stroke:var(--gold);stroke-linecap:round;stroke-dasharray:339.3;stroke-dashoffset:339.3;transition:stroke-dashoffset .8s linear}
+.ringw .clock{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 16%}
+.ringw .clock b{font-size:clamp(2rem,8.5vw,2.65rem);font-weight:800;line-height:1.1;letter-spacing:.01em}
+.ringw .clock small{max-width:100%;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.cyc-chip{margin-top:4px;font-size:.72rem;font-weight:700;color:var(--goldink);background:var(--gold);border-radius:999px;padding:1px 8px}
+.cyc-chip[hidden]{display:none}
+.dock .btns{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:15px}
+.go{min-width:146px;min-height:52px;border:0;border-radius:999px;background:var(--pri);color:var(--priink);font-weight:800;font-size:1.08rem;padding:0 24px;transition:background .2s,transform .08s}
+.go:active{transform:scale(.97)}
+.go.run{background:var(--pink);color:#fff}
+.endbtn{min-height:46px;padding:0 16px;border-radius:999px;background:none;border:1px solid var(--line);color:var(--muted);font-size:.9rem;font-weight:600}
+.endbtn[hidden]{display:none}
+.amb{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+.amb button{border:1px solid var(--line);background:var(--surface2);border-radius:999px;padding:4px 10px;font-size:.76rem;color:var(--muted);font-weight:600}
+.amb button.on{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 15%,var(--surface));color:var(--ok);font-weight:700}
+.kbd{display:none;margin:10px 0 0;text-align:center;font-size:.78rem;color:var(--muted)}
+.kbd kbd{font:inherit;font-size:.73rem;padding:1px 7px;border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;background:var(--bg);color:var(--ink)}
+
+/* ============ 每日日语金句卡 & 连击热度条 ============ */
+.qcard{background:linear-gradient(135deg,color-mix(in srgb,var(--pri) 9%,var(--surface)),var(--surface));border:1px solid var(--line);border-radius:var(--r);padding:13px 15px;box-shadow:var(--shadow);display:flex;align-items:flex-start;gap:12px}
+.qcard .qbody{flex:1;min-width:0}
+.qcard .qjp{font-size:1.08rem;font-weight:800;line-height:1.35}
+.qcard .qrd{font-size:.8rem;color:var(--pri);font-weight:600;margin-top:1px}
+.qcard .qcn{font-size:.86rem;color:var(--muted);margin-top:3px}
+.qcard .qacts{display:flex;flex-direction:column;gap:6px;flex:none}
+.qcard .qbtn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:5px 9px;font-size:.78rem;font-weight:700;color:var(--muted)}
+
+.combo-bar{background:linear-gradient(90deg,color-mix(in srgb,var(--gold) 22%,var(--surface)),color-mix(in srgb,var(--pink) 16%,var(--surface)));border:1px solid var(--gold);border-radius:14px;padding:9px 14px;display:flex;align-items:center;gap:10px}
+.combo-bar[hidden]{display:none}
+.combo-bar b{font-weight:800;font-size:.95rem;white-space:nowrap}
+.combo-bar .ctrack{flex:1;height:8px;background:var(--track);border-radius:6px;overflow:hidden}
+.combo-bar .ctrack i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--pink));transition:width .25s linear}
+.combo-bar small{font-weight:700;color:var(--pink);white-space:nowrap}
 
 /* ============ 学习目标 ============ */
-.goal{background:var(--surface);border:2px solid var(--line);border-radius:var(--r);padding:14px 16px;margin-bottom:12px;box-shadow:var(--shadow);transition:border-color .2s}
+.presets{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.presets button{border:1px dashed var(--line);background:var(--surface);border-radius:999px;padding:4px 10px;font-size:.76rem;color:var(--muted);font-weight:600}
+.goal{position:relative;background:var(--surface);border:2px solid var(--line);border-radius:var(--r);padding:14px 16px;margin-bottom:12px;box-shadow:var(--shadow);transition:border-color .2s}
 .goal.on{border-color:var(--pri)}
 .goal header{display:flex;align-items:center;gap:10px}
 .pick{flex:1;min-width:0;display:flex;align-items:center;gap:10px;background:none;border:0;padding:4px 0;min-height:36px;font-weight:700;font-size:1.02rem;text-align:left}
 .pick .dot{flex:none;width:18px;height:18px;border-radius:50%;border:2px solid var(--line);transition:border-color .2s,background .2s}
 .goal.on .pick .dot{border-color:var(--pri);background:radial-gradient(circle,var(--pri) 0 4.5px,transparent 5.5px)}
 .pick .nm{overflow-wrap:anywhere}
-.cnt{flex:none;font-weight:800;font-size:1.1rem}
-.cnt i{font-style:normal;font-weight:500;color:var(--muted);font-size:.9rem}
+.cnt{flex:none;font-weight:800;font-size:1.08rem}
+.cnt i{font-style:normal;font-weight:500;color:var(--muted);font-size:.88rem}
+.cnt .done{font-style:normal;font-size:.72rem;font-weight:700;color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,transparent);border-radius:999px;padding:2px 9px;margin-right:8px;vertical-align:2px}
 .bar{height:10px;border-radius:6px;background:var(--track);margin:10px 0 8px;overflow:hidden}
 .bar i{display:block;height:100%;background:var(--ok);border-radius:6px;transition:width .35s}
-.goal footer{display:flex;align-items:center;flex-wrap:wrap;gap:2px 4px;color:var(--muted);font-size:.85rem}
+.goal footer{display:flex;align-items:center;flex-wrap:wrap;gap:2px 4px;color:var(--muted);font-size:.84rem}
+.goal.gfin footer{margin-top:-2px}
 .goal .meta{flex:1;min-width:0}
 .chip{font-style:normal;font-size:.72rem;font-weight:700;color:var(--priink);background:var(--pri);border-radius:999px;padding:1px 8px;margin-right:6px;white-space:nowrap}
-.ghost{background:none;border:0;border-radius:8px;color:var(--muted);padding:6px 10px;min-height:36px;font-size:.85rem}
+.ghost{background:none;border:0;border-radius:8px;color:var(--muted);padding:6px 10px;min-height:34px;font-size:.84rem}
 .ghost:disabled{opacity:.35;cursor:default}
 .ghost.warn{color:var(--pink);font-weight:700}
-.tap{width:100%;margin-top:6px;min-height:52px;border:0;border-radius:12px;background:var(--gold);color:var(--goldink);font-weight:700;font-size:1.05rem;transition:transform .08s,filter .15s}
+.tap{width:100%;margin-top:6px;min-height:50px;border:0;border-radius:12px;background:var(--gold);color:var(--goldink);font-weight:800;font-size:1.02rem;transition:transform .08s,filter .15s}
 .tap:active:not(:disabled){transform:scale(.98)}
-.tap:disabled{background:var(--track);color:var(--muted);cursor:default}
-.cnt .done{font-style:normal;font-size:.72rem;font-weight:700;color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,transparent);border-radius:999px;padding:2px 9px;margin-right:8px;vertical-align:2px}
-.goal.fin footer{margin-top:-2px}
-.empty{color:var(--muted);margin:0 0 12px;padding:16px;border:2px dashed var(--line);border-radius:var(--r);text-align:center;font-size:.95rem;text-wrap:balance}
+.empty{color:var(--muted);margin:0 0 12px;padding:16px;border:2px dashed var(--line);border-radius:var(--r);text-align:center;font-size:.94rem;text-wrap:balance}
+.fold{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--surface);border:1px dashed var(--line);border-radius:14px;padding:11px 14px;margin:4px 0 12px;color:var(--muted);font-weight:700;font-size:.88rem;text-align:left}
+.fold i{font-style:normal;transition:transform .2s}.fold[aria-expanded=true] i{transform:rotate(180deg)}
+.goal.gm{display:flex;align-items:center;gap:6px;padding:6px 8px 6px 12px;margin-bottom:8px;border-width:1px;box-shadow:none}
+.goal.gm .pick{font-size:.94rem;font-weight:600;min-height:32px}
+.goal.gm .cnt{font-size:.94rem}.goal.gm .ghost{padding:4px 8px;min-height:32px}
 
 /* 添加目标 */
-.add{display:grid;grid-template-columns:112px 1fr;gap:8px;margin-top:4px}
+.add{display:grid;grid-template-columns:112px 1fr;gap:8px;margin-top:6px}
 .add .nm{grid-column:1/-1}
-.field{font:inherit;font-size:16px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 14px;min-height:48px;width:100%;min-width:0}
+.field{font:inherit;font-size:16px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 14px;min-height:46px;width:100%;min-width:0}
 .field::placeholder{color:var(--muted);opacity:.75}
-.btn{min-height:48px;padding:0 18px;border-radius:12px;border:0;background:var(--pri);color:var(--priink);font-weight:700}
+.btn{min-height:46px;padding:0 18px;border-radius:12px;border:0;background:var(--pri);color:var(--priink);font-weight:700}
 .btn:active{filter:brightness(.92)}
+.btn.gold{background:var(--gold);color:var(--goldink)}
+.btn.soft{background:var(--surface2);color:var(--ink);border:1px solid var(--line)}
 .btn.block{width:100%;margin-top:14px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
 
-/* ============ 统计 ============ */
+/* ============ 任务与周常 BOSS 讨伐 ============ */
+.qs{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin-bottom:8px;box-shadow:var(--shadow)}
+.qs.ok{border-color:var(--ok)}.qs .qi{font-size:1.25rem}.qs .qt{flex:1;min-width:0}.qs .qt .bar{margin:6px 0 0;height:8px}.qs small{flex:none;color:var(--muted);font-weight:600}
+.boss{background:linear-gradient(135deg,color-mix(in srgb,var(--pink) 11%,var(--surface)),var(--surface));border:1px solid color-mix(in srgb,var(--pink) 40%,var(--line));border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow)}
+.boss-hd{display:flex;align-items:center;gap:12px}
+.boss-ic{width:46px;height:46px;border-radius:14px;background:color-mix(in srgb,var(--pink) 18%,var(--surface));display:grid;place-items:center;font-size:1.65rem;flex:none}
+.boss-info{flex:1;min-width:0}
+.boss-info b{display:block;font-size:1rem}
+.boss-info small{color:var(--muted)}
+.hp-bar{height:12px;border-radius:999px;background:var(--track);overflow:hidden;margin:10px 0 6px}
+.hp-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),#FF7E5F);border-radius:999px;transition:width .4s}
+.boss-ft{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted)}
+
+/* ============ 道场（闪电刷词与百人斩） ============ */
+.dojo-wrap{display:flex;flex-direction:column;gap:18px}
+.pill-row{display:flex;gap:6px;flex-wrap:wrap}
+.pill{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:.82rem;font-weight:700;color:var(--muted);transition:all .15s}
+.pill.on{background:var(--pri);color:var(--priink);border-color:var(--pri)}
+.qbox{background:var(--surface);border:2px solid var(--line);border-radius:22px;padding:20px 18px;box-shadow:var(--shadow);text-align:center;position:relative}
+.qbox-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;font-size:.84rem;color:var(--muted)}
+.qtag{background:var(--surface2);border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-weight:700;font-size:.76rem}
+.qstreak{font-weight:800;color:var(--pink)}
+.qprompt{font-size:clamp(1.65rem,6.5vw,2.35rem);font-weight:800;line-height:1.28;margin:10px 0 6px;word-break:break-word}
+.qsub{color:var(--muted);font-size:.9rem;min-height:1.4em}
+.qtools{display:flex;justify-content:center;gap:8px;margin:10px 0 16px}
+.qtools button{border:1px solid var(--line);background:var(--surface2);border-radius:999px;padding:4px 12px;font-size:.8rem;font-weight:600;color:var(--muted)}
+.qtools button.fav{color:var(--goldink);background:color-mix(in srgb,var(--gold) 28%,var(--surface));border-color:var(--gold)}
+:root[data-theme="dark"] .qtools button.fav{color:var(--gold)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .qtools button.fav{color:var(--gold)}}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:480px){.opts{grid-template-columns:1fr}}
+.opt{min-height:52px;padding:10px 14px;border-radius:14px;border:2px solid var(--line);background:var(--surface2);font-weight:700;font-size:.98rem;text-align:left;display:flex;align-items:center;gap:10px;transition:transform .08s,border-color .15s,background .15s}
+.opt:active:not(:disabled){transform:scale(.98)}
+.opt .k{flex:none;width:24px;height:24px;border-radius:7px;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;font-size:.76rem;color:var(--muted)}
+.opt.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,var(--surface))}
+.opt.wrong{border-color:var(--pink);background:color-mix(in srgb,var(--pink) 18%,var(--surface))}
+.qfeed{margin-top:14px;min-height:1.5em;font-size:.9rem;font-weight:700}
+.blitz-bar{height:8px;border-radius:6px;background:var(--track);overflow:hidden;margin-bottom:14px}
+.blitz-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--ok),var(--gold),var(--pink));transition:width .2s linear}
+.cform{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.cform .full{grid-column:1/-1}
+
+/* ============ 神社（御神签 / 祈愿抽卡 / 伴学灵图鉴 / 授与所） ============ */
+.shrine-grid{display:flex;flex-direction:column;gap:20px}
+.kuji-card{background:linear-gradient(135deg,color-mix(in srgb,var(--pink) 12%,var(--surface)),color-mix(in srgb,var(--gold) 12%,var(--surface)));border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:var(--shadow)}
+.kuji-res{display:flex;align-items:center;gap:14px;margin-top:10px;padding:12px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--line)}
+.kuji-stamp{flex:none;width:54px;height:54px;border-radius:14px;background:var(--pink);color:#fff;display:grid;place-items:center;font-weight:900;font-size:1.25rem;letter-spacing:.04em}
+.gacha-box{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:var(--shadow);text-align:center}
+.gacha-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.shop-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:520px){.shop-row,.gacha-btns{grid-template-columns:1fr}}
+.shop-item{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:space-between;gap:10px}
+.relics{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.rl{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:12px;text-align:center;position:relative;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;gap:4px}
+.rl.lock{opacity:.52;filter:grayscale(.85)}
+.rl.eq{border-color:var(--gold);box-shadow:0 0 0 2px color-mix(in srgb,var(--gold) 35%,transparent)}
+.rl .rar{position:absolute;top:8px;left:8px;font-size:.64rem;font-weight:800;padding:1px 6px;border-radius:999px;background:var(--track);color:var(--muted)}
+.rl.ur .rar{background:linear-gradient(135deg,#7AE0FF,#B38BFF);color:#140E2E}
+.rl.ssr .rar{background:var(--gold);color:var(--goldink)}
+.rl.sr .rar{background:#B9C2DA;color:#1d2540}
+.rl .st{position:absolute;top:8px;right:8px;font-size:.68rem;font-weight:800;color:var(--gold)}
+.rl .emi{font-size:2.1rem;line-height:1.2;margin-top:8px}
+.rl b{font-size:.88rem;line-height:1.25}
+.rl small{font-size:.73rem;color:var(--muted);line-height:1.3}
+.rl .usebtn{margin-top:6px;width:100%;border:1px solid var(--line);background:var(--surface2);border-radius:8px;padding:4px 8px;font-size:.74rem;font-weight:700}
+.rl.eq .usebtn{background:var(--gold);color:var(--goldink);border-color:var(--gold)}
+
+/* ============ 统计与热力图 ============ */
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .cell{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow);min-width:0}
-.cell b{display:block;font-size:1.4rem;font-weight:800;line-height:1.2;white-space:nowrap}
-.cell b .u{font-size:.78rem;font-weight:600;color:var(--muted);margin:0 3px 0 2px}
+.cell b{display:block;font-size:1.35rem;font-weight:800;line-height:1.2;white-space:nowrap}
+.cell b .u{font-size:.76rem;font-weight:600;color:var(--muted);margin:0 3px 0 2px}
 .cell small{color:var(--muted)}
 
-/* 近七天 */
 .week{--ch:112px;display:grid;grid-template-columns:repeat(7,1fr);gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 10px 10px;box-shadow:var(--shadow)}
 .col{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0;font-size:.74rem;color:var(--muted)}
 .col .v{height:1.1em;line-height:1.1;font-weight:700;color:var(--ink)}
@@ -116,6 +261,16 @@ small{font-size:.82rem}
 .col.today .b{background:var(--gold)}
 .col.today .w{color:var(--ink);font-weight:700}
 .col .f{height:1.1em;font-size:.68rem}
+
+.heat-box{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;box-shadow:var(--shadow)}
+.heat-hd{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;max-width:340px;margin:0 auto 6px;text-align:center;font-size:.72rem;color:var(--muted);font-weight:600}
+.heat{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;max-width:340px;margin:0 auto}
+.heat i{aspect-ratio:1;border-radius:6px;background:var(--track)}
+.heat .future{opacity:.22}
+.heat .l1{background:color-mix(in srgb,var(--ok) 30%,var(--track))}.heat .l2{background:color-mix(in srgb,var(--ok) 55%,var(--track))}
+.heat .l3{background:color-mix(in srgb,var(--ok) 80%,var(--track))}.heat .l4{background:var(--ok)}
+.heat .frz{background:color-mix(in srgb,#60A5FA 45%,var(--track))}
+.heat .td{outline:2px solid var(--gold);outline-offset:1px}
 
 /* 排行榜 */
 .rank{list-style:none;margin:0;padding:0}
@@ -128,173 +283,77 @@ small{font-size:.82rem}
 .rank .d{flex:1;min-width:0}
 .rank .d b{font-weight:700}
 .rank .d small{display:block;color:var(--muted)}
-.rank .p{flex:none;font-size:1.3rem;font-weight:800}
+.rank .p{flex:none;font-size:1.25rem;font-weight:800}
 .rank .p i{font-style:normal;font-size:.75rem;font-weight:600;color:var(--muted);margin-left:2px}
 
 /* 成就 */
 .badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
 .bd{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow)}
-.bd .ic{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--track);color:var(--muted)}
-.bd .tx{min-width:0}
+.bd .ic{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--track);font-size:1.25rem}
+.bd .tx{min-width:0;flex:1}
 .bd b{display:block;line-height:1.3}
 .bd small{display:block;color:var(--muted);line-height:1.35}
 .bd.lock b{color:var(--muted)}
-.bd.got .ic{background:var(--gold);color:var(--goldink)}
+.bd.lock .ic{filter:grayscale(1);opacity:.5}
 .bd.got b{color:var(--pink)}
-.bd .when{margin-top:2px;font-size:.72rem}
-
-/* ============ 计时器（手机：底部固定条） ============ */
-.dock{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--surface);border-top:1px solid var(--line);
-  padding:0 16px calc(12px + env(safe-area-inset-bottom,0px));box-shadow:0 -10px 28px -14px rgba(22,32,74,.35)}
-.strip{height:4px;background:var(--track);margin:0 -16px 10px;overflow:hidden}
-.strip i{display:block;height:100%;width:0;background:var(--gold);transition:width 1s linear}
-.dockin{max-width:640px;margin:0 auto;display:flex;align-items:center;gap:10px}
-.clock{flex:1;min-width:0}
-.clock b{display:block;font-size:2.1rem;font-weight:800;line-height:1.1;letter-spacing:.01em}
-.clock small{display:block;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.btns{flex:none;display:flex;align-items:center;gap:8px}
-.go{min-width:108px;min-height:54px;border:0;border-radius:999px;background:var(--pri);color:var(--priink);font-weight:700;font-size:1.1rem;padding:0 24px;transition:background .2s,transform .08s}
-.go:active{transform:scale(.97)}
-.go.run{background:var(--pink);color:#fff}
-.fin{min-height:44px;padding:0 14px;border-radius:999px;background:none;border:1px solid var(--line);color:var(--muted);font-size:.92rem}
-.fin[hidden]{display:none}
-.kbd{display:none;margin:12px 0 0;text-align:center;font-size:.8rem;color:var(--muted)}
-.kbd kbd{font:inherit;font-size:.75rem;padding:1px 8px;border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;background:var(--bg);color:var(--ink)}
-
-/* 提示条 */
-.toast{position:fixed;left:50%;bottom:calc(112px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(6px);background:var(--ink);color:var(--bg);padding:9px 18px;border-radius:999px;font-weight:700;font-size:.9rem;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:30;width:max-content;max-width:calc(100vw - 32px);text-align:center}
-.toast.on{opacity:1;transform:translateX(-50%)}
-
-/* 弹窗：手机为底部抽屉 */
-.veil{position:fixed;inset:0;background:rgba(10,14,36,.6);display:none;align-items:flex-end;justify-content:center;z-index:20}
-.veil.on{display:flex}
-.card{background:var(--surface);border-radius:24px 24px 0 0;padding:22px 20px calc(20px + env(safe-area-inset-bottom,0px));width:100%;max-width:560px;max-height:90%;overflow:auto;animation:up .25s ease-out}
-.card h2{margin:0 0 4px;font-size:1.3rem;font-weight:800}
-.card .grid{margin:14px 0}
-@keyframes up{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
-
-@media(max-width:360px){
-  .app{padding-left:12px;padding-right:12px}
-  .cell{padding:10px}.cell b{font-size:1.2rem}
-  .go{min-width:92px;padding:0 18px}
-}
-
-/* ============ 平板 / 小窗口：统计放宽 ============ */
-@media(min-width:640px){
-  .veil{align-items:center;padding:16px}
-  .card{border-radius:24px;max-width:440px;padding:24px}
-  .toast{bottom:calc(120px + env(safe-area-inset-bottom,0px))}
-}
-
-/* ============ 电脑：双栏布局 ============ */
-@media(min-width:960px){
-  .app{max-width:1160px;padding:0 32px 56px}
-  .top{padding:28px 0 18px}
-  .top h1{font-size:1.6rem}
-  .layout{display:grid;grid-template-columns:400px minmax(0,1fr);gap:32px;align-items:start;margin-top:20px}
-  .layout>main{margin-top:0}
-  /* 左栏：计时器 + 目标，随页面滚动保持可见 */
-  .side{position:sticky;top:20px;display:flex;flex-direction:column;gap:20px;max-height:calc(100vh - 40px)}
-  .goals-sec{overflow-y:auto;min-height:0;padding:3px;margin:-3px;overscroll-behavior:contain;scrollbar-width:thin}
-  .dock{position:relative;left:auto;right:auto;bottom:auto;flex:none;border:1px solid var(--line);border-radius:20px;padding:0 22px 22px;box-shadow:var(--shadow);overflow:hidden}
-  .strip{margin:0 -22px 20px;height:5px}
-  .dockin{display:grid;gap:16px;max-width:none}
-  .clock b{font-size:3.6rem;letter-spacing:.02em}
-  .clock small{font-size:.9rem;margin-top:2px}
-  .btns{width:100%}
-  .go{flex:1;min-height:56px;font-size:1.15rem}
-  .fin{min-height:56px;padding:0 22px}
-  .go:hover{filter:brightness(1.08)}
-  .kbd{display:block}
-  .toast{bottom:32px}
-  /* 右栏 */
-  .cell{padding:16px 18px}
-  .cell b{font-size:1.75rem}
-  .week{--ch:168px;gap:12px;padding:18px 18px 14px}
-  .col{font-size:.82rem}
-  .col .t{max-width:56px}
-  .col .f{font-size:.74rem}
-  .hud{padding:18px 24px;gap:20px}
-  .lv{width:64px;height:64px}
-  .lv b{font-size:1.7rem}
-  .track{height:12px}
-  .pts b{font-size:2.3rem}
-}
-@media(hover:hover){
-  .tap:hover:not(:disabled){filter:brightness(1.06)}
-  .btn:hover{filter:brightness(1.1)}
-  .ghost:hover:not(:disabled){background:var(--track)}
-  .goal:not(.on):hover{border-color:var(--muted)}
-  .fin:hover{background:var(--track)}
-}
-@media(min-width:1280px){.badges{grid-template-columns:repeat(3,1fr)}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
-
-/* ============ 升级：任务 / 热力图 / 成就稀有度 / 庆祝 ============ */
-.mute{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;width:34px;height:28px;font-size:.9rem;padding:0}
-.pts .fl{display:block;color:var(--pink);font-weight:700}
-.qs{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin-bottom:8px;box-shadow:var(--shadow)}
-.qs.ok{border-color:var(--ok)}.qs .qi{font-size:1.3rem}.qs .qt{flex:1;min-width:0}.qs .qt .bar{margin:6px 0 0;height:8px}.qs small{flex:none;color:var(--muted)}
-.heat{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;box-shadow:var(--shadow)}
-.heat i{aspect-ratio:1;border-radius:6px;background:var(--track)}
-.heat .l1{background:color-mix(in srgb,var(--ok) 30%,var(--track))}.heat .l2{background:color-mix(in srgb,var(--ok) 55%,var(--track))}
-.heat .l3{background:color-mix(in srgb,var(--ok) 80%,var(--track))}.heat .l4{background:var(--ok)}.heat .td{outline:2px solid var(--gold);outline-offset:1px}
-.bd .ic{font-size:1.25rem}.bd.lock .ic{filter:grayscale(1);opacity:.5}
 .bd.got.r1 .ic{background:#D79B6B}.bd.got.r2 .ic{background:#B9C2DA}.bd.got.r3 .ic{background:var(--gold)}
 .bd.got.r4 .ic{background:linear-gradient(135deg,#7AE0FF,#B38BFF)}.bd.got.r4{border-color:#9C8CFF}
 .bd .rt{font-style:normal;font-size:.66rem;font-weight:700;border-radius:999px;padding:0 7px;background:var(--track);color:var(--muted);vertical-align:2px}
 .bd .pg{height:6px;border-radius:4px;background:var(--track);margin-top:5px;overflow:hidden}.bd .pg i{display:block;height:100%;background:var(--pri)}
-.card.cele{position:relative;overflow:hidden;text-align:center}.card .big{font-size:3.4rem;line-height:1.2;margin-top:6px}
+.bd .when{margin-top:2px;font-size:.72rem}
+
+/* 飘字动效 / 提示条 / 弹窗 */
+.pop{position:fixed;pointer-events:none;z-index:40;font-weight:900;font-size:1rem;color:var(--goldink);background:var(--gold);padding:3px 10px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.22);animation:popUp .95s ease-out forwards}
+@keyframes popUp{0%{opacity:1;transform:translate(-50%,0) scale(.85)}40%{transform:translate(-50%,-22px) scale(1.06)}100%{opacity:0;transform:translate(-50%,-48px) scale(.96)}}
+.toast{position:fixed;left:50%;bottom:calc(140px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(6px);background:var(--ink);color:var(--bg);padding:9px 18px;border-radius:999px;font-weight:700;font-size:.88rem;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:30;width:max-content;max-width:calc(100vw - 32px);text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%)}
+.veil{position:fixed;inset:0;background:rgba(10,14,36,.62);display:none;align-items:flex-end;justify-content:center;z-index:25}
+.veil.on{display:flex}
+.card{background:var(--surface);border-radius:24px 24px 0 0;padding:22px 20px calc(20px + env(safe-area-inset-bottom,0px));width:100%;max-width:540px;max-height:90%;overflow:auto;animation:up .24s ease-out}
+.card h2{margin:0 0 4px;font-size:1.28rem;font-weight:800;justify-content:center}
+.card .grid{margin:14px 0}
+.card.cele{position:relative;overflow:hidden;text-align:center}
+.card .big{font-size:3.2rem;line-height:1.2;margin-top:6px}
 .conf{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .conf i{position:absolute;top:-30px;font-style:normal;animation:fall 1.9s ease-in forwards}
 @keyframes fall{to{transform:translateY(460px) rotate(360deg);opacity:0}}
+@keyframes up{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
 
-/* ============ 分页 UI：底部悬浮标签栏 + 圆环计时器 ============ */
-.app{padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))}
-.views{margin-top:16px}
-.view{animation:vin .28s ease-out}.view[hidden]{display:none!important}
-@keyframes vin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-#v-focus>*+*{margin-top:24px}
-.tabs{position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:6;max-width:440px;margin:0 auto;display:flex;gap:4px;padding:6px;border-radius:24px;
-  background:color-mix(in srgb,var(--surface) 88%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--line);box-shadow:0 14px 34px -14px rgba(22,32,74,.45)}
-.tabs button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;border:0;background:none;border-radius:18px;min-height:54px;padding:6px 4px;color:var(--muted);font-size:.74rem;font-weight:700;transition:background .2s,color .2s}
-.tabs button.on{background:var(--pri);color:var(--priink)}
-.tabs svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.tabs small{font-size:.62rem;font-weight:600;opacity:.85;line-height:1}
-.mini{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:6;border:0;border-radius:999px;background:var(--pink);color:#fff;font-weight:700;
-  padding:10px 18px;box-shadow:0 10px 24px -10px rgba(0,0,0,.5);max-width:calc(100vw - 32px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mini[hidden]{display:none}
-.toast{bottom:calc(150px + env(safe-area-inset-bottom,0px))}
-.dock{position:relative;left:auto;right:auto;bottom:auto;z-index:auto;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:22px 20px 18px;box-shadow:var(--shadow);text-align:center;overflow:visible}
-.strip{display:none}
-.ringw{position:relative;width:min(250px,68vw);aspect-ratio:1;margin:0 auto}
-.ringw svg{width:100%;height:100%;transform:rotate(-90deg)}
-.ringw circle{fill:none;stroke-width:7}
-.ringw .rt{stroke:var(--track)}
-.ringw .rp{stroke:var(--gold);stroke-linecap:round;stroke-dasharray:339.3;stroke-dashoffset:339.3;transition:stroke-dashoffset 1s linear}
-.ringw .clock{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 20%}
-.ringw .clock b{font-size:clamp(2rem,9vw,2.7rem)}
-.ringw .clock small{max-width:100%}
-.dock .btns{justify-content:center;margin-top:18px}
-.dock .go{min-width:150px;flex:none}
-.dock .note{margin-top:12px;font-size:.8rem}
-.goals-sec{overflow:visible;margin:0;padding:0}
-@media(min-width:960px){
-  .views{margin-top:24px}
-  #v-focus{display:grid;grid-template-columns:400px minmax(0,1fr);grid-template-rows:auto 1fr;gap:24px 32px;align-items:start}
-  #v-focus>*+*{margin-top:0}
-  #v-focus .dock{grid-row:1/3;position:sticky;top:20px;padding:28px 24px 22px}
-  #dash{display:grid;grid-template-columns:1fr 1fr;gap:28px 32px;align-items:start}
-  #dash .sec{margin:0}
-  .toast{bottom:100px}
+@media(max-width:360px){
+  .app{padding-left:12px;padding-right:12px}
+  .cell{padding:10px}.cell b{font-size:1.18rem}
+  .tabs button{font-size:.68rem}
 }
-
-/* ============ 已完成目标自动折叠 ============ */
-.fold{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--surface);border:1px dashed var(--line);border-radius:14px;padding:11px 14px;margin:4px 0 12px;color:var(--muted);font-weight:700;font-size:.9rem;text-align:left}
-.fold i{font-style:normal;transition:transform .2s}.fold[aria-expanded=true] i{transform:rotate(180deg)}
-.goal.gm{display:flex;align-items:center;gap:6px;padding:6px 8px 6px 12px;margin-bottom:8px;border-width:1px;box-shadow:none}
-.goal.gm .pick{font-size:.95rem;font-weight:600;min-height:32px}
-.goal.gm .cnt{font-size:.95rem}.goal.gm .ghost{padding:4px 8px;min-height:32px}
+@media(min-width:640px){
+  .veil{align-items:center;padding:16px}
+  .card{border-radius:24px;max-width:460px;padding:24px}
+}
+@media(min-width:960px){
+  .app{max-width:1160px;padding:0 32px 116px}
+  .top{padding:24px 0 16px;gap:10px}
+  .top h1{font-size:1.55rem}
+  .hud{padding:16px 24px;gap:20px}
+  .lv{width:62px;height:62px}.lv b{font-size:1.65rem}
+  .pts b{font-size:2.15rem}
+  .views{margin-top:22px}
+  #v-focus{display:grid;grid-template-columns:390px minmax(0,1fr);gap:28px;align-items:start}
+  #v-focus>.dock{position:sticky;top:20px;padding:24px 22px 20px}
+  .kbd{display:block}
+  #dash{display:grid;grid-template-columns:1fr 1fr;gap:26px 32px;align-items:start}
+  #dash .sec{margin:0}
+  .dojo-wrap{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:26px;align-items:start}
+  .shrine-top{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .cell{padding:15px 18px}.cell b{font-size:1.65rem}
+  .week{--ch:156px;gap:10px;padding:18px 18px 14px}
+  .toast{bottom:96px}
+}
+@media(min-width:1280px){.badges{grid-template-columns:repeat(3,1fr)}.relics{grid-template-columns:repeat(4,1fr)}}
+@media(hover:hover){
+  .tap:hover:not(:disabled),.btn:hover:not(:disabled),.go:hover{filter:brightness(1.07)}
+  .ghost:hover:not(:disabled),.endbtn:hover,.opt:hover:not(:disabled),.pill:hover:not(.on),.presets button:hover{background:var(--track)}
+  .goal:not(.on):hover{border-color:var(--muted)}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
@@ -302,40 +361,124 @@ small{font-size:.82rem}
   <header class="top">
     <span class="logo" aria-hidden="true">日</span>
     <h1>日语专注修行</h1>
+    <button class="koban-pill" id="kobanBtn" title="前往神社祈愿">🪙 <span id="kb">0</span></button>
     <span class="sync" id="sync" data-s="wait" role="status" aria-live="polite">连接中…</span>
-  <button class="mute" id="mute" aria-label="音效开关"></button>
+    <button class="icbtn" id="themeBtn" aria-label="切换主题" title="切换深浅色主题">🌓</button>
+    <button class="icbtn" id="mute" aria-label="音效开关" title="音效与语音开关">🔔</button>
   </header>
 
   <section class="hud" id="hud" aria-label="等级与今日积分"></section>
 
   <div class="views">
+    <!-- 1. 专注视图 -->
     <div class="view" id="v-focus">
       <section class="dock" aria-label="计时器">
-        <div class="strip"><i id="strip"></i></div>
+        <div class="modes" id="modes" role="group" aria-label="专注周期">
+          <button data-m="15">⚡ 15分</button>
+          <button data-m="25" class="on">🍅 25分</button>
+          <button data-m="45">🧘 45分</button>
+        </div>
+        <div class="pet-bar">
+          <button class="pet-av" id="petAv" title="点我互动朗读日语鼓励">🦊</button>
+          <div class="pet-say" id="petSay">今日も一緒に頑張ろう！<small>今天也一起加油吧！</small></div>
+        </div>
         <div class="ringw">
           <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="rt" cx="60" cy="60" r="54"/><circle class="rp" id="ring" cx="60" cy="60" r="54"/></svg>
-          <div class="clock"><b id="clk">00:00</b><small id="sub">选择目标后点击开始</small></div>
+          <div class="clock">
+            <b id="clk">00:00</b>
+            <small id="sub">选择目标后点击开始</small>
+            <span class="cyc-chip" id="cyc" hidden>🍅 ×1</span>
+          </div>
         </div>
-        <div class="btns"><button class="fin" id="end" hidden>结束</button><button class="go" id="go">开始</button></div>
-        <p class="note">圆环 = 25 分钟连续专注进度，暂停会重置</p>
+        <div class="btns">
+          <button class="endbtn" id="end" hidden>结束结算</button>
+          <button class="go" id="go">开始专注</button>
+        </div>
+        <div class="amb" id="amb" aria-label="环境白噪音">
+          <button data-amb="off" class="on">🔇 静音</button>
+          <button data-amb="rain">🌧️ 夜雨</button>
+          <button data-amb="wave">🌊 海浪</button>
+          <button data-amb="fire">🔥 围炉</button>
+        </div>
+        <p class="note" id="ringNote">圆环 = 25 分钟连续专注进度，满环自动奖 +20 分</p>
         <p class="kbd">按 <kbd>空格</kbd> 开始 / 暂停</p>
       </section>
-      <div id="quests"></div>
-      <section class="goals-sec">
-        <h2>学习目标</h2>
-        <div id="goals"></div>
-        <form class="add" id="gform" autocomplete="off">
-          <input class="field nm" id="gname" placeholder="目标，例如：N3 单词" maxlength="30" aria-label="目标名称" enterkeyhint="next">
-          <input class="field num" id="gtotal" type="number" inputmode="numeric" min="1" max="999" placeholder="项目数" aria-label="项目数" enterkeyhint="done">
-          <button class="btn" id="gadd" type="submit">添加目标</button>
-        </form>
-      </section>
+
+      <div class="focus-main">
+        <div class="qcard" id="qcard"></div>
+        <div class="combo-bar" id="comboBar" hidden>
+          <b id="comboTxt">⚡ 连击 ×2</b>
+          <div class="ctrack"><i id="comboFill"></i></div>
+          <small id="comboSec">120s</small>
+        </div>
+
+        <section class="goals-sec">
+          <h2>学习目标<small>完成每项 +10 分 +5🪙 · 达成目标 +50 分</small></h2>
+          <div class="presets" id="presets">
+            <button type="button" data-n="📕 核心词汇背诵" data-t="25">+ 核心词汇 25</button>
+            <button type="button" data-n="🎧 听力精听跟读" data-t="5">+ 听力精听 5</button>
+            <button type="button" data-n="📘 语法句型造句" data-t="10">+ 语法造句 10</button>
+            <button type="button" data-n="📖 读解真题精读" data-t="2">+ 读解真题 2</button>
+          </div>
+          <div id="goals"></div>
+          <form class="add" id="gform" autocomplete="off">
+            <input class="field nm" id="gname" placeholder="目标，例如：N2 单词第 3 单元" maxlength="36" aria-label="目标名称" enterkeyhint="next">
+            <input class="field num" id="gtotal" type="number" inputmode="numeric" min="1" max="999" placeholder="项目数" aria-label="项目数" enterkeyhint="done">
+            <button class="btn" id="gadd" type="submit">添加目标</button>
+          </form>
+        </section>
+
+        <div id="quests"></div>
+        <div id="boss"></div>
+      </div>
     </div>
+
+    <!-- 2. 道场视图 -->
+    <div class="view" id="v-dojo" hidden>
+      <div class="dojo-wrap">
+        <div class="dojo-left">
+          <section class="sec">
+            <h2>言灵道场<small>键盘 1-4 秒选 · R 重播发音 · 答对加积分与小判</small></h2>
+            <div class="pill-row" id="dojoModes" style="margin-bottom:10px">
+              <button class="pill on" data-dm="zen">🧘 自在快刷（连击加成）</button>
+              <button class="pill" data-dm="blitz">⚔️ 60秒百人斩</button>
+            </div>
+            <div class="pill-row" id="dojoDecks" style="margin-bottom:14px"></div>
+            <div class="qbox" id="qbox"></div>
+          </section>
+        </div>
+        <div class="dojo-right">
+          <section class="sec">
+            <h2>我的生词 / 错题本<small id="wbStat"></small></h2>
+            <p class="note" style="margin:0 0 10px">道场答错会自动收录进错题池，在「错题/生词」题库中连续答对 3 次自动斩除毕业！你也可以把教材里的生词加进来反复刷：</p>
+            <form class="cform" id="cform" autocomplete="off">
+              <input class="field" id="cq" placeholder="日语词（如：曖昧）" maxlength="30" aria-label="日语词汇">
+              <input class="field" id="cr" placeholder="假名读音（如：あいまい）" maxlength="40" aria-label="假名读音">
+              <input class="field full" id="cm" placeholder="中文释义（如：含糊，模棱两可）" maxlength="50" aria-label="中文释义">
+              <button class="btn full" type="submit">➕ 加入专属词库</button>
+            </form>
+            <div id="customList" style="margin-top:12px"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. 神社视图 -->
+    <div class="view" id="v-shrine" hidden>
+      <div class="shrine-grid" id="shrine"></div>
+    </div>
+
+    <!-- 4. 数据视图 -->
     <div class="view" id="v-stats" hidden><main id="dash"></main></div>
+
+    <!-- 5. 成就视图 -->
     <div class="view" id="v-badges" hidden><div id="bdg"></div></div>
   </div>
+
   <nav class="tabs" aria-label="页面导航">
     <button data-t="focus" class="on" aria-current="page"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg>专注</button>
+    <button data-t="dojo"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h6M9 11h4"/></svg>道场<small id="dc"></small></button>
+    <button data-t="shrine"><svg viewBox="0 0 24 24"><path d="M3 7h18M5 11h14M7 7v14M17 7v14M12 3v8"/></svg>神社<span class="dot-red" id="shrineDot" hidden></span><small id="sc"></small></button>
     <button data-t="stats"><svg viewBox="0 0 24 24"><path d="M4 20V11M10 20V4M16 20v-6M22 20H2"/></svg>数据</button>
     <button data-t="badges"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="M8.5 14L7 22l5-3 5 3-1.5-8"/></svg>成就<small id="bc"></small></button>
   </nav>
@@ -346,36 +489,217 @@ small{font-size:.82rem}
 <div class="veil" id="veil" role="dialog" aria-modal="true"><div class="card" id="card"></div></div>
 
 <script>
-const TOKEN_KEY="jp-focus-token",APP_TITLE="日语专注修行";
+const TOKEN_KEY="jp-focus-token",THEME_KEY="jp-theme",APP_TITLE="日语专注修行";
 let S={goals:[],activeId:null,days:{},session:null,badges:{},flags:{}},pendDel=null,tickN=0,toastT=null;
 let loaded=false,rev=0,pushT=null,pushing=false,again=false,lock=false;
 const dirty=new Set();
 
-/* ---- sync with Cloudflare D1 (via the Worker API) ---- */
+/* ============ 精选日语名言与谚语 ============ */
+const QUOTES=[
+  ["継続は力なり","けいぞくはちからなり","坚持就是力量 · 每天微小的积累终成大器"],
+  ["七転び八起き","ななころびやおき","百折不挠 · 跌倒七次就勇敢站起八次"],
+  ["千里の道も一歩から","せんりのみちもいっぽから","千里之行，始于足下 · 现在就开始第一项吧"],
+  ["塵も積もれば山となる","ちりもつもればやまとなる","聚沙成塔，积少成多 · 每一个单词都算数"],
+  ["雨垂れ石を穿つ","あまだれいしをうがつ","水滴石穿 · 专注的力量能穿透一切难关"],
+  ["習うより慣れろ","ならうよりなれろ","熟能生巧 · 光看语法书不如多读多刷几题"],
+  ["石の上にも三年","いしのうえにもさんねん","功到自然成 · 冰冷的石头坐上三年也会变暖"],
+  ["思い立ったが吉日","おもいたったがきちじつ","心动不如行动 · 决定努力的此刻就是最好吉日"],
+  ["好きこそ物の上手なれ","すきこそもののじょうずなれ","热爱是最好的老师 · 享受日语的声音与韵律"],
+  ["急がば回れ","いそがばまわれ","欲速则不达 · 扎实的假名与基础是最快的捷径"],
+  ["鉄は熱いうちに打て","てつはあついうちにうて","趁热打铁 · 趁着连击手感火热再来一组"],
+  ["初心忘るべからず","しょしんわするべからず","勿忘初心 · 想起最初想听懂日语时的悸动"],
+  ["一期一会","いちごいちえ","一期一会 · 珍惜今天遇到的每一个新表达"],
+  ["案ずるより産むが易し","あんずるよりうむがやすし","船到桥头自然直 · 开始计时后其实没那么难"],
+  ["明日は明日の風が吹く","あしたはあしたのかぜがふく","明天自有明天的风 · 专注把眼前这一刻做好"],
+  ["百聞は一見に如かず","ひゃくぶんはいっけんにしかず","百闻不如一见 · 亲口读出来记得最牢"],
+  ["切磋琢磨","せっさたくま","切磋琢磨 · 今日的你正在超越昨日的自己"],
+  ["花鳥風月","かちょうふうげつ","花鸟风月 · 在词句间感受四季流转之美"]
+];
+
+/* ============ 24 风物御守与伴学灵图鉴 ============ */
+const RELICS=[
+  {id:"dango",n:"花见三色团子",jp:"花見団子（はなみだんご）",e:"🍡",r:1,s:"桜の下で一休みしよう！|赏花吃颗团子，继续冲！"},
+  {id:"furin",n:"江户玻璃风铃",jp:"風鈴（ふうりん）",e:"🎐",r:1,s:"涼しい音色で集中力アップ！|清脆风铃声帮你静下心来"},
+  {id:"matcha",n:"宇治新茶一服",jp:"抹茶（まっちゃ）",e:"🍵",r:1,s:"落ち着いて、一問ずつね。|静心品茶，一步一个脚印"},
+  {id:"onigiri",n:"梅干海苔饭团",jp:"お握り（おにぎり）",e:"🍙",r:1,s:"エネルギー満タン！行こう！|能量满格，准备出发！"},
+  {id:"tanzaku",n:"七夕许愿短册",jp:"短冊（たんざく）",e:"🎋",r:1,s:"願いはきっと叶うよ！|写下合格心愿，定能实现"},
+  {id:"chochin",n:"浅草雷门提灯",jp:"提灯（ちょうちん）",e:"🏮",r:1,s:"今日も明るく進もう！|点亮灯火，照亮前行之路"},
+  {id:"onsen",n:"箱根竹林秘汤",jp:"温泉（おんせん）",e:"♨️",r:1,s:"焦らずマイペースで大丈夫。|不用急躁，保持你的节奏"},
+  {id:"momiji",n:"岚山红叶书签",jp:"紅葉（もみじ）",e:"🍁",r:1,s:"昨日の続きから始めよう！|翻开书签，续写今日进步"},
+  {id:"hanafuda",n:"花札·松上鹤",jp:"花札（はなふだ）",e:"🎴",r:1,s:"いい勝負になりそうだね！|今天也是精彩的一局！"},
+  {id:"hora",n:"湘南江之岛海螺",jp:"法螺貝（ほらがい）",e:"🐚",r:1,s:"波のリズムに身を任せて。|伴着海浪节拍沉浸学习"},
+  {id:"kitsune",n:"伏见稻荷白狐",jp:"白狐（びゃっこ）",e:"🦊",r:2,s:"コンコン！いい集中力だね！|啾啾！现在的专注度超棒！"},
+  {id:"maneki",n:"豪德寺招福猫",jp:"招き猫（まねきねこ）",e:"🐱",r:2,s:"幸運と高得点を招くにゃ！|喵～为你招来暴击与高分！"},
+  {id:"usagi",n:"因幡月影白兔",jp:"白兎（しろうさぎ）",e:"🐰",r:2,s:"ぴょんぴょんレベルアップ！|蹦蹦跳跳，经验值飞涨中！"},
+  {id:"shiba",n:"柴犬豆助学长",jp:"柴犬（しばいぬ）",e:"🐕",r:2,s:"ワン！サボっちゃダメだぞ！|汪！学长看着你，不许偷懒哦"},
+  {id:"fukuro",n:"北海道雪鸮博士",jp:"梟（ふくろう）",e:"🦉",r:2,s:"ホーホー、語彙が増えたね！|咕咕～你的词汇量又涨啦！"},
+  {id:"koi",n:"隅田川绯鲤旗",jp:"鯉のぼり（こいのぼり）",e:"🎏",r:2,s:"逆風を越えて滝を登れ！|逆流而上，鱼跃龙门！"},
+  {id:"sensu",n:"京友禅金彩折扇",jp:"扇子（せんす）",e:"🪭",r:2,s:"優雅に難問を解き明かそう。|从容优雅地攻克每一道难题"},
+  {id:"torii",n:"严岛海上大鸟居",jp:"大鳥居（おおとりい）",e:"⛩️",r:3,s:"神域の静けさが君を守る。|海上神域的宁静守护你的专注"},
+  {id:"fuji",n:"凯风快晴赤富士",jp:"赤富士（あかふじ）",e:"🗻",r:3,s:"頂上まであと少し、登り続けよう！|向着最高峰稳步攀登吧！"},
+  {id:"sakura",n:"吉野千本夜樱",jp:"千本桜（せんぼんざくら）",e:"🌸",r:3,s:"満開の桜のように輝いてるよ！|你的努力正如漫山夜樱绽放"},
+  {id:"shika",n:"春日大社神鹿",jp:"神鹿（しんろく）",e:"🦌",r:3,s:"古都の知恵を授けよう。|为你献上千年古都的灵气"},
+  {id:"ryu",n:"金阁云海瑞龙",jp:"瑞龍（ずいりゅう）",e:"🐉",r:4,s:"雲を突き抜け、言霊を極めよ！|腾云驾雾，登顶言灵之巅！"},
+  {id:"kagami",n:"月读命八咫神镜",jp:"八咫鏡（やたのかがみ）",e:"🌙",r:4,s:"澄み切った心はすべてを映す。|明镜止水之心，过目不忘"},
+  {id:"katana",n:"言灵名刀·千鹤丸",jp:"名刀（めいとう）",e:"⚔️",r:4,s:"一刀両断！迷いを斬り捨てろ！|一刀两断，斩尽一切迷惘与错题！"}
+];
+const RAR_NAME=["","R","SR","SSR","UR"],RAR_CLS=["","r","sr","ssr","ur"];
+
+/* ============ 道场内置精选词库（120+ 高频词条） ============ */
+const BASE_DECK=[
+  /* 入门基础 k */
+  ["おはようございます","おはようございます","早上好（礼貌）","k"],["ありがとうございます","ありがとうございます","非常感谢","k"],
+  ["すみません","すみません","不好意思 / 劳驾 / 对不起","k"],["いただきます","いただきます","我开动了（餐前致谢）","k"],
+  ["ごちそうさまでした","ごちそうさまでした","多谢款待（餐后致谢）","k"],["お疲れ様です","おつかれさまです","辛苦了（日常寒暄）","k"],
+  ["傘","かさ","雨伞","k"],["鞄","かばん","包，公文包","k"],["靴","くつ","鞋子","k"],["机","つくえ","书桌，课桌","k"],
+  ["時計","とけい","钟表，手表","k"],["駅","えき","车站","k"],["切符","きっぷ","车票，入场券","k"],["果物","くだもの","水果","k"],
+  ["野菜","やさい","蔬菜","k"],["天気","てんき","天气","k"],["約束","やくそく","约定，诺言","k"],["散歩","さんぽ","散步","k"],
+  ["掃除","そうじ","打扫，清扫","k"],["洗濯","せんたく","洗衣服","k"],
+  /* N5-N4 核心易错 n54 */
+  ["都合","つごう","情况，方便与否","n54"],["支度","したく","准备，打点行装","n54"],["丁寧","ていねい","礼貌，仔细周到","n54"],
+  ["複雑","ふくざつ","复杂","n54"],["丈夫","じょうぶ","结实，健康无恙","n54"],["大事","だいじ","重要，珍重","n54"],
+  ["一生懸命","いっしょうけんめい","拼命努力，全力以赴","n54"],["久しぶり","ひさしぶり","好久不见","n54"],
+  ["届ける","とどける","送到，送交，申报","n54"],["届く","とどく","寄到，送达，够得着","n54"],["増える","ふえる","增加，增多","n54"],
+  ["減る","へる","减少，减轻","n54"],["決まる","きまる","决定，定下来","n54"],["調べる","しらべる","调查，查阅","n54"],
+  ["比べる","くらべる","比较，对比","n54"],["褒める","ほめる","表扬，称赞","n54"],["叱る","しかる","批评，训斥","n54"],
+  ["誘う","さそう","邀请，约请","n54"],["断る","ことわる","拒绝，谢绝；事先说明","n54"],["間に合う","まにあう","来得及，赶得上","n54"],
+  ["引っ越す","ひっこす","搬家，迁居","n54"],["召し上がる","めしあがる","吃、喝（尊他语）","n54"],
+  ["伺う","うかがう","拜访、请教、听说（自谦）","n54"],["拝見する","はいけんする","拜读、观看（自谦）","n54"],
+  ["必ず","かならず","必定，一定（100%肯定）","n54"],["決して","けっして","决（不）…（接否定）","n54"],
+  ["せっかく","せっかく","好不容易，特意","n54"],["そろそろ","そろそろ","快要，该…了；慢慢地","n54"],
+  /* N3 进阶核心 n3 */
+  ["曖昧","あいまい","含糊，暧昧，模棱两可","n3"],["雰囲気","ふんいき","气氛，氛围","n3"],["流石","さすが","不愧是，果然名不虚传","n3"],
+  ["羨ましい","うらやましい","令人羡慕的","n3"],["懐かしい","なつかしい","令人怀念的","n3"],["悔しい","くやしい","不甘心，懊悔","n3"],
+  ["情けない","なさけない","可叹，没出息，令人寒心","n3"],["もったいない","もったいない","可惜，浪费，受之有愧","n3"],
+  ["だらしない","だらしない","散漫，邋遢，没规矩","n3"],["落ち着く","おちつく","冷静下来，安顿，沉着","n3"],
+  ["諦める","あきらめる","放弃，死心","n3"],["飽きる","あきる","厌倦，腻烦","n3"],["憧れる","あこがれる","憧憬，向往","n3"],
+  ["疑う","うたがう","怀疑，猜疑","n3"],["敬う","うやまう","尊敬，敬重","n3"],["逆らう","さからう","违抗，逆着","n3"],
+  ["優れる","すぐれる","优秀，卓越，身体舒畅","n3"],["怠ける","なまける","偷懒，懈怠","n3"],["稼ぐ","かせぐ","赚钱，挣分，争取时间","n3"],
+  ["儲かる","もうかる","盈利，赚钱","n3"],["契機","けいき","契机，转机","n3"],["把握","はあく","掌握，把握","n3"],
+  ["妥協","だきょう","妥协，折中","n3"],["矛盾","むじゅん","矛盾，前后抵触","n3"],["偏る","かたよる","偏向，不均衡","n3"],
+  ["〜おかげで","接连体形/の","多亏了…（积极原因）","n3"],["〜せいで","接连体形/の","都怪…（消极原因）","n3"],
+  ["〜ついでに","接动词原形/た/の","顺便…（借某机会做某事）","n3"],["〜わりに","接普通形/な/の","虽然…却…（与预期不符）","n3"],
+  /* N2-N1 高阶词汇与拟声拟态 n21 */
+  ["相応しい","ふさわしい","相称的，适合的","n21"],["著しい","いちじるしい","显著的，惊人的","n21"],
+  ["甚だしい","はなはだしい","极其，非常严重","n21"],["潔い","いさぎよい","爽快，干脆，坦荡","n21"],
+  ["紛らわしい","まぎらわしい","容易混淆的，模棱两可","n21"],["煩わしい","わずらわしい","繁琐恼人的，麻烦的","n21"],
+  ["呆気ない","あっけない","没劲，结束得太快太轻易","n21"],["素っ気ない","そっけない","冷淡，简慢","n21"],
+  ["培う","つちかう","培养，培育（能力/默契）","n21"],["覆す","くつがえす","推翻，颠覆","n21"],
+  ["促す","うながす","促进，敦促，催促","n21"],["滞る","とどこおる","停滞，拖欠，不顺畅","n21"],
+  ["携わる","たずさわる","从事，参与（工作/项目）","n21"],["委ねる","ゆだねる","委托，托付，任凭","n21"],
+  ["侮る","あなどる","轻视，小看","n21"],["蔑む","さげすむ","鄙视，蔑视","n21"],["潤う","うるおう","滋润，富裕起来","n21"],
+  ["捗る","はかどる","进展顺利，效率高","n21"],["ぎっしり","拟态副词","满满当当，排得密密麻麻","n21"],
+  ["びっしょり","拟态副词","湿透，浑身湿淋淋","n21"],["うんざり","拟态副词","厌烦透顶，腻味","n21"],
+  ["うっかり","拟态副词","一不留神，疏忽大意","n21"],["あっさり","拟态副词","清淡；干脆利落，轻易","n21"],
+  ["こっそり","拟态副词","悄悄地，暗中","n21"],["びくびく","拟态副词","提心吊胆，战战兢兢","n21"],
+  ["〜に際して","接名词/动词原形","在…之际（正式场合转折点）","n21"],["〜を問わず","接名词","不论…，不分…（昼夜/男女）","n21"],
+  ["〜かねない","接动词ます形去ます","很有可能发生（不良结果）","n21"],["〜ざるを得ない","接动词ない形去ない","不得不…，只好…","n21"],
+  /* 地道惯用句与高频口语 exp */
+  ["耳が痛い","みみがいたい","戳中痛处，忠言逆耳","exp"],["顔が広い","かおがひろい","交游广阔，人脉广","exp"],
+  ["口が堅い","くちがかたい","嘴严，守口如瓶","exp"],["手が離せない","てがはなせない","忙得腾不出手","exp"],
+  ["足が出る","あしがでる","超支，亏空；露出马脚","exp"],["頭が下がる","あたまがさがる","令人钦佩，甘拜下风","exp"],
+  ["気が利く","きがきく","机灵，周到，有眼力见","exp"],["腑に落ちない","ふにおちない","想不通，难以理解信服","exp"],
+  ["猫の手も借りたい","ねこのてもかりたい","忙得不可开交（连猫爪都想借）","exp"],["朝飯前","あさめしまえ","小菜一碟，轻而易举","exp"],
+  ["三日坊主","みっかぼうず","三天打鱼两天晒网，三分钟热度","exp"],["図星","ずぼし","正中要害，被猜中心事","exp"],
+  ["相槌を打つ","あいづちをうつ","随声附和，点头回应","exp"],["道草を食う","みちくさをくう","半路耽搁，闲逛磨蹭","exp"],
+  ["油を売る","あぶらをうる","偷懒闲聊，磨洋工","exp"],["腹が立つ","はらがたつ","生气，火大","exp"],
+  ["胸がいっぱい","むねがいっぱい","感慨万千，激动得说不出话","exp"],["目がない","めがない","对…毫无抵抗力，酷爱…","exp"],
+  ["お言葉に甘えて","おことばにあまえて","恭敬不如从命，那就却之不恭了","exp"],["恐れ入りますが","おそれいりますが","非常抱歉打扰一下（委婉开场）","exp"],
+  ["差し支えなければ","さしつかえなければ","如果您方便的话，若无妨碍","exp"],["あいにく","あいにく","不巧，偏偏（委婉拒绝常用）","exp"],
+  ["とりあえず","とりあえず","暂且，总之先…","exp"],["なんだかんだ言って","なんだかんだいって","虽说这说那，但归根结底还是…","exp"]
+];
+
+/* ============ 周常言灵讨伐 BOSS 列表 ============ */
+const BOSSES=[
+  {n:"怠惰之鬼 · なまけ鬼",e:"👹",sub:"专趁人想刷手机时偷走专注力"},
+  {n:"忘却妖雾 · わすれ霧",e:"🌫️",sub:"唯有反复刷词与专注才能驱散迷雾"},
+  {n:"三日坊主大天狗",e:"👺",sub:"最怕连续打卡与坚定的每日修行者"},
+  {n:"敬语迷宫机关兽",e:"🗿",sub:"用扎实的词汇与专注时长击破防线"}
+];
+
+/* ============ 同步与初始化 ============ */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pad=n=>String(n).padStart(2,"0");
+const dk=(d=new Date())=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const wkKey=(d=new Date())=>{const t=new Date(d.getFullYear(),d.getMonth(),d.getDate());t.setDate(t.getDate()+3-(t.getDay()+6)%7);const w1=new Date(t.getFullYear(),0,4);return t.getFullYear()+"-W"+pad(1+Math.round(((t-w1)/864e5-3+(w1.getDay()+6)%7)/7))};
 const tok=()=>{try{return localStorage.getItem(TOKEN_KEY)||""}catch(e){return""}};
-function api(method,body,keep){const h={"content-type":"application/json"},t=tok();if(t)h.Authorization="Bearer "+t;
-  return fetch("/api/state",{method,headers:h,body:body?JSON.stringify(body):undefined,keepalive:!!keep})}
-function setSync(t){const el=document.getElementById("sync");if(!el)return;el.textContent=t;el.dataset.s=t==="已同步"?"ok":/失败/.test(t)?"err":"wait"}
-function modal(html,locked){lock=!!locked;document.getElementById("card").innerHTML=html;document.getElementById("veil").classList.add("on")}
-function unmodal(){lock=false;document.getElementById("veil").classList.remove("on");document.getElementById("card").classList.remove("cele");if(pendC.length){const a=pendC.shift();setTimeout(()=>celebrate(...a),300)}}
+
+function applyTheme(t){
+  if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t);
+  else document.documentElement.removeAttribute("data-theme");
+  const b=$("#themeBtn");if(b)b.textContent=t==="dark"?"🌙":t==="light"?"☀️":"🌓";
+}
+try{applyTheme(localStorage.getItem(THEME_KEY)||"")}catch(e){}
+$("#themeBtn").onclick=()=>{
+  let cur="";try{cur=localStorage.getItem(THEME_KEY)||""}catch(e){}
+  const nxt=cur===""?"dark":cur==="dark"?"light":"";
+  try{if(nxt)localStorage.setItem(THEME_KEY,nxt);else localStorage.removeItem(THEME_KEY)}catch(e){}
+  applyTheme(nxt);toast(nxt==="dark"?"已切换至深色夜修模式":nxt==="light"?"已切换至浅色晨读模式":"已切换至跟随系统主题");
+};
+
+function api(method,body,keep){
+  const h={"content-type":"application/json"},t=tok();
+  if(t)h.Authorization="Bearer "+t;
+  return fetch("/api/state",{method,headers:h,body:body?JSON.stringify(body):undefined,keepalive:!!keep});
+}
+function setSync(t){const el=$("#sync");if(!el)return;el.textContent=t;el.dataset.s=t==="已同步"?"ok":/失败|过大/.test(t)?"err":"wait"}
+function modal(html,locked){lock=!!locked;$("#card").innerHTML=html;$("#veil").classList.add("on")}
+function unmodal(){
+  lock=false;$("#veil").classList.remove("on");$("#card").classList.remove("cele");
+  if(pendC.length){const a=pendC.shift();setTimeout(()=>celebrate(...a),280)}
+}
 function save(){if(!loaded)return;setSync("待同步");clearTimeout(pushT);pushT=setTimeout(push,800)}
+
 async function push(keep){
   if(!loaded)return;
   if(pushing){again=true;return}
   clearTimeout(pushT);pushT=null;pushing=true;
   if(S.session)flush();
   const ks=[...dirty];dirty.clear();
-  const body={rev,goals:S.goals,activeId:S.activeId,session:S.session,badges:S.badges,flags:S.flags,days:Object.fromEntries(ks.map(k=>[k,S.days[k]]))};
+  const daysPayload=Object.fromEntries(ks.filter(k=>S.days[k]).map(k=>[k,S.days[k]]));
+  const body={rev,goals:S.goals,activeId:S.activeId,session:S.session,badges:S.badges,flags:S.flags,days:daysPayload};
   setSync("同步中…");
+  let ok=false;
   try{
     const r=await api("PUT",body,keep);
-    if(r.status===409){pushing=false;await pull(true);toast("已载入其他设备的最新数据，请重做刚才的操作");return}
-    if(r.status===401){pushing=false;ks.forEach(k=>dirty.add(k));askToken();return}
+    if(r.status===409){pushing=false;again=false;await pull(true);toast("已载入其他设备的最新数据，请重做刚才的操作");return}
+    if(r.status===401){pushing=false;again=false;ks.forEach(k=>dirty.add(k));askToken();return}
+    if(r.status===413){pushing=false;again=false;setSync("数据过大");toast("自定义数据超出容量上限");return}
     if(!r.ok)throw new Error("http "+r.status);
-    rev=(await r.json()).rev;setSync("已同步");
-  }catch(e){ks.forEach(k=>dirty.add(k));setSync("同步失败，10 秒后重试");pushT=setTimeout(push,10000)}
-  pushing=false;if(again){again=false;push()}
+    rev=(await r.json()).rev;setSync("已同步");ok=true;
+  }catch(e){
+    ks.forEach(k=>dirty.add(k));
+    again=false;
+    setSync("同步失败，10 秒后重试");
+    pushT=setTimeout(push,10000);
+  }
+  pushing=false;
+  if(ok&&again){again=false;push()}
 }
+
+function migrateAndRepair(){
+  if(!S.flags||typeof S.flags!=="object")S.flags={};
+  if(!S.badges||typeof S.badges!=="object")S.badges={};
+  if(!Array.isArray(S.goals))S.goals=[];
+  if(!S.days||typeof S.days!=="object")S.days={};
+  /* 为已完成的历史目标补齐防刷分标记 */
+  const gdIds=S.flags.gdIds||(S.flags.gdIds=[]);
+  S.goals.forEach(g=>{if(g.done>=g.total&&!gdIds.includes(g.id))gdIds.push(g.id)});
+  /* 老用户升级首次赠送欢迎小判，新用户赠送 100 起步小判 */
+  if(typeof S.flags.koban!=="number"){
+    const tp=totalPts();
+    S.flags.koban=tp>0?Math.min(800,120+Math.floor(tp*.5)):100;
+  }
+  if(!S.flags.bag)S.flags.bag={kitsune:1};
+  if(!S.flags.pet)S.flags.pet="kitsune";
+  /* 后台/跨端恢复中的进行中会话：立刻补算连续时长与番茄奖励 */
+  if(S.session&&S.session.run){
+    syncBlock(Date.now(),true);
+  }
+  autoApplyStreakShield();
+}
+
 async function pull(force){
   if(!force&&(dirty.size||pushT))await push();
   const r=await api("GET");
@@ -383,284 +707,1133 @@ async function pull(force){
   if(!r.ok)throw new Error("http "+r.status);
   const j=await r.json();
   S=Object.assign({goals:[],days:{},activeId:null,session:null,badges:{},flags:{}},j.state);
-  rev=j.rev;dirty.clear();loaded=true;setSync("已同步");render();return true;
+  rev=j.rev;dirty.clear();loaded=true;
+  migrateAndRepair();
+  setSync("已同步");render();return true;
 }
+
 function askToken(){
   modal(`<h2>需要访问口令</h2><p class="note">请输入部署时设置的 ACCESS_TOKEN。</p>
   <input class="field" id="tk" type="password" autocomplete="current-password" style="margin-top:12px" aria-label="访问口令">
   <button class="btn block" id="tkok">确认</button>`,true);
-  const go=()=>{try{localStorage.setItem(TOKEN_KEY,document.getElementById("tk").value.trim())}catch(e){}boot()};
-  document.getElementById("tkok").onclick=go;
-  document.getElementById("tk").onkeydown=e=>{if(e.key==="Enter")go()};
+  const go=()=>{try{localStorage.setItem(TOKEN_KEY,$("#tk").value.trim())}catch(e){}boot()};
+  $("#tkok").onclick=go;
+  $("#tk").onkeydown=e=>{if(e.key==="Enter")go()};
 }
 async function boot(){
-  modal('<p class="note" style="margin:0">正在加载数据…</p>',true);
+  modal('<p class="note" style="margin:0;text-align:center">正在连接道场同步数据…</p>',true);
   try{if(await pull(true))unmodal()}
-  catch(e){modal('<h2>无法连接服务器</h2><p class="note">请检查网络后重试。</p><button class="btn block" id="retry">重试</button>',true);document.getElementById("retry").onclick=boot}
+  catch(e){modal('<h2>无法连接服务器</h2><p class="note" style="text-align:center">请检查网络或 Worker 部署状态后重试。</p><button class="btn block" id="retry">重试</button>',true);$("#retry").onclick=boot}
 }
-const $=s=>document.querySelector(s);
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const pad=n=>String(n).padStart(2,"0");
-const dk=(d=new Date())=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+
+/* ============ 核心状态与时间计算（修复全部跨日与漏算 Bug） ============ */
 const day=k=>{dirty.add(k);return S.days[k]||(S.days[k]={ms:0,pauseMs:0,items:0,pts:0,sessions:0,pauses:0,best:0})};
 const goal=id=>S.goals.find(g=>g.id===id);
-const clock=ms=>{const t=Math.floor(ms/1000),h=Math.floor(t/3600),m=Math.floor(t%3600/60),s=t%60;return(h?h+":"+pad(m):pad(m))+":"+pad(s)};
+const clock=ms=>{const t=Math.max(0,Math.floor(ms/1000)),h=Math.floor(t/3600),m=Math.floor(t%3600/60),s=t%60;return(h?h+":"+pad(m):pad(m))+":"+pad(s)};
 const mins=ms=>{const m=Math.round(ms/60000);return m>=60?Math.floor(m/60)+" 小时 "+(m%60)+" 分":m+" 分钟"};
-/* 数值 + 小号单位（统一字体，避免数字和单位大小混乱） */
 const u=(n,unit)=>`${n}<span class="u">${unit}</span>`;
 const minsH=ms=>{const m=Math.round(ms/60000);return m>=60?u(Math.floor(m/60),"时")+u(m%60,"分"):u(m,"分钟")};
-const BLOCK=25*60000;
 
-function live(){const s=S.session;if(!s)return{act:0,pau:0};const d=Date.now()-s.since;return{act:s.act+(s.run?d:0),pau:s.pau+(s.run?0:d)}}
-function flush(){const s=S.session;if(!s||!s.run)return;const n=Date.now(),d=n-s.since,g=goal(S.activeId);s.act+=d;if(g)g.ms=(g.ms||0)+d;s.since=n}
-function ds(k){const d=S.days[k]||{},t=k===dk()&&S.session,l=t?live():{act:0,pau:0};
-  return{ms:(d.ms||0)+l.act,pau:(d.pauseMs||0)+l.pau,items:d.items||0,pts:(d.pts||0)+Math.floor(l.act/60000),pauses:(d.pauses||0)+(t?S.session.pauses:0),best:Math.max(d.best||0,t?S.session.best:0)}}
+function sesDay(s=S.session){return(s&&s.startDay)||dk()}
+function live(){
+  const s=S.session;if(!s)return{act:0,pau:0,best:0};
+  const n=Date.now(),d=Math.max(0,n-s.since);
+  const act=s.act+(s.run?d:0),pau=s.pau+(s.run?0:d);
+  const curBlock=s.run&&s.blockStart?Math.max(0,n-s.blockStart):0;
+  return{act,pau,best:Math.max(s.best||0,curBlock)};
+}
+function ds(k){
+  const d=S.days[k]||{},t=S.session&&sesDay(S.session)===k,l=t?live():{act:0,pau:0,best:0};
+  const focusRate=todayBuff()==="focus"?1.2:1;
+  return{
+    ms:(d.ms||0)+l.act,
+    pau:(d.pauseMs||0)+l.pau,
+    items:d.items||0,
+    pts:(d.pts||0)+Math.floor(Math.floor(l.act/60000)*focusRate),
+    pauses:(d.pauses||0)+(t?S.session.pauses:0),
+    best:Math.max(d.best||0,l.best)
+  };
+}
 const focus=x=>x.ms+x.pau>0?Math.round(x.ms/(x.ms+x.pau)*100):null;
-function allKeys(){const a=Object.keys(S.days);if(!a.includes(dk()))a.push(dk());return a}
+function allKeys(){const a=Object.keys(S.days);const t=dk();if(!a.includes(t))a.push(t);if(S.session&&!a.includes(sesDay()))a.push(sesDay());return a}
 function totalPts(){return allKeys().reduce((n,k)=>n+ds(k).pts,0)}
-function streak(){let n=0;const d=new Date();for(let i=0;i<400;i++){const x=ds(dk(d));if(x.ms>0||x.items>0)n++;else if(i>0)break;d.setDate(d.getDate()-1)}return n}
 
-const TITLES=["见习生","初学者","修行者","熟练者","达人","师范","名人","仙人","宗师","大贤者","传说"];
+/* 连胜护盾自动守护与连续天数计算 */
+function autoApplyStreakShield(){
+  const sh=S.flags.shields||0;if(sh<=0)return;
+  const frz=S.flags.frozen||(S.flags.frozen=[]);
+  const missed=[];
+  const d=new Date();d.setDate(d.getDate()-1);
+  for(let i=1;i<=4;i++){
+    const k=dk(d),x=ds(k);
+    if(x.ms>0||x.items>0){
+      if(missed.length>0&&missed.length<=sh){
+        missed.forEach(mk=>{if(!frz.includes(mk))frz.push(mk)});
+        S.flags.shields-=missed.length;
+        if(frz.length>45)frz.splice(0,frz.length-45);
+        save();
+        setTimeout(()=>toast(`🛡️ 身代护符已自动发动！为你守护了连续学习火焰`),500);
+      }
+      break;
+    }else if(!frz.includes(k)){
+      missed.push(k);
+      if(missed.length>sh)break;
+    }
+    d.setDate(d.getDate()-1);
+  }
+}
+function streak(){
+  let n=0;const d=new Date(),frz=S.flags.frozen||[];
+  for(let i=0;i<400;i++){
+    const k=dk(d),x=ds(k);
+    if(x.ms>0||x.items>0)n++;
+    else if(frz.includes(k)){/* 护符冻结日：桥接连击不断裂 */}
+    else if(i>0)break;
+    d.setDate(d.getDate()-1);
+  }
+  return n;
+}
+
+/* ============ 小判、御神签 Buff、狂热状态与周常 BOSS ============ */
+function relicBonusRate(){
+  const cnt=Object.keys(S.flags.bag||{}).length;
+  return 1+Math.floor(cnt/6)*0.05;
+}
+function gainKoban(base){
+  const mult=relicBonusRate()*(todayBuff()==="focus"?1.15:1);
+  const v=Math.max(1,Math.round(base*mult));
+  S.flags.koban=Math.max(0,(S.flags.koban||0)+v);
+  return v;
+}
+function todayBuff(){
+  const q=S.flags.kuji;
+  return q&&q.d===dk()?q.buff:"";
+}
+function isFrenzy(){return(S.flags.frenzyUntil||0)>Date.now()}
+function frenzyMult(){return isFrenzy()?1.5:1}
+
+function curBossState(){
+  const w=wkKey();
+  if(!S.flags.boss||S.flags.boss.w!==w){
+    const idx=[...w].reduce((a,c)=>a+c.charCodeAt(0),0)%BOSSES.length;
+    S.flags.boss={w,idx,dmg:0,stage:1};
+  }
+  return S.flags.boss;
+}
+function bossMaxHp(stage){return 300+(stage-1)*250}
+function dealBoss(dmg){
+  if(dmg<=0)return;
+  const b=curBossState();
+  b.dmg+=dmg;
+  let leveled=false;
+  while(b.dmg>=bossMaxHp(b.stage)){
+    b.dmg-=bossMaxHp(b.stage);
+    b.stage++;
+    stw().boss=(stw().boss||0)+1;
+    day(dk()).pts+=80;
+    const kb=gainKoban(180);
+    leveled=true;
+    pendC.push(["👹⚔️","讨伐成功！击退言灵妖魔",`周常讨伐突破至第 ${b.stage} 阶！\n奖励 +80 积分 · +${kb} 🪙 小判`]);
+  }
+  if(leveled&&!$("#veil").classList.contains("on")){const a=pendC.shift();if(a)celebrate(...a)}
+}
+
+/* ============ 等级、统计与 36 枚成就 ============ */
+const TITLES=["见习生","初学者","修行者","熟练者","达人","师范","名人","仙人","宗师","大贤者","言灵师","剑圣","天下无双","半神","传说"];
 const lvOf=t=>Math.floor(Math.sqrt(t/40))+1;
 const RP=[0,20,40,80,150],RN=["","铜","银","金","钻"];
-const newSt=()=>({crit:0,combo:0,gd:0,night:0,early:0,back:0,qd:0});
-const ST=()=>S.flags.st||newSt(),stw=()=>S.flags.st||(S.flags.st=newSt());
+const newSt=()=>({crit:0,combo:0,gd:0,night:0,early:0,back:0,qd:0,qok:0,qb60:0,boss:0,kichi:0});
+const ST=()=>Object.assign(newSt(),S.flags.st||{}),stw=()=>{if(!S.flags.st)S.flags.st=newSt();return S.flags.st};
 let combo=0,lastInc=0,pendC=[];
+
 const sumD=f=>allKeys().reduce((n,k)=>n+f(ds(k)),0),maxD=f=>Math.max(0,...allKeys().map(k=>f(ds(k))));
 const IT=()=>sumD(x=>x.items),MN=()=>sumD(x=>x.ms)/60000;
+const bagCnt=()=>Object.keys(S.flags.bag||{}).length;
 const P=(id,n,d,e,r,cur,max)=>({id,n,d,e,r,p:()=>[Math.min(max,Math.floor(cur())),max],f:()=>cur()>=max});
 const Bf=(id,n,d,e,r,f)=>({id,n,d,e,r,f});
+
 const BADGES=[
-P("first","初次出击","完成第 1 个项目","🎯",1,IT,1),
-P("i10","小试牛刀","累计完成 10 个项目","📘",1,IT,10),
-P("i50","积少成多","累计完成 50 个项目","📚",2,IT,50),
-P("i200","词海行舟","累计完成 200 个项目","🌊",3,IT,200),
-P("i500","百炼成钢","累计完成 500 个项目","⚔️",4,IT,500),
-P("block","二十五分钟","连续专注 25 分钟不暂停","🍅",1,()=>maxD(x=>x.best)/60000,25),
-P("long","深度沉浸","连续专注 60 分钟不暂停","🧘",3,()=>maxD(x=>x.best)/60000,60),
-P("m60","第一个小时","累计专注 1 小时","⏱️",1,MN,60),
-P("m600","十小时修行","累计专注 10 小时","🏯",3,MN,600),
-P("m3000","五十小时","累计专注 50 小时","🗻",4,MN,3000),
-P("p100","百分日","单日积分达到 100","💯",1,()=>maxD(x=>x.pts),100),
-P("p300","三百分日","单日积分达到 300","🚀",3,()=>maxD(x=>x.pts),300),
-P("streak","三日连击","连续 3 天学习","🔥",1,streak,3),
-P("s7","七日不断","连续 7 天学习","🌟",2,streak,7),
-P("s14","两周坚持","连续 14 天学习","💎",3,streak,14),
-P("s30","三十日传说","连续 30 天学习","🏆",4,streak,30),
-Bf("goal","目标达成","完成一个学习目标","🏁",1,()=>!!S.flags.goal),
-P("g3","三冠王","累计完成 3 个学习目标","👑",3,()=>ST().gd,3),
-Bf("calm","心如止水","一次学习专注度 90% 以上（至少 10 分钟）","🌸",2,()=>!!S.flags.calm),
-P("combo","连击高手","2 分钟内连续完成 5 项","⚡",2,()=>ST().combo,5),
-P("crit","幸运之星","触发 3 次幸运暴击","🍀",2,()=>ST().crit,3),
-P("night","夜猫子","22 点后学习满 5 分钟","🦉",1,()=>ST().night,1),
-P("early","早起鸟","5–8 点学习满 5 分钟","🌅",1,()=>ST().early,1),
-P("back","王者归来","中断 3 天以上后重新开始","🔙",2,()=>ST().back,1),
-P("q1","任务达人","一天内完成全部 3 个任务","📜",1,()=>ST().qd,1),
-P("q7","七日全勤","累计 7 天完成全部任务","🎁",3,()=>ST().qd,7),
-P("lv5","修行有成","升到 Lv.5","🥋",2,()=>lvOf(totalPts()),5),
-P("lv10","一代宗师","升到 Lv.10","🐉",4,()=>lvOf(totalPts()),10)];
+  P("first","初次出击","完成第 1 个项目","🎯",1,IT,1),
+  P("i10","小试牛刀","累计完成 10 个项目","📘",1,IT,10),
+  P("i50","积少成多","累计完成 50 个项目","📚",2,IT,50),
+  P("i200","词海行舟","累计完成 200 个项目","🌊",3,IT,200),
+  P("i500","百炼成钢","累计完成 500 个项目","⚔️",4,IT,500),
+  P("block","二十五分钟","连续专注 25 分钟不暂停","🍅",1,()=>maxD(x=>x.best)/60000,25),
+  P("long","深度沉浸","连续专注 60 分钟不暂停","🧘",3,()=>maxD(x=>x.best)/60000,60),
+  P("m60","第一个小时","累计专注 1 小时","⏱️",1,MN,60),
+  P("m600","十小时修行","累计专注 10 小时","🏯",3,MN,600),
+  P("m3000","五十小时","累计专注 50 小时","🗻",4,MN,3000),
+  P("p100","百分日","单日积分达到 100","💯",1,()=>maxD(x=>x.pts),100),
+  P("p300","三百分日","单日积分达到 300","🚀",3,()=>maxD(x=>x.pts),300),
+  P("streak","三日连击","连续 3 天学习","🔥",1,streak,3),
+  P("s7","七日不断","连续 7 天学习","🌟",2,streak,7),
+  P("s14","两周坚持","连续 14 天学习","💎",3,streak,14),
+  P("s30","三十日传说","连续 30 天学习","🏆",4,streak,30),
+  Bf("goal","目标达成","完成一个学习目标","🏁",1,()=>!!S.flags.goal),
+  P("g3","三冠王","累计完成 3 个学习目标","👑",3,()=>ST().gd,3),
+  Bf("calm","心如止水","一次学习专注度 90% 以上（至少 10 分钟）","🌸",2,()=>!!S.flags.calm),
+  P("combo","连击高手","2 分钟内连续完成 5 项","⚡",2,()=>ST().combo,5),
+  P("crit","幸运之星","触发 3 次幸运暴击","🍀",2,()=>ST().crit,3),
+  P("night","夜猫子","22 点后学习满 5 分钟","🦉",1,()=>ST().night,1),
+  P("early","早起鸟","5–8 点学习满 5 分钟","🌅",1,()=>ST().early,1),
+  P("back","王者归来","中断 3 天以上后重新开始","🔙",2,()=>ST().back,1),
+  P("q1","任务达人","一天内完成全部 3 个任务","📜",1,()=>ST().qd,1),
+  P("q7","七日全勤","累计 7 天完成全部任务","🎁",3,()=>ST().qd,7),
+  P("lv5","修行有成","升到 Lv.5","🥋",2,()=>lvOf(totalPts()),5),
+  P("lv10","一代宗师","升到 Lv.10","🐉",4,()=>lvOf(totalPts()),10),
+  /* 新增道场 / 神社 / 讨伐成就 */
+  P("dz20","初入道场","道场累计答对 20 题","⛩️",1,()=>ST().qok,20),
+  P("dz200","言灵剑客","道场累计答对 200 题","🗡️",3,()=>ST().qok,200),
+  P("bz20","疾风百人斩","60 秒百人斩单局答对 20 题","⚡",3,()=>ST().qb60,20),
+  P("kuji1","天选大吉","神社御神签抽中「大吉」","🎊",2,()=>ST().kichi,1),
+  P("col8","风物收集家","解锁 8 种神社风物图鉴","🎐",2,bagCnt,8),
+  P("col18","博物风雅","解锁 18 种神社风物图鉴","🏮",3,bagCnt,18),
+  P("col24","森罗万象","集齐全部 24 种神社风物图鉴","🌕",4,bagCnt,24),
+  P("boss1","退魔初阵","首次击败每周言灵妖魔","👹",2,()=>ST().boss,1)
+];
 
-/* ---- 每日任务：按日期固定抽 3 个，每个 +15，全部完成开宝箱 ---- */
+/* ============ 每日任务（修复 f90 单次判定 Bug） ============ */
+function hasCalmToday(){
+  const t=dk();
+  if(S.flags.calmDay===t)return 1;
+  if(S.session&&sesDay()===t){
+    const l=live();
+    if(l.act>=600000&&l.act+l.pau>0&&Math.round(l.act/(l.act+l.pau)*100)>=90)return 1;
+  }
+  return 0;
+}
 const POOL=[
-{id:"i5",t:"完成 5 个项目",g:5,f:x=>x.items},
-{id:"i10",t:"完成 10 个项目",g:10,f:x=>x.items},
-{id:"m25",t:"今日专注 25 分钟",g:25,f:x=>Math.floor(x.ms/60000)},
-{id:"m45",t:"今日专注 45 分钟",g:45,f:x=>Math.floor(x.ms/60000)},
-{id:"b25",t:"连续专注 25 分钟不暂停",g:25,f:x=>Math.floor(x.best/60000)},
-{id:"f90",t:"一次专注度 90% 以上（≥10 分钟）",g:1,f:x=>x.ms>=600000&&focus(x)>=90?1:0},
-{id:"p60",t:"今日积分达到 60",g:60,f:x=>x.pts},
-{id:"s2",t:"完成 2 次学习（点结束）",g:2,f:()=>(S.days[dk()]||{}).sessions||0}];
-function todayQuests(){let h=[...dk()].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,7);const r=[];while(r.length<3){h=(h*69069+1)>>>0;const q=POOL[(h>>>8)%POOL.length];if(!r.includes(q))r.push(q)}return r}
-function checkQuests(){const t=dk(),Q=S.flags.q&&S.flags.q.d===t?S.flags.q:(S.flags.q={d:t,c:[],box:0}),x=ds(t),m=[];let box=false;
-  todayQuests().forEach(q=>{if(!Q.c.includes(q.id)&&q.f(x)>=q.g){Q.c.push(q.id);day(t).pts+=15;m.push("任务「"+q.t+"」+15")}});
-  if(Q.c.length>=3&&!Q.box){Q.box=1;const r=20+Math.floor(Math.random()*61);day(t).pts+=r;stw().qd++;m.push("🎁 宝箱 +"+r);box=true}
-  return{msgs:m,box}}
-function questsHTML(){const t=dk(),Q=S.flags.q&&S.flags.q.d===t?S.flags.q:{c:[],box:0},x=ds(t);
-  return `<section class="sec"><h2>今日任务<small>每个 +15 · 全部完成开宝箱 🎁${Q.box?" ✓":""}</small></h2>${todayQuests().map(q=>{const v=Math.min(q.g,q.f(x)),ok=Q.c.includes(q.id);
-  return `<div class="qs${ok?" ok":""}"><span class="qi">${ok?"✅":"🎯"}</span><span class="qt"><b>${q.t}</b><div class="bar"><i style="width:${v/q.g*100}%"></i></div></span><small>${v}/${q.g}</small></div>`}).join("")}</section>`}
+  {id:"i5",t:"完成 5 个目标项目",g:5,f:x=>x.items},
+  {id:"i10",t:"完成 10 个目标项目",g:10,f:x=>x.items},
+  {id:"m25",t:"今日专注满 25 分钟",g:25,f:x=>Math.floor(x.ms/60000)},
+  {id:"m45",t:"今日专注满 45 分钟",g:45,f:x=>Math.floor(x.ms/60000)},
+  {id:"b25",t:"连续专注 25 分钟不暂停",g:25,f:x=>Math.floor(x.best/60000)},
+  {id:"f90",t:"单次专注度 90% 以上（≥10 分钟）",g:1,f:()=>hasCalmToday()},
+  {id:"p60",t:"今日积分达到 60",g:60,f:x=>x.pts},
+  {id:"s2",t:"完成 2 次专注结算",g:2,f:()=>(S.days[dk()]||{}).sessions||0},
+  {id:"q10",t:"在言灵道场答对 10 题",g:10,f:()=>todayQuizCount()}
+];
+function todayQuizCount(){return S.flags.qdCnt&&S.flags.qdCnt.d===dk()?S.flags.qdCnt.n:0}
+function addTodayQuizCount(){const t=dk();if(!S.flags.qdCnt||S.flags.qdCnt.d!==t)S.flags.qdCnt={d:t,n:0};S.flags.qdCnt.n++}
 
-/* ---- 热力图 / 成就墙 ---- */
-function heatHTML(){const c=[];for(let i=34;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const k=dk(d),x=ds(k),m=x.ms/60000,l=m>0?(m<15?1:m<30?2:m<60?3:4):(x.items>0?1:0);
-  c.push(`<i class="l${l}${i?"":" td"}" title="${k}：${Math.round(m)} 分钟"></i>`)}
-  return `<section class="sec"><h2>学习热力图<small>近 5 周 · 越绿学得越多</small></h2><div class="heat">${c.join("")}</div></section>`}
-function badgesHTML(){const n=BADGES.filter(b=>S.badges[b.id]).length;
-  return `<section class="sec"><h2>成就奖励<small>${n}/${BADGES.length} · 铜 20 · 银 40 · 金 80 · 钻 150 分</small></h2><div class="badges">${BADGES.map(b=>{const got=S.badges[b.id],pr=!got&&b.p?b.p():null;
-  return `<div class="bd r${b.r} ${got?"got":"lock"}"><span class="ic">${b.e}</span><span class="tx"><b>${b.n} <em class="rt">${RN[b.r]}</em></b><small>${b.d}</small>${pr?`<div class="pg"><i style="width:${pr[0]/pr[1]*100}%"></i></div><small class="when">${pr[0]}/${pr[1]}</small>`:""}${got?`<small class="when">${esc(String(got).slice(5))} 解锁 · +${RP[b.r]}</small>`:""}</span></div>`}).join("")}</div></section>`}
+function todayQuests(){
+  let h=[...dk()].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,7);
+  const r=[];
+  while(r.length<3){h=(h*69069+1)>>>0;const q=POOL[(h>>>8)%POOL.length];if(!r.includes(q))r.push(q)}
+  return r;
+}
 
-/* ---- 音效 / 震动 / 庆祝弹窗 ---- */
+/* 级联结算：任务 -> 宝箱 -> 积分成就 -> 升级 一次性干净触发 */
+function checkBadges(){
+  if(!loaded)return;
+  const g=[],msgs=[];let box=false,changed=true,guard=0;
+  const t=dk(),Q=S.flags.q&&S.flags.q.d===t?S.flags.q:(S.flags.q={d:t,c:[],box:0});
+  while(changed&&guard++<8){
+    changed=false;
+    const x=ds(t);
+    todayQuests().forEach(q=>{
+      if(!Q.c.includes(q.id)&&q.f(x)>=q.g){
+        Q.c.push(q.id);day(t).pts+=15;const kb=gainKoban(20);
+        msgs.push(`任务「${q.t}」+15分 +${kb}🪙`);changed=true;
+      }
+    });
+    if(Q.c.length>=3&&!Q.box){
+      Q.box=1;const r=25+Math.floor(Math.random()*60),kb=gainKoban(80);
+      day(t).pts+=r;stw().qd++;msgs.push(`🎁 每日全勤宝箱 +${r}分 +${kb}🪙`);box=true;changed=true;
+    }
+    BADGES.forEach(b=>{
+      if(!S.badges[b.id]&&b.f()){
+        S.badges[b.id]=t;day(t).pts+=RP[b.r];gainKoban(RP[b.r]);
+        g.push(b);changed=true;
+      }
+    });
+  }
+  const L=lvOf(totalPts()),old=S.flags.lv,up=old&&L>old;
+  S.flags.lv=L;
+  const lines=[];
+  if(g.length)lines.push("解锁成就："+g.map(b=>b.n).join("、")+" +"+g.reduce((n,b)=>n+RP[b.r],0)+"分");
+  if(up){const kb=gainKoban(50);lines.push(`升至 Lv.${L}「${TITLES[Math.min(L-1,TITLES.length-1)]}」+${kb}🪙`)}
+  lines.push(...msgs);
+  if(g.length||up||box)celebrate(g.length?g.map(b=>b.e).join(""):up?"⬆️":"🎁",g.length?"解锁新成就！":up?"道场晋升！":"今日任务全达成！",lines.join("\n"));
+  else if(lines.length)toast(lines.join(" · "));
+  if(lines.length){save();render()}
+}
+
+/* ============ 音效 / 朗读 / 白噪音合成器（兼容 iOS/Safari 唤醒） ============ */
 const muted=()=>{try{return localStorage.getItem("jp-mute")==="1"}catch(e){return false}};
-function sfx(f){if(muted())return;try{const a=sfx.c||(sfx.c=new(window.AudioContext||window.webkitAudioContext)()),o=a.createOscillator(),g=a.createGain();o.type="triangle";o.frequency.value=f;o.connect(g);g.connect(a.destination);g.gain.setValueAtTime(.07,a.currentTime);g.gain.exponentialRampToValueAtTime(.0001,a.currentTime+.3);o.start();o.stop(a.currentTime+.3)}catch(e){}}
-function fx(f){if(!muted()){try{navigator.vibrate&&navigator.vibrate(18)}catch(e){}}sfx(f||660)}
+function getAudioCtx(){
+  const C=window.AudioContext||window.webkitAudioContext;
+  if(!C)return null;
+  const a=sfx.c||(sfx.c=new C());
+  if(a.state==="suspended")a.resume().catch(()=>{});
+  return a;
+}
+function sfx(f,dur=.26,type="triangle"){
+  if(muted())return;
+  try{
+    const a=getAudioCtx();if(!a)return;
+    const o=a.createOscillator(),g=a.createGain();
+    o.type=type;o.frequency.value=f;o.connect(g);g.connect(a.destination);
+    g.gain.setValueAtTime(.065,a.currentTime);
+    g.gain.exponentialRampToValueAtTime(.0001,a.currentTime+dur);
+    o.start();o.stop(a.currentTime+dur);
+  }catch(e){}
+}
+function chord(freqs){if(muted())return;freqs.forEach((f,i)=>setTimeout(()=>sfx(f,.32,"sine"),i*55))}
+function fx(f){if(!muted()){try{navigator.vibrate&&navigator.vibrate(16)}catch(e){}}sfx(f||660)}
+
+function speakJP(text){
+  if(muted()||!window.speechSynthesis||!text)return;
+  try{
+    const clean=String(text).replace(/（.*?）|\(.*?\)|〜/g,"").trim();
+    if(!clean)return;
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(clean);
+    u.lang="ja-JP";u.rate=0.95;
+    const vs=speechSynthesis.getVoices();
+    const jv=vs.find(v=>/ja[-_]JP/i.test(v.lang)&&/Kyoko|Otoya|Google|Haruka|Nanami/i.test(v.name))||vs.find(v=>/^ja/i.test(v.lang));
+    if(jv)u.voice=jv;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+/* WebAudio 零外部资源白噪音（夜雨 / 海浪 / 围炉） */
+let ambNode=null,ambMode="off";
+function stopAmbient(){
+  if(ambNode){try{ambNode.stop()}catch(e){}try{ambNode.disconnect()}catch(e){}if(ambNode._lfo)try{ambNode._lfo.stop()}catch(e){}ambNode=null}
+}
+function setAmbient(mode){
+  ambMode=mode;stopAmbient();
+  document.querySelectorAll("#amb button").forEach(b=>b.classList.toggle("on",b.dataset.amb===mode));
+  if(mode==="off"||muted())return;
+  try{
+    const a=getAudioCtx();if(!a)return;
+    const len=a.sampleRate*3,buf=a.createBuffer(1,len,a.sampleRate),ch=buf.getChannelData(0);
+    let b0=0,b1=0,b2=0;
+    for(let i=0;i<len;i++){
+      const w=Math.random()*2-1;
+      b0=.99765*b0+w*.099046;b1=.963*b1+w*.2965164;b2=.57*b2+w*1.0526913;
+      let sample=(b0+b1+b2+w*.1848)*.12;
+      if(mode==="fire"&&Math.random()<.0018)sample+=(Math.random()*.7);
+      ch[i]=sample;
+    }
+    const src=a.createBufferSource();src.buffer=buf;src.loop=true;
+    const flt=a.createBiquadFilter();flt.type="lowpass";
+    const gn=a.createGain();
+    if(mode==="rain"){flt.frequency.value=1150;gn.gain.value=.08}
+    else if(mode==="wave"){
+      flt.frequency.value=480;gn.gain.value=.055;
+      const lfo=a.createOscillator(),lfoG=a.createGain();
+      lfo.frequency.value=.13;lfoG.gain.value=320;
+      lfo.connect(lfoG);lfoG.connect(flt.frequency);lfo.start();src._lfo=lfo;
+    }else{flt.frequency.value=340;gn.gain.value=.11}
+    src.connect(flt);flt.connect(gn);gn.connect(a.destination);
+    src.start();ambNode=src;
+  }catch(e){}
+}
+
+const mb=$("#mute"),um=()=>{mb.textContent=muted()?"🔕":"🔔"};um();
+mb.onclick=()=>{
+  const nextMute=!muted();
+  try{localStorage.setItem("jp-mute",nextMute?"1":"0")}catch(e){}
+  um();
+  if(nextMute){stopAmbient();try{window.speechSynthesis&&speechSynthesis.cancel()}catch(e){}}
+  else{fx(660);if(ambMode!=="off")setAmbient(ambMode)}
+};
+
+function popText(el,txt){
+  if(!el)return;
+  const r=el.getBoundingClientRect(),p=document.createElement("span");
+  p.className="pop";p.textContent=txt;
+  p.style.left=(r.left+r.width/2)+"px";p.style.top=Math.max(20,r.top)+"px";
+  document.body.appendChild(p);setTimeout(()=>p.remove(),980);
+}
 function celebrate(e,title,sub){
   if($("#veil").classList.contains("on")){pendC.push([e,title,sub]);return}
-  fx(880);const em="🎉✨🌸⭐🎊".match(/./gu);
+  chord([523,659,784,1046]);
+  const em="🎉✨🌸⭐🎊⛩️".match(/\p{Extended_Pictographic}/gu)||["🎉","✨","🌸","⭐"];
   const c=Array.from({length:26},()=>`<i style="left:${Math.random()*100}%;animation-delay:${Math.random()*.7}s;font-size:${14+Math.random()*14}px">${em[Math.floor(Math.random()*em.length)]}</i>`).join("");
-  $("#card").innerHTML=`<div class="conf">${c}</div><div class="big">${e}</div><h2>${esc(title)}</h2><p class="note" style="margin:6px 0 0">${esc(sub).replace(/\n/g,"<br>")}</p><button class="btn block" id="close">太棒了</button>`;
-  $("#card").classList.add("cele");$("#veil").classList.add("on")}
-const mb=$("#mute"),um=()=>{mb.textContent=muted()?"🔕":"🔔"};um();
-mb.onclick=()=>{try{localStorage.setItem("jp-mute",muted()?"0":"1")}catch(e){}um();fx(660)};
+  $("#card").innerHTML=`<div class="conf">${c}</div><div class="big">${e}</div><h2>${esc(title)}</h2><p class="note" style="margin:6px 0 0">${esc(sub).replace(/\n/g,"<br>")}</p><button class="btn block" id="close">太棒了！继续修行</button>`;
+  $("#card").classList.add("cele");$("#veil").classList.add("on");
+}
+function toast(t){const el=$("#toast");el.textContent=t;el.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove("on"),2600)}
 
-/* ---- 统计追踪 ---- */
-function trackSession(s){if(s.act<300000)return;const h=new Date().getHours(),st=stw();if(h>=22||h<4)st.night++;if(h>=5&&h<8)st.early++}
-function backCheck(){const t=dk(),ks=Object.keys(S.days).filter(k=>k<t&&(S.days[k].ms>0||S.days[k].items>0)).sort();if(!ks.length)return;
-  if((new Date(t+"T00:00:00")-new Date(ks[ks.length-1]+"T00:00:00"))/864e5>=3)stw().back=1}
-function checkBadges(){const g=[],q=checkQuests();
-  BADGES.forEach(b=>{if(!S.badges[b.id]&&b.f()){S.badges[b.id]=dk();day(dk()).pts+=RP[b.r];g.push(b)}});
-  const L=lvOf(totalPts()),old=S.flags.lv,up=old&&L>old,lines=[];S.flags.lv=L;
-  if(g.length)lines.push("成就："+g.map(b=>b.n).join("、")+" +"+g.reduce((n,b)=>n+RP[b.r],0));
-  if(up)lines.push("升到 Lv."+L+"「"+TITLES[Math.min(L-1,TITLES.length-1)]+"」");
-  lines.push(...q.msgs);
-  if(g.length||up||q.box)celebrate(g.length?g.map(b=>b.e).join(""):up?"⬆️":"🎁",g.length?"解锁成就！":up?"升级了！":"今日任务全部完成！",lines.join("\n"));
-  else if(lines.length)toast(lines.join(" · "));
-  if(lines.length){save();render()}}
+/* ============ 专注计时与目标操作（彻底修复后台漏奖、撤销刷分、删除卡死） ============ */
+let selCycleMin=25;
+function trackTimeWindow(s){
+  const act=s.act+(s.run?Math.max(0,Date.now()-s.since):0);
+  if(act<300000)return;
+  const hNow=new Date().getHours(),hStart=typeof s.startHour==="number"?s.startHour:hNow,st=stw();
+  if(!s.nightDone&&(hNow>=22||hNow<4||hStart>=22||hStart<4)){st.night++;s.nightDone=1}
+  if(!s.earlyDone&&((hNow>=5&&hNow<8)||(hStart>=5&&hStart<8))){st.early++;s.earlyDone=1}
+}
+function backCheck(){
+  const t=dk(),ks=Object.keys(S.days).filter(k=>k<t&&(S.days[k].ms>0||S.days[k].items>0)).sort();
+  if(!ks.length)return;
+  if(Math.round((new Date(t+"T00:00:00")-new Date(ks[ks.length-1]+"T00:00:00"))/864e5)>=3)stw().back=1;
+}
+function syncBlock(n=Date.now(),silent=false){
+  const s=S.session;if(!s||!s.run||!s.blockStart)return 0;
+  const b=Math.max(0,n-s.blockStart);
+  s.best=Math.max(s.best||0,b);
+  const cMin=s.cycleMin||25,cMs=cMin*60000,a=Math.floor(b/cMs),prev=s.blockAwarded||0;
+  if(a>prev){
+    const addN=a-prev;s.blockAwarded=a;
+    const per=cMin>=45?40:cMin>=25?20:10;
+    const pts=per*addN,dKey=sesDay(s);
+    day(dKey).pts+=pts;s.pts=(s.pts||0)+pts;
+    const kb=gainKoban(pts);dealBoss(cMin*addN);
+    if(!silent){chord([587,740,880]);toast(`🍅 连续专注 ${cMin*a} 分钟 +${pts}分 +${kb}🪙`)}
+    return pts;
+  }
+  return 0;
+}
+function flush(){
+  const s=S.session;if(!s||!s.run)return;
+  const n=Date.now(),d=Math.max(0,n-s.since),g=goal(S.activeId);
+  syncBlock(n);
+  s.act+=d;if(g)g.ms=(g.ms||0)+d;s.since=n;
+  trackTimeWindow(s);
+}
 
-function toast(t){const el=$("#toast");el.textContent=t;el.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove("on"),2400)}
-
-/* ---- actions ---- */
-function addGoal(){const name=$("#gname").value.trim(),total=parseInt($("#gtotal").value,10);
+function addGoal(presetName,presetTotal){
+  const name=(presetName??$("#gname").value).trim(),total=parseInt(presetTotal??$("#gtotal").value,10);
   if(!name||!(total>=1)){toast("请填写目标名称和项目数");return}
-  const g={id:Date.now().toString(36),name,total:Math.min(total,999),done:0,ms:0};S.goals.push(g);if(!S.activeId)S.activeId=g.id;
-  $("#gname").value="";$("#gtotal").value="";save();render()}
-function inc(g){if(g.done>=g.total)return;g.done++;const d=day(dk()),st=stw(),n=Date.now(),pt=[];
+  const g={id:Date.now().toString(36)+Math.random().toString(36).slice(2,4),name,total:Math.min(total,999),done:0,ms:0};
+  S.goals.push(g);
+  const curG=goal(S.activeId);
+  if(!S.activeId||(!S.session&&curG&&curG.done>=curG.total))S.activeId=g.id;
+  if(!presetName){$("#gname").value="";$("#gtotal").value=""}
+  fx(620);save();render();
+}
+
+function inc(g,btnEl){
+  if(g.done>=g.total)return;
+  backCheck();
+  g.done++;
+  const t=dk(),d=day(t),st=stw(),n=Date.now(),pt=[];
   combo=n-lastInc<120000?combo+1:1;lastInc=n;st.combo=Math.max(st.combo,combo);
-  let add=10;const cb=combo>=3?Math.min(combo-2,5):0;if(cb){add+=cb;pt.push("连击 ×"+combo+" +"+cb)}
-  if(Math.random()<.12){add+=10;st.crit++;pt.push("🍀 暴击 +10")}
-  d.pts+=add;d.items++;if(S.session)S.session.items++;fx(500+Math.min(combo,8)*50);
-  if(g.done>=g.total){d.pts+=50;st.gd++;S.flags.goal=1;toast("🏁 目标「"+g.name+"」达成！ +"+(add+50)+" 分")}else toast("+"+add+" 分"+(pt.length?" · "+pt.join(" · "):""));
-  checkBadges();save();render()}
-function undo(g){if(g.done<=0)return;const d=day(dk());g.done--;d.items=Math.max(0,d.items-1);d.pts=Math.max(0,d.pts-10);save();render()}
-function del(g){if(pendDel!==g.id){pendDel=g.id;renderGoals();setTimeout(()=>{if(pendDel===g.id){pendDel=null;renderGoals()}},3000);return}
-  flush();S.goals=S.goals.filter(x=>x!==g);if(S.activeId===g.id)S.activeId=S.goals[0]?S.goals[0].id:null;pendDel=null;save();render()}
+  const maxCb=todayBuff()==="combo"?8:5;
+  let add=Math.round(10*frenzyMult());
+  const cb=combo>=3?Math.min(combo-2,maxCb):0;
+  if(cb){add+=cb;pt.push(`连击×${combo} +${cb}`)}
+  const critChance=todayBuff()==="crit"?.24:.12;
+  if(Math.random()<critChance){add+=10;st.crit++;pt.push("🍀暴击 +10")}
+  let goalBonus=0;
+  const gdIds=S.flags.gdIds||(S.flags.gdIds=[]);
+  if(g.done>=g.total&&!gdIds.includes(g.id)){
+    gdIds.push(g.id);if(gdIds.length>200)gdIds.shift();
+    goalBonus=50;st.gd++;S.flags.goal=1;
+  }
+  const totalAdd=add+goalBonus;
+  const kb=gainKoban(5+(goalBonus?25:0)+(cb?2:0));
+  d.pts+=totalAdd;d.items++;
+  if(S.session){S.session.items++;S.session.pts=(S.session.pts||0)+totalAdd}
+  /* 记录撤销栈，防止刷分与跨天误扣 */
+  const uh=S.flags.uh||(S.flags.uh={});
+  const arr=uh[g.id]||(uh[g.id]=[]);
+  arr.push({d:t,pts:totalAdd,kb,ses:!!S.session});
+  if(arr.length>15)arr.shift();
+
+  dealBoss(10+(goalBonus?30:0));
+  fx(520+Math.min(combo,10)*45);
+  popText(btnEl,`+${totalAdd}分 +${kb}🪙`);
+  if(g.done>=g.total){
+    chord([523,659,784,1046]);
+    toast(goalBonus?`🏁 目标「${g.name}」达成！+${totalAdd}分 +${kb}🪙`:`✓ 目标「${g.name}」再次完成！+${totalAdd}分`);
+    setPetSay("すごい！目標達成おめでとう！","太棒啦！恭喜达成学习目标！");
+  }else{
+    toast(`+${totalAdd}分 +${kb}🪙`+(pt.length?" · "+pt.join(" · "):""));
+    if(combo>=3)setPetSay(`${combo}コンボ！勢いに乗ってるね！`,`${combo} 连击！手感火热继续冲！`);
+  }
+  checkBadges();save();render();
+}
+
+function undo(g){
+  if(g.done<=0)return;
+  g.done--;
+  const uh=S.flags.uh&&S.flags.uh[g.id],h=uh&&uh.length?uh.pop():null;
+  if(h&&S.days[h.d]){
+    const d=day(h.d);
+    d.items=Math.max(0,d.items-1);
+    d.pts=Math.max(0,d.pts-h.pts);
+    S.flags.koban=Math.max(0,(S.flags.koban||0)-(h.kb||0));
+    if(h.ses&&S.session){
+      S.session.items=Math.max(0,S.session.items-1);
+      S.session.pts=Math.max(0,(S.session.pts||0)-h.pts);
+    }
+  }else{
+    /* 无历史栈的旧进度：仅当今日确有项目记录时才扣减今日 10 分，避免误扣其他积分 */
+    const d=day(dk());
+    if(d.items>0){d.items--;d.pts=Math.max(0,d.pts-10)}
+  }
+  toast("已撤销一项进度");save();render();
+}
+
+function del(g){
+  if(pendDel!==g.id){pendDel=g.id;renderGoals();setTimeout(()=>{if(pendDel===g.id){pendDel=null;renderGoals()}},3000);return}
+  flush();
+  S.goals=S.goals.filter(x=>x!==g);
+  if(S.flags.uh)delete S.flags.uh[g.id];
+  if(S.activeId===g.id){
+    const nextActive=S.goals.find(x=>x.done<x.total)||S.goals[0]||null;
+    S.activeId=nextActive?nextActive.id:null;
+  }
+  pendDel=null;save();render();
+}
 function pick(g){flush();S.activeId=g.id;save();render()}
+
 function toggle(){
-  if(!goal(S.activeId)){toast("先添加并选择一个学习目标");return}
+  /* 修复：仅在未开始新会话时要求必须有目标，避免计时中删除唯一目标后无法暂停 */
+  if(!S.session&&!goal(S.activeId)){toast("先添加并选择一个学习目标");return}
   const n=Date.now();let s=S.session;
-  if(!s)backCheck(),S.session={run:true,since:n,act:0,pau:0,pauses:0,items:0,best:0,blockStart:n,blockAwarded:0,startDay:dk()};
-  else if(s.run){flush();s.run=false;s.since=n;s.pauses++;s.blockStart=null;s.blockAwarded=0}
-  else{s.pau+=n-s.since;s.run=true;s.since=n;s.blockStart=n;s.blockAwarded=0}
-  save();render()}
-function endSession(){const s=S.session;if(!s)return;
-  if(s.run)flush();else s.pau+=Date.now()-s.since;
-  const d=day(s.startDay),m=Math.floor(s.act/60000),f=s.act+s.pau>0?Math.round(s.act/(s.act+s.pau)*100):0;
-  d.ms+=s.act;d.pauseMs+=s.pau;d.sessions++;d.pauses+=s.pauses;d.best=Math.max(d.best,s.best);d.pts+=m;
-  if(f>=90&&s.act>=600000)S.flags.calm=1;
-  S.session=null;trackSession(s);save();render();
-  const msg=s.act<60000?"这次时间太短，先坐稳再开始。":f>=90?"专注度极高，几乎没有被打断。":f>=70?"不错，再减少几次暂停会更稳。":"暂停偏多。下次把单次学习缩短到 15 分钟，完成后再休息。";
-  $("#card").innerHTML=`<h2>本次学习结束</h2><div class="grid">
+  if(!s){
+    backCheck();
+    S.session={run:true,since:n,act:0,pau:0,pauses:0,items:0,pts:0,best:0,blockStart:n,blockAwarded:0,cycleMin:selCycleMin,startDay:dk(),startHour:new Date(n).getHours()};
+    fx(660);setPetSay("集中スタート！応援してるよ！","开始专注啦！我会一直陪着你！");
+  }else if(s.run){
+    flush();s.run=false;s.since=n;s.pauses++;s.blockStart=null;s.blockAwarded=0;
+    fx(440);setPetSay("少し一息つこうね。","稍微喘口气，准备好再继续吧。");
+  }else{
+    s.pau+=Math.max(0,n-s.since);s.run=true;s.since=n;s.blockStart=n;s.blockAwarded=0;s.startHour=new Date(n).getHours();
+    fx(660);setPetSay("おかえり！また頑張ろう！","欢迎回来！重新进入心流吧！");
+  }
+  save();render();
+}
+
+function endSession(){
+  const s=S.session;if(!s)return;
+  if(s.run)flush();else s.pau+=Math.max(0,Date.now()-s.since);
+  trackTimeWindow(s);
+  const dKey=sesDay(s),d=day(dKey);
+  const rawMin=Math.floor(s.act/60000);
+  const minPts=Math.floor(rawMin*(todayBuff()==="focus"?1.2:1));
+  const f=s.act+s.pau>0?Math.round(s.act/(s.act+s.pau)*100):0;
+  d.ms+=s.act;d.pauseMs+=s.pau;d.sessions++;d.pauses+=s.pauses;d.best=Math.max(d.best,s.best||0);d.pts+=minPts;
+  const kb=rawMin>0?gainKoban(rawMin*2):0;
+  dealBoss(rawMin*2);
+  if(f>=90&&s.act>=600000){S.flags.calm=1;S.flags.calmDay=dKey}
+  const totalEarned=minPts+(s.pts||0);
+  S.session=null;save();render();
+  setPetSay("お疲れ様でした！よく頑張ったね！","辛苦啦！刚才的专注超赞！");
+  const msg=s.act<60000?"这次时间较短，深呼吸坐稳后再开启下一轮吧。":f>=90?"心如止水，专注度极高！伴学灵为你骄傲！":f>=70?"节奏很稳！再减少一两次中断就能冲击 90% 专注度。":"暂停略多，不妨切换成「⚡ 15分」轻快模式更容易进入状态。";
+  $("#card").innerHTML=`<h2>🍵 本次修行结算</h2><div class="grid">
   <div class="cell"><b>${minsH(s.act)}</b><small>专注时长</small></div>
   <div class="cell"><b>${u(f,"%")}</b><small>专注度</small></div>
   <div class="cell"><b>${s.pauses}</b><small>暂停次数</small></div>
   <div class="cell"><b>${s.items}</b><small>完成项目</small></div>
-  <div class="cell"><b>${u(Math.floor(s.best/60000),"分")}</b><small>最长连续</small></div>
-  <div class="cell"><b>+${m+s.items*10}</b><small>本次积分</small></div></div>
-  <p class="note" style="margin-top:0">${msg}</p><button class="btn block" id="close">关闭</button>`;
-  $("#card").classList.remove("cele");$("#veil").classList.add("on");checkBadges()}
+  <div class="cell"><b>${u(Math.floor((s.best||0)/60000),"分")}</b><small>最长连续</small></div>
+  <div class="cell"><b>+${totalEarned}</b><small>本次总积分${kb?` · +${kb}🪙`:""}</small></div></div>
+  <p class="note" style="margin-top:0;text-align:center">${msg}</p><button class="btn block" id="close">收下奖励</button>`;
+  $("#card").classList.remove("cele");$("#veil").classList.add("on");
+  checkBadges();
+}
 
-/* ---- render ---- */
-const ICON_STAR='<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>';
-const ICON_LOCK='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+/* ============ 伴学灵互动与每日一句 ============ */
+let quoteIdx=null,petCustomSay=null;
+function curPet(){return RELICS.find(r=>r.id===S.flags.pet)||RELICS[10]||RELICS[0]}
+function setPetSay(jp,cn){petCustomSay=[jp,cn];renderPet()}
+function renderPet(){
+  const p=curPet(),[jp,cn]=petCustomSay||p.s.split("|");
+  const av=$("#petAv"),say=$("#petSay");
+  if(av)av.textContent=p.e;
+  if(say)say.innerHTML=`${esc(jp)}<small>${esc(cn)} · 伴学：${esc(p.n)}</small>`;
+}
+$("#petAv").onclick=()=>{
+  const p=curPet(),[jp,cn]=p.s.split("|");
+  petCustomSay=[jp,cn];renderPet();
+  speakJP(jp);fx(740);
+};
 
+function renderQuote(){
+  if(quoteIdx===null){
+    const seed=[...dk()].reduce((a,c)=>a*33+c.charCodeAt(0),5);
+    quoteIdx=Math.abs(seed)%QUOTES.length;
+  }
+  const [jp,rd,cn]=QUOTES[quoteIdx%QUOTES.length];
+  $("#qcard").innerHTML=`<div class="qbody">
+    <div class="qjp">「${esc(jp)}」</div>
+    <div class="qrd">${esc(rd)}</div>
+    <div class="qcn">${esc(cn)}</div>
+  </div>
+  <div class="qacts">
+    <button class="qbtn" id="qSpeak" title="日语朗读">🔊 朗读</button>
+    <button class="qbtn" id="qNext" title="换一句日语名言">↻ 换句</button>
+  </div>`;
+  $("#qSpeak").onclick=()=>speakJP(jp);
+  $("#qNext").onclick=()=>{quoteIdx=(quoteIdx+1)%QUOTES.length;renderQuote();fx(580)};
+}
+
+/* ============ 言灵道场：闪电刷词与 60 秒百人斩 ============ */
+let dojoMode="zen",dojoDeck="all",curQ=null,qAnswered=false,qStreak=0;
+let blitzRun=false,blitzLeft=0,blitzScore=0,blitzTimer=null;
+
+function allCards(){
+  const custom=(S.flags.custom||[]).map((c,i)=>[c.q,c.r||c.q,c.m,"wb","c_"+i]);
+  const base=BASE_DECK.map((c,i)=>[c[0],c[1],c[2],c[3],"b_"+i]);
+  return [...custom,...base];
+}
+function wrongMap(){return S.flags.wrong||(S.flags.wrong={})}
+function favSet(){return S.flags.favs||(S.flags.favs=[])}
+function wbCards(){
+  const wm=wrongMap(),fs=favSet();
+  return allCards().filter(c=>c[3]==="wb"||wm[c[4]]>0||fs.includes(c[4]));
+}
+function filteredDeck(){
+  if(dojoDeck==="wb")return wbCards();
+  if(dojoDeck==="all")return allCards();
+  return allCards().filter(c=>c[3]===dojoDeck);
+}
+
+function makeQuestion(){
+  let pool=filteredDeck();
+  if(pool.length<4){
+    if(dojoDeck==="wb"){curQ=null;return}
+    pool=allCards();
+  }
+  const item=pool[Math.floor(Math.random()*pool.length)];
+  const [q,r,m,cat,key]=item;
+  const hasReading=q!==r&&!/^接|^拟态/.test(r);
+  /* 随机题型：0=看词选释义，1=看汉字选假名读音，2=看中文选日语词 */
+  const roll=Math.random();
+  const qType=hasReading&&roll<.42?1:(roll>.76?2:0);
+  const full=allCards();
+  const sameCat=full.filter(x=>x[3]===cat&&x[4]!==key);
+  const distPool=(sameCat.length>=6?sameCat:full.filter(x=>x[4]!==key));
+  const pick3=(proj,ans)=>{
+    const s=[];const shuffled=[...distPool].sort(()=>Math.random()-.5);
+    for(const x of shuffled){const v=proj(x);if(v&&v!==ans&&!s.includes(v)){s.push(v);if(s.length===3)break}}
+    while(s.length<3){const v=proj(full[Math.floor(Math.random()*full.length)]);if(v&&v!==ans&&!s.includes(v))s.push(v)}
+    return s;
+  };
+  let prompt,sub,ans,opts,speakTxt=q;
+  if(qType===1){
+    const pureR=r.replace(/（.*?）/g,"");
+    prompt=q;sub="请选择正确的平假名读音";ans=pureR;
+    opts=[ans,...pick3(x=>x[1].replace(/（.*?）/g,""),ans)];
+  }else if(qType===2){
+    prompt=m;sub="请选择对应的地道日语表达";ans=q;
+    opts=[ans,...pick3(x=>x[0],ans)];
+  }else{
+    prompt=q;sub=hasReading&&dojoMode==="zen"?"请选择正确的中文释义":"请选择正确的释义";ans=m;
+    opts=[ans,...pick3(x=>x[2],ans)];
+  }
+  opts.sort(()=>Math.random()-.5);
+  curQ={item,key,q,r,m,prompt,sub,ans,opts,qType,speakTxt};
+  qAnswered=false;
+}
+
+function startBlitz(){
+  blitzRun=true;blitzLeft=60;blitzScore=0;qStreak=0;
+  clearInterval(blitzTimer);
+  makeQuestion();renderDojo();
+  blitzTimer=setInterval(()=>{
+    blitzLeft=Math.max(0,+(blitzLeft-.2).toFixed(1));
+    const bar=$("#blitzFill"),tm=$("#blitzTm");
+    if(bar)bar.style.width=(blitzLeft/60*100)+"%";
+    if(tm)tm.textContent=blitzLeft.toFixed(1)+"s";
+    if(blitzLeft<=0)endBlitz();
+  },200);
+}
+function endBlitz(){
+  clearInterval(blitzTimer);blitzTimer=null;blitzRun=false;
+  const st=stw(),isRec=blitzScore>(st.qb60||0);
+  st.qb60=Math.max(st.qb60||0,blitzScore);
+  const pts=blitzScore*2+(blitzScore>=15?20:0),kb=blitzScore>0?gainKoban(blitzScore*3):0;
+  if(pts>0){day(dk()).pts+=pts;dealBoss(blitzScore*3)}
+  save();checkBadges();renderDojo();renderDash();
+  celebrate("⚔️",isRec?`百人斩新纪录：${blitzScore} 斩！`:`百人斩结束：${blitzScore} 斩`,`60 秒内精准斩破 ${blitzScore} 题！\n获得 +${pts} 积分 · +${kb} 🪙 小判`);
+}
+
+function answerQuiz(idx,btnEl){
+  if(!curQ||qAnswered)return;
+  if(dojoMode==="blitz"&&!blitzRun)return;
+  qAnswered=true;
+  const chosen=curQ.opts[idx],ok=chosen===curQ.ans,wm=wrongMap();
+  const buttons=document.querySelectorAll("#qbox .opt");
+  buttons.forEach((b,i)=>{
+    if(curQ.opts[i]===curQ.ans)b.classList.add("right");
+    else if(i===idx&&!ok)b.classList.add("wrong");
+    b.disabled=true;
+  });
+  speakJP(curQ.q);
+  const feed=$("#qfeed");
+  if(ok){
+    qStreak++;stw().qok=(stw().qok||0)+1;
+    addTodayQuizCount();
+    /* 错题池答对减计数，3 次归零自动毕业 */
+    if(wm[curQ.key]){wm[curQ.key]--;if(wm[curQ.key]<=0){delete wm[curQ.key];toast(`🎓「${curQ.q}」已彻底掌握，移出错题池！`)}}
+    if(dojoMode==="blitz"){
+      blitzScore++;
+      let timeAdd="";
+      if(qStreak%5===0){blitzLeft=Math.min(60,blitzLeft+3);timeAdd=" · ⏱+3s!"}
+      fx(560+Math.min(qStreak,10)*40);
+      if(feed)feed.innerHTML=`<span style="color:var(--ok)">⚡ 斩！${esc(curQ.q)}（${esc(curQ.r)}）：${esc(curQ.m)}${timeAdd}</span>`;
+      setTimeout(()=>{if(blitzRun){makeQuestion();renderDojoQuestion()}},360);
+    }else{
+      const mult=(todayBuff()==="quiz"?1.35:1)*frenzyMult();
+      const basePts=qStreak>=5?4:qStreak>=3?3:2;
+      const pts=Math.max(2,Math.round(basePts*mult));
+      const kb=gainKoban(2+(qStreak>=5?2:0));
+      day(dk()).pts+=pts;dealBoss(3);
+      fx(540+Math.min(qStreak,10)*40);
+      popText(btnEl,`+${pts}分 +${kb}🪙`);
+      if(feed)feed.innerHTML=`<span style="color:var(--ok)">✅ 正确！${esc(curQ.q)}【${esc(curQ.r)}】${esc(curQ.m)}（连击 ×${qStreak}）</span>`;
+      save();checkBadges();renderHudOnly();
+      setTimeout(()=>{makeQuestion();renderDojoQuestion()},780);
+    }
+  }else{
+    qStreak=0;
+    wm[curQ.key]=Math.min(5,(wm[curQ.key]||0)+3);
+    const keys=Object.keys(wm);if(keys.length>120)delete wm[keys[0]];
+    sfx(220,.35,"sawtooth");
+    if(dojoMode==="blitz"){
+      blitzLeft=Math.max(0,blitzLeft-2);
+      if(feed)feed.innerHTML=`<span style="color:var(--pink)">❌ -2s！正解：${esc(curQ.q)}【${esc(curQ.r)}】${esc(curQ.m)}（已入错题本）</span>`;
+      save();
+      setTimeout(()=>{if(blitzRun){makeQuestion();renderDojoQuestion()}},900);
+    }else{
+      if(feed)feed.innerHTML=`<span style="color:var(--pink)">❌ 已收录错题本！${esc(curQ.q)}【${esc(curQ.r)}】${esc(curQ.m)}</span>`;
+      save();renderDojoDecks();
+      setTimeout(()=>{makeQuestion();renderDojoQuestion()},1500);
+    }
+  }
+}
+
+function renderDojoDecks(){
+  const wbc=wbCards().length;
+  $("#dc").textContent=wbc?`错题${wbc}`:"";
+  $("#wbStat").textContent=`当前收录 ${wbc} 词`;
+  const decks=[
+    ["all","全部词库"],["k","入门/日常"],["n54","N5–N4"],["n3","N3 核心"],["n21","N2–N1 高阶"],["exp","惯用句/口语"],["wb",`📕 错题/生词 (${wbc})`]
+  ];
+  $("#dojoDecks").innerHTML=decks.map(([id,nm])=>`<button class="pill${dojoDeck===id?" on":""}" data-dk="${id}">${nm}</button>`).join("");
+  const cl=S.flags.custom||[];
+  $("#customList").innerHTML=cl.length?cl.slice().reverse().slice(0,12).map((c,ri)=>{
+    const idx=cl.length-1-ri;
+    return `<div class="qs" style="padding:8px 12px"><span class="qt"><b>${esc(c.q)}</b> <small style="color:var(--pri)">${esc(c.r||"")}</small><br><small>${esc(c.m)}</small></span><button class="ghost" data-delc="${idx}">删除</button></div>`;
+  }).join("")+(cl.length>12?`<p class="note">共 ${cl.length} 条自建生词</p>`:""):`<p class="note">暂无自建生词，在上方输入即可加入专属题库。</p>`;
+}
+
+function renderDojoQuestion(){
+  const box=$("#qbox");if(!box)return;
+  if(dojoMode==="blitz"&&!blitzRun){
+    box.innerHTML=`<div class="big" style="font-size:2.8rem">⚔️</div>
+      <h2 style="justify-content:center;margin-top:6px">60 秒百人斩挑战</h2>
+      <p class="note">限时 60 秒极速快刷！每 5 连击奖励 +3 秒，答错扣 2 秒。<br>历史最高纪录：<b>${ST().qb60||0} 斩</b></p>
+      <button class="btn gold block" id="startBlitz">⚡ 拔刀开战</button>`;
+    $("#startBlitz").onclick=startBlitz;
+    return;
+  }
+  if(!curQ)makeQuestion();
+  if(!curQ){
+    box.innerHTML=`<p class="empty" style="margin:0">📕 错题与生词本目前是空的！<br>先在「全部词库」刷题或在右侧添加生词吧。</p>`;
+    return;
+  }
+  const fav=favSet().includes(curQ.key);
+  box.innerHTML=`
+    ${dojoMode==="blitz"?`<div class="blitz-bar"><i id="blitzFill" style="width:${blitzLeft/60*100}%"></i></div>`:""}
+    <div class="qbox-top">
+      <span class="qtag">${dojoMode==="blitz"?`⏱ <b id="blitzTm">${blitzLeft.toFixed(1)}s</b> · 已斩 ${blitzScore}`:`道场累计 ${ST().qok||0} 题`}</span>
+      <span class="qstreak">${qStreak>=2?`🔥 连击 ×${qStreak}`:"答对积累连击"}</span>
+    </div>
+    <div class="qprompt">${esc(curQ.prompt)}</div>
+    <div class="qsub">${esc(curQ.sub)}</div>
+    <div class="qtools">
+      <button type="button" id="qAudio">🔊 发音 (R)</button>
+      <button type="button" id="qFav" class="${fav?"fav":""}">${fav?"⭐ 已收藏生词":"☆ 收藏生词"}</button>
+    </div>
+    <div class="opts">${curQ.opts.map((o,i)=>`<button class="opt" data-oi="${i}"><span class="k">${i+1}</span><span>${esc(o)}</span></button>`).join("")}</div>
+    <div class="qfeed" id="qfeed"></div>`;
+  $("#qAudio").onclick=()=>speakJP(curQ.q);
+  $("#qFav").onclick=()=>{
+    const fs=favSet(),i=fs.indexOf(curQ.key);
+    if(i>=0){fs.splice(i,1);toast("已移出生词收藏")}else{fs.push(curQ.key);if(fs.length>150)fs.shift();toast("⭐ 已加入生词本")}
+    save();renderDojoDecks();renderDojoQuestion();
+  };
+}
+function renderDojo(){
+  document.querySelectorAll("#dojoModes .pill").forEach(b=>b.classList.toggle("on",b.dataset.dm===dojoMode));
+  renderDojoDecks();renderDojoQuestion();
+}
+
+/* ============ 神社：每日御神签、祈愿抽卡与授与所 ============ */
+const KUJI_TIERS=[
+  {t:"大吉",buff:"crit",desc:"今日目标项目暴击率翻倍（24%）",kb:60},
+  {t:"中吉",buff:"focus",desc:"今日专注分钟积分 +20% · 小判获取 +15%",kb:45},
+  {t:"小吉",buff:"quiz",desc:"今日道场刷词积分加成 +35%",kb:35},
+  {t:"吉",buff:"combo",desc:"今日目标连击额外加分上限提升至 +8",kb:30}
+];
+function drawOmikuji(){
+  const t=dk();
+  if(S.flags.kuji&&S.flags.kuji.d===t){toast("今天已经抽过御神签啦，明日再来祈福吧");return}
+  const r=Math.random(),idx=r<.22?0:r<.52?1:r<.8?2:3;
+  const k=KUJI_TIERS[idx],wIdx=Math.floor(Math.random()*BASE_DECK.length);
+  S.flags.kuji={d:t,idx,buff:k.buff,wIdx};
+  if(idx===0)stw().kichi=(stw().kichi||0)+1;
+  S.flags.koban=(S.flags.koban||0)+k.kb;
+  day(t).pts+=10;
+  save();checkBadges();render();
+  const w=BASE_DECK[wIdx];
+  celebrate("⛩️",`今日御神签：【${k.t}】`,`加持效果：${k.desc}\n幸运日语：${w[0]}（${w[1]}·${w[2]}）\n祈福奖励：+10 积分 · +${k.kb} 🪙 小判`);
+}
+
+function rollOneRelic(minRarity=1){
+  const r=Math.random();
+  let rar=r<.05?4:r<.20?3:r<.52?2:1;
+  if(rar<minRarity)rar=minRarity;
+  const pool=RELICS.filter(x=>x.r===rar);
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+function pullGacha(n){
+  const cost=n===5?450:100;
+  if((S.flags.koban||0)<cost){toast(`小判不足（需要 ${cost} 🪙，专注、完成目标或道场刷词即可获取）`);return}
+  S.flags.koban-=cost;
+  const bag=S.flags.bag||(S.flags.bag={}),got=[];
+  for(let i=0;i<n;i++){
+    const minR=(n===5&&i===4&&!got.some(x=>x.r.r>=2))?2:1;
+    const rel=rollOneRelic(minR);
+    const isNew=!bag[rel.id];
+    bag[rel.id]=Math.min(5,(bag[rel.id]||0)+1);
+    if(bag[rel.id]===5&&!isNew)S.flags.koban+=25; /* 满星溢出返还星砂小判 */
+    got.push({r:rel,isNew,star:bag[rel.id]});
+  }
+  save();checkBadges();render();
+  const lines=got.map(g=>`${g.r.e} [${RAR_NAME[g.r.r]}] ${g.r.n} ${g.isNew?"✨新解锁！":`★${g.star}`}`).join("\n");
+  celebrate(got.map(g=>g.r.e).join(""),n===5?"五连祈愿降临！":"神社祈愿成功！",lines);
+}
+
+function buyShield(){
+  const sh=S.flags.shields||0;
+  if(sh>=2){toast("最多可同时持有 2 枚身代护符");return}
+  if((S.flags.koban||0)<200){toast("小判不足（需要 200 🪙）");return}
+  S.flags.koban-=200;S.flags.shields=sh+1;
+  fx(780);toast("🛡️ 已请得「身代护符」！漏打卡时将自动守护连击火焰");save();render();
+}
+function buyFrenzy(){
+  if(isFrenzy()){toast("狂热加成正在生效中！");return}
+  if((S.flags.koban||0)<150){toast("小判不足（需要 150 🪙）");return}
+  S.flags.koban-=150;S.flags.frenzyUntil=Date.now()+30*60000;
+  chord([587,740,880,1174]);toast("🔥 30 分钟双倍狂热已开启！目标与道场得分 +50%！");save();render();
+}
+
+function renderShrine(){
+  const t=dk(),kj=S.flags.kuji&&S.flags.kuji.d===t?S.flags.kuji:null;
+  const bag=S.flags.bag||{},owned=Object.keys(bag).length;
+  $("#shrineDot").hidden=!!kj;
+  $("#sc").textContent=`${owned}/${RELICS.length}`;
+  const kjInfo=kj?KUJI_TIERS[kj.idx]:null,kjWord=kj?BASE_DECK[kj.wIdx||0]:null;
+  $("#shrine").innerHTML=`
+    <div class="shrine-top">
+      <div class="kuji-card">
+        <h2>⛩️ 每日御神签<small>每日免费一签 · 抽取今日修行 Buff</small></h2>
+        ${kj?`<div class="kuji-res">
+          <div class="kuji-stamp">${kjInfo.t}</div>
+          <div>
+            <b>${kjInfo.desc}</b>
+            <small style="display:block;color:var(--muted);margin-top:3px">今日幸运词：${esc(kjWord[0])}（${esc(kjWord[1])} · ${esc(kjWord[2])}）</small>
+          </div>
+        </div>`:`<p class="note">摇动签筒，抽取今日运势、专属修行加成与免费小判！</p>
+        <button class="btn gold block" id="drawKuji">🎋 免费抽取今日御神签</button>`}
+      </div>
+
+      <div class="gacha-box">
+        <h2 style="justify-content:center">🎐 千本鸟居祈愿<small>当前持有 🪙 ${S.flags.koban||0} 小判</small></h2>
+        <p class="note" style="margin-top:4px">收集 24 种日本风物与守护伴学灵！每集满 6 种永久提升 +5% 小判获取（当前加成 +${Math.round((relicBonusRate()-1)*100)}%）。</p>
+        <div class="gacha-btns">
+          <button class="btn soft" id="pull1">🪙 100 祈愿一次</button>
+          <button class="btn gold" id="pull5">🪙 450 五连祈愿（保底SR+）</button>
+        </div>
+      </div>
+    </div>
+
+    <section class="sec">
+      <h2>🛡️ 神社授与所<small>使用小判兑换修行秘宝</small></h2>
+      <div class="shop-row">
+        <div class="shop-item">
+          <div><b>🛡️ 身代护符（已持有 ${S.flags.shields||0}/2）</b><p class="note" style="margin-top:4px">若某天忙忘学习，自动消耗 1 枚护符冻结昨日，保住连续学习火焰不断裂！</p></div>
+          <button class="btn soft" id="buySh" ${(S.flags.shields||0)>=2?"disabled":""}>🪙 200 兑换护符</button>
+        </div>
+        <div class="shop-item">
+          <div><b>🔥 修行狂热绘马（30 分钟）</b><p class="note" style="margin-top:4px">${isFrenzy()?"⚡ 狂热生效中！目标与道场得分提升 50%":"开启后 30 分钟内，完成目标项目与道场刷词基础得分提升 +50%！"}</p></div>
+          <button class="btn soft" id="buyFr" ${isFrenzy()?"disabled":""}>🪙 150 开启狂热</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h2>🏮 风物与伴学灵图鉴<small>已收集 ${owned}/${RELICS.length} · 点击即可设为计时器伴学灵</small></h2>
+      <div class="relics">${RELICS.slice().sort((a,b)=>b.r-a.r).map(r=>{
+        const st=bag[r.id]||0,eq=S.flags.pet===r.id;
+        return `<div class="rl ${RAR_CLS[r.r]} ${st?"":"lock"} ${eq?"eq":""}">
+          <span class="rar">${RAR_NAME[r.r]}</span>
+          ${st?`<span class="st">${"★".repeat(st)}</span>`:""}
+          <div class="emi">${st?r.e:"❔"}</div>
+          <b>${st?esc(r.n):"？？？"}</b>
+          <small>${st?esc(r.jp):"祈愿解锁"}</small>
+          ${st?`<button class="usebtn" data-pet="${r.id}">${eq?"✓ 伴学中":"设为伴学灵"}</button>`:""}
+        </div>`;
+      }).join("")}</div>
+    </section>`;
+  const dkBtn=$("#drawKuji");if(dkBtn)dkBtn.onclick=drawOmikuji;
+  $("#pull1").onclick=()=>pullGacha(1);
+  $("#pull5").onclick=()=>pullGacha(5);
+  $("#buySh").onclick=buyShield;
+  $("#buyFr").onclick=buyFrenzy;
+}
+
+/* ============ 渲染：目标、任务、周常 BOSS、热力图（按自然周对齐） ============ */
 let FOLD=true;
 function goalHTML(g){
-    const p=Math.min(100,Math.round(g.done/g.total*100)),fin=g.done>=g.total,on=g.id===S.activeId;
-    return `<article class="goal${on?" on":""}" data-id="${g.id}">
-    <header><button class="pick" data-a="pick" aria-pressed="${on}"><span class="dot"></span><span class="nm">${esc(g.name)}</span></button><span class="cnt">${fin?'<em class="done">✓ 已达成</em>':""}${g.done}<i>/${g.total}</i></span></header>
-    <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${p}"><i style="width:${p}%"></i></div>
-    <footer><span class="meta">${on?'<em class="chip">计时目标</em>':""}累计 ${Math.floor((g.ms||0)/60000)} 分钟</span>
-    <button class="ghost" data-a="undo" ${g.done?"":"disabled"}>撤销</button>
-    <button class="ghost${pendDel===g.id?" warn":""}" data-a="del">${pendDel===g.id?"再点确认删除":"删除"}</button></footer>
-    ${fin?"":'<button class="tap" data-a="inc">完成一项　+10 分</button>'}</article>`}
+  const p=Math.min(100,Math.round(g.done/g.total*100)),fin=g.done>=g.total,on=g.id===S.activeId;
+  return `<article class="goal${on?" on":""}${fin?" gfin":""}" data-id="${esc(g.id)}">
+  <header><button class="pick" data-a="pick" aria-pressed="${on}"><span class="dot"></span><span class="nm">${esc(g.name)}</span></button><span class="cnt">${fin?'<em class="done">✓ 已达成</em>':""}${g.done}<i>/${g.total}</i></span></header>
+  <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${p}"><i style="width:${p}%"></i></div>
+  <footer><span class="meta">${on?'<em class="chip">计时目标</em>':""}累计 ${Math.floor((g.ms||0)/60000)} 分钟</span>
+  <button class="ghost" data-a="undo" ${g.done?"":"disabled"}>撤销</button>
+  <button class="ghost${pendDel===g.id?" warn":""}" data-a="del">${pendDel===g.id?"再点确认删除":"删除"}</button></footer>
+  ${fin?"":`<button class="tap" data-a="inc">完成一项　+${Math.round(10*frenzyMult())} 分</button>`}</article>`;
+}
 function miniHTML(g){
-    return `<article class="goal gm" data-id="${g.id}"><button class="pick" data-a="pick" title="设为计时目标"><span class="dot"></span><span class="nm">${esc(g.name)}</span></button>
-    <span class="cnt"><em class="done">✓</em>${g.done}<i>/${g.total}</i></span>
-    <button class="ghost" data-a="undo">撤销</button><button class="ghost${pendDel===g.id?" warn":""}" data-a="del">${pendDel===g.id?"确认删除":"删除"}</button></article>`}
+  return `<article class="goal gm" data-id="${esc(g.id)}"><button class="pick" data-a="pick" title="设为计时目标"><span class="dot"></span><span class="nm">${esc(g.name)}</span></button>
+  <span class="cnt"><em class="done">✓</em>${g.done}<i>/${g.total}</i></span>
+  <button class="ghost" data-a="undo">撤销</button><button class="ghost${pendDel===g.id?" warn":""}" data-a="del">${pendDel===g.id?"确认删除":"删除"}</button></article>`;
+}
 function renderGoals(){
-  /* 已完成且不是当前计时目标的，自动归入折叠区；最近完成的排最前 */
   const old=S.goals.filter(g=>g.done>=g.total&&g.id!==S.activeId).reverse(),cur=S.goals.filter(g=>!old.includes(g));
   const fold=old.length?`<button class="fold" data-fold aria-expanded="${!FOLD}"><span>已完成 ${old.length} 个目标 · 累计 ${Math.floor(old.reduce((n,g)=>n+(g.ms||0),0)/60000)} 分钟</span><i>▾</i></button>${FOLD?"":old.map(miniHTML).join("")}`:"";
-  const hint=!cur.length&&S.goals.length?`<p class="empty">所有目标都完成了 🎉<br>添加一个新目标，继续冲。</p>`:"";
+  const hint=!cur.length&&S.goals.length?`<p class="empty">当前目标全部达成 🎉<br>点击上方快捷模板或添加新目标继续冲刺！</p>`:"";
   $("#goals").innerHTML=S.goals.length?cur.map(goalHTML).join("")+hint+fold:
-    `<p class="empty">先添加一个目标，例如「N3 单词」共 30 个项目。<br>完成一个就点一下，进度和积分会自动增加。</p>`}
+    `<p class="empty">点击上方快捷模板，或添加一个目标（如「N2 单词」30 项）。<br>每完成一项点一下，连击、暴击与小判奖励停不下来！</p>`;
+}
+
+function questsHTML(){
+  const t=dk(),Q=S.flags.q&&S.flags.q.d===t?S.flags.q:{c:[],box:0},x=ds(t);
+  return `<section class="sec"><h2>📜 今日任务<small>每个 +15分 +20🪙 · 全完成开宝箱 🎁${Q.box?" ✓":""}</small></h2>${todayQuests().map(q=>{
+    const v=Math.min(q.g,q.f(x)),ok=Q.c.includes(q.id);
+    return `<div class="qs${ok?" ok":""}"><span class="qi">${ok?"✅":"🎯"}</span><span class="qt"><b>${q.t}</b><div class="bar"><i style="width:${v/q.g*100}%"></i></div></span><small>${v}/${q.g}</small></div>`;
+  }).join("")}</section>`;
+}
+function bossHTML(){
+  const b=curBossState(),info=BOSSES[b.idx%BOSSES.length],max=bossMaxHp(b.stage),left=Math.max(0,max-b.dmg);
+  const pct=Math.max(0,Math.min(100,Math.round(left/max*100)));
+  return `<section class="sec"><h2>👹 每周言灵讨伐<small>第 ${b.stage} 阶 · 击败奖 +80分 +180🪙</small></h2>
+  <div class="boss">
+    <div class="boss-hd"><div class="boss-ic">${info.e}</div><div class="boss-info"><b>${info.n}</b><small>${info.sub}</small></div></div>
+    <div class="hp-bar"><i style="width:${pct}%"></i></div>
+    <div class="boss-ft"><span>剩余 HP：<b>${left}</b> / ${max}</span><span>专注/分 -2 · 项目 -10 · 刷词 -3</span></div>
+  </div></section>`;
+}
+
+/* 修复热力图：按周一至周日自然列对齐，含星期表头与护盾冻结色 */
+function heatHTML(){
+  const now=new Date(),dow=(now.getDay()+6)%7; /* 周一=0 .. 周日=6 */
+  const totalCells=35,endOffset=6-dow,startBack=totalCells-1-endOffset;
+  const frz=S.flags.frozen||[],cells=[];
+  for(let i=startBack;i>=-endOffset;i--){
+    const d=new Date(now.getFullYear(),now.getMonth(),now.getDate()-i),k=dk(d);
+    if(i<0){cells.push(`<i class="future" title="${k}（未来）"></i>`);continue}
+    const x=ds(k),m=x.ms/60000,isFrz=frz.includes(k)&&m===0&&x.items===0;
+    const l=m>0?(m<15?1:m<30?2:m<60?3:4):(x.items>0?1:0);
+    cells.push(`<i class="${isFrz?"frz":"l"+l}${i===0?" td":""}" title="${k}：${isFrz?"🛡️ 护符守护":`${Math.round(m)} 分钟 · ${x.items} 项 · ${x.pts} 分`}"></i>`);
+  }
+  return `<section class="sec"><h2>学习热力图<small>近 5 周按周一至周日对齐 · 越绿越投入</small></h2>
+  <div class="heat-box">
+    <div class="heat-hd"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+    <div class="heat">${cells.join("")}</div>
+  </div></section>`;
+}
+
+function badgesHTML(){
+  const n=BADGES.filter(b=>S.badges[b.id]).length;
+  return `<section class="sec"><h2>成就殿堂<small>${n}/${BADGES.length} · 铜 20 · 银 40 · 金 80 · 钻 150 分</small></h2><div class="badges">${BADGES.map(b=>{
+    const got=S.badges[b.id],pr=!got&&b.p?b.p():null;
+    return `<div class="bd r${b.r} ${got?"got":"lock"}"><span class="ic">${b.e}</span><span class="tx"><b>${b.n} <em class="rt">${RN[b.r]}</em></b><small>${b.d}</small>${pr?`<div class="pg"><i style="width:${pr[0]/pr[1]*100}%"></i></div><small class="when">${pr[0]}/${pr[1]}</small>`:""}${got?`<small class="when">${esc(String(got).slice(5))} 解锁 · +${RP[b.r]}分</small>`:""}</span></div>`;
+  }).join("")}</div></section>`;
+}
+
+function renderHudOnly(){
+  const t=dk(),x=ds(t),tot=totalPts(),lv=lvOf(tot),base=40*(lv-1)**2,next=40*lv*lv;
+  const pct=Math.round(Math.min(100,(tot-base)/(next-base)*100));
+  const kj=S.flags.kuji&&S.flags.kuji.d===t?KUJI_TIERS[S.flags.kuji.idx]:null;
+  const sh=S.flags.shields||0;
+  $("#kb").textContent=S.flags.koban||0;
+  $("#hud").innerHTML=`<div class="lv"><span><small>LEVEL</small><b>${lv}</b></span></div>
+  <div class="xp">
+    <div class="xp-top"><b>${TITLES[Math.min(lv-1,TITLES.length-1)]}</b>${kj?`<span class="buff-tag">⛩️ ${kj.t}加持</span>`:""}${isFrenzy()?`<span class="frenzy-tag">🔥 狂热×1.5</span>`:""}</div>
+    <div class="track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><i style="width:${pct}%"></i></div>
+    <small>总积分 ${tot} · 距 Lv.${lv+1} 还差 ${next-tot} 分</small>
+  </div>
+  <div class="pts"><b>${x.pts}</b><small>今日积分</small><small class="fl">🔥 ${streak()} 天${sh?` · 🛡️×${sh}`:""}</small></div>`;
+}
 
 function renderDash(){
-  const t=dk(),x=ds(t),f=focus(x),tot=totalPts(),lv=Math.floor(Math.sqrt(tot/40))+1,base=40*(lv-1)**2,next=40*lv*lv;
-  const titles=TITLES;
-  const pct=Math.round(Math.min(100,(tot-base)/(next-base)*100));
-  $("#hud").innerHTML=`<div class="lv"><span><small>LEVEL</small><b>${lv}</b></span></div>
-  <div class="xp"><b>${titles[Math.min(lv-1,titles.length-1)]}</b><div class="track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><i style="width:${pct}%"></i></div><small>距下一级还差 ${next-tot} 分</small></div>
-  <div class="pts"><b>${x.pts}</b><small>今日积分</small><small class="fl">🔥 ${streak()} 天连击</small></div>`;
-
+  renderHudOnly();
+  const t=dk(),x=ds(t),f=focus(x);
   const wk=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);wk.push({k:dk(d),w:"日一二三四五六"[d.getDay()]})}
   const mx=Math.max(30,...wk.map(o=>ds(o.k).ms/60000)),fs=wk.map(o=>focus(ds(o.k))).filter(v=>v!==null),avg=fs.length?Math.round(fs.reduce((a,b)=>a+b,0)/fs.length):null;
-  const tip=avg===null?"开始第一次计时后，这里会显示每天的专注度。":avg>=85?"近七天专注度 "+avg+"%，状态很稳。":avg>=65?"近七天专注度 "+avg+"%，暂停略多，试试缩短单次时长。":"近七天专注度 "+avg+"%，容易被打断。每次只设 15 分钟的小目标。";
+  const tip=avg===null?"开始第一次专注后，这里会展示每日专注度曲线。":avg>=85?`近七天平均专注度 ${avg}%，心流稳如泰山！`:avg>=65?`近七天平均专注度 ${avg}%，试试用 15 分钟短周期减少中断。`:`近七天平均专注度 ${avg}%，开启白噪音可帮助你更快静心。`;
 
   const rows=allKeys().map(k=>({k,...ds(k)})).filter(r=>r.pts>0).sort((a,b)=>b.pts-a.pts||b.k.localeCompare(a.k));
   const idx=rows.findIndex(r=>r.k===t),lab=k=>k===t?"今天":k.slice(5);
-  const li=r=>`<li class="${r.k===t?"me":""}"><span class="no">${rows.indexOf(r)+1}</span><span class="d"><b>${lab(r.k)}</b><small>${mins(r.ms)} · 专注度 ${focus(r)===null?"—":focus(r)+"%"} · ${r.items} 项</small></span><span class="p">${r.pts}<i>分</i></span></li>`;
-  let list=rows.slice(0,7).map(li).join("");if(idx>=7)list+=li(rows[idx]);
-  const head=!rows.length?"完成第一个项目，榜单就开始了。":idx===0?(rows.length>1?"今天是历史最高分，继续保持。":"今天暂列第 1。"):idx<0?"今天还没有积分，点一下完成项目就能上榜。":`今天排第 ${idx+1} 名，再得 ${rows[0].pts-rows[idx].pts+1} 分就能刷新最高纪录。`;
+  const li=(r,rankNo)=>`<li class="${r.k===t?"me":""}"><span class="no">${rankNo}</span><span class="d"><b>${lab(r.k)}</b><small>${mins(r.ms)} · 专注度 ${focus(r)===null?"—":focus(r)+"%"} · ${r.items} 项</small></span><span class="p">${r.pts}<i>分</i></span></li>`;
+  let list=rows.slice(0,7).map((r,i)=>li(r,i+1)).join("");if(idx>=7)list+=li(rows[idx],idx+1);
+  const head=!rows.length?"完成第一个项目或道场刷词即可登上榜单！":idx===0?(rows.length>1?"🏆 今天已刷新历史最高分纪录！继续扩大优势！":"今天暂列历史第 1 名！"):idx<0?"今天尚未得分，完成一项或去道场刷几题立即上榜！":`今天排历史第 ${idx+1} 名，再得 ${rows[0].pts-rows[idx].pts+1} 分即可登顶历史第一！`;
 
-  $("#dash").innerHTML=`<section class="sec"><h2>今日数据</h2><div class="grid">
+  $("#dash").innerHTML=`<section class="sec"><h2>今日修行总览</h2><div class="grid">
   <div class="cell"><b>${minsH(x.ms)}</b><small>专注时长</small></div>
   <div class="cell"><b>${f===null?"—":u(f,"%")}</b><small>专注度</small></div>
   <div class="cell"><b>${x.items}</b><small>完成项目</small></div>
-  <div class="cell"><b>${x.pauses}</b><small>暂停次数</small></div>
+  <div class="cell"><b>${todayQuizCount()}</b><small>道场答对</small></div>
   <div class="cell"><b>${u(Math.floor(x.best/60000),"分")}</b><small>最长连续</small></div>
   <div class="cell"><b>${u(streak(),"天")}</b><small>连续学习</small></div></div></section>
 
   <section class="sec"><h2>近七天专注时长<small>柱：分钟 · 底部：专注度</small></h2><div class="week">${wk.map(o=>{
     const v=ds(o.k),m=v.ms/60000,h=m>0?Math.max(6,Math.round(m/mx*100)):0,fc=focus(v),td=o.k===t;
-    return `<div class="col${td?" today":""}" title="${o.k}：${Math.round(m)} 分钟${fc===null?"":"，专注度 "+fc+"%"}"><span class="v">${m>0?Math.round(m):""}</span><div class="t"><div class="b" style="height:${h}%"></div></div><span class="w">${td?"今天":"周"+o.w}</span><span class="f">${fc===null?"":fc+"%"}</span></div>`}).join("")}</div>
-  <p class="note">${tip}</p></section>
+    return `<div class="col${td?" today":""}" title="${o.k}：${Math.round(m)} 分钟${fc===null?"":"，专注度 "+fc+"%"}"><span class="v">${m>0?Math.round(m):""}</span><div class="t"><div class="b" style="height:${h}%"></div></div><span class="w">${td?"今天":"周"+o.w}</span><span class="f">${fc===null?"":fc+"%"}</span></div>`;
+  }).join("")}</div><p class="note">${tip}</p></section>
   ${heatHTML()}
+  <section class="sec"><h2>每日高分殿堂</h2><p class="note" style="margin:0 0 10px">${head}</p>${list?`<ol class="rank">${list}</ol>`:""}</section>`;
 
-  <section class="sec"><h2>每日成就排行榜</h2><p class="note" style="margin:0 0 10px">${head}</p>${list?`<ol class="rank">${list}</ol>`:""}</section>
-
-  `;
-  $("#quests").innerHTML=questsHTML();$("#bdg").innerHTML=badgesHTML();
-  $("#bc").textContent=BADGES.filter(b=>S.badges[b.id]).length+"/"+BADGES.length}
+  $("#quests").innerHTML=questsHTML();
+  $("#boss").innerHTML=bossHTML();
+  $("#bdg").innerHTML=badgesHTML();
+  $("#bc").textContent=BADGES.filter(b=>S.badges[b.id]).length+"/"+BADGES.length;
+}
 
 function renderBar(){
   const s=S.session,l=live(),g=goal(S.activeId);
+  const cMin=s?s.cycleMin||25:selCycleMin,cMs=cMin*60000,bonus=cMin>=45?40:cMin>=25?20:10;
+  document.querySelectorAll("#modes button").forEach(b=>{
+    b.classList.toggle("on",Number(b.dataset.m)===cMin);
+    b.disabled=!!s;
+  });
+  $("#ringNote").textContent=`圆环 = ${cMin} 分钟连续专注进度，满环自动奖 +${bonus} 分（暂停会重置当前环）`;
   $("#clk").textContent=clock(l.act);
-  $("#sub").textContent=!s?(g?"目标：" + g.name:"选择目标后点击开始"):(s.run?"计时中":"已暂停")+" · "+(g?g.name:"");
-  const b=$("#go");b.textContent=!s?"开始":s.run?"暂停":"继续";b.classList.toggle("run",!!(s&&s.run));
-  $("#end").hidden=!s;const mn=$("#mini");mn.hidden=!(s&&TAB!=="focus");if(s)mn.textContent=(s.run?"⏱ ":"⏸ ")+clock(l.act)+(g?" · "+g.name:"");
-  const bl=s&&s.run?Math.min(1,(Date.now()-s.blockStart)/BLOCK):0;$("#strip").style.width=(bl*100)+"%";$("#ring").style.strokeDashoffset=339.3*(1-bl);
-  /* 标签页标题显示计时，PC 上切到别的标签也能看到 */
-  document.title=s&&s.run?clock(l.act)+" · "+APP_TITLE:APP_TITLE}
+  $("#sub").textContent=!s?(g?"当前目标："+g.name:"选择目标后点击开始"):(s.run?"心流专注中":"已暂停")+(g?" · "+g.name:"");
+  const b=$("#go");b.textContent=!s?"开始专注":s.run?"暂停":"继续专注";b.classList.toggle("run",!!(s&&s.run));
+  $("#end").hidden=!s;
+  const mn=$("#mini");mn.hidden=!(s&&TAB!=="focus");
+  if(s)mn.textContent=(s.run?"⏱ ":"⏸ ")+clock(l.act)+(g?" · "+g.name:"");
 
-function render(){renderGoals();renderDash();renderBar()}
+  /* 修复圆环：超过单轮时长后按周期取模继续推进，并展示已完成轮数徽章 */
+  const elapsed=s&&s.run&&s.blockStart?Math.max(0,Date.now()-s.blockStart):0;
+  const cycles=Math.floor(elapsed/cMs),bl=s&&s.run?(elapsed%cMs)/cMs:0;
+  $("#ring").style.strokeDashoffset=339.3*(1-bl);
+  const cyc=$("#cyc");cyc.hidden=!(s&&s.run&&cycles>=1);
+  if(cycles>=1)cyc.textContent=`🍅 ×${cycles}`;
 
-/* ---- tabs ---- */
+  /* 连击热度倒计时条 */
+  const cbLeft=combo>=2?Math.max(0,120000-(Date.now()-lastInc)):0;
+  const cbar=$("#comboBar");
+  if(cbLeft>0){
+    cbar.hidden=false;
+    $("#comboTxt").textContent=`⚡ 连击 ×${combo}`;
+    $("#comboFill").style.width=(cbLeft/120000*100)+"%";
+    $("#comboSec").textContent=Math.ceil(cbLeft/1000)+"s";
+  }else cbar.hidden=true;
+
+  document.title=s&&s.run?clock(l.act)+" · "+APP_TITLE:APP_TITLE;
+}
+
+function render(){renderPet();renderQuote();renderGoals();renderDash();renderShrine();renderDojo();renderBar()}
+
+/* ============ 页面标签切换与事件绑定 ============ */
 let TAB="focus";
-function setTab(t){TAB=t;document.querySelectorAll(".view").forEach(v=>v.hidden=v.id!=="v-"+t);
+function setTab(t){
+  if(TAB==="dojo"&&t!=="dojo"&&blitzRun)endBlitz();
+  TAB=t;
+  document.querySelectorAll(".view").forEach(v=>v.hidden=v.id!=="v-"+t);
   document.querySelectorAll(".tabs button").forEach(b=>{const on=b.dataset.t===t;b.classList.toggle("on",on);b.setAttribute("aria-current",on?"page":"false")});
-  scrollTo(0,0);renderBar()}
+  scrollTo(0,0);renderBar();
+}
 $(".tabs").onclick=e=>{const b=e.target.closest("button[data-t]");if(b)setTab(b.dataset.t)};
+$("#kobanBtn").onclick=()=>setTab("shrine");
 $("#mini").onclick=()=>setTab("focus");
 
-/* ---- events ---- */
+$("#modes").onclick=e=>{const b=e.target.closest("button[data-m]");if(!b||S.session)return;selCycleMin=Number(b.dataset.m);fx(560);renderBar()};
+$("#amb").onclick=e=>{const b=e.target.closest("button[data-amb]");if(!b)return;setAmbient(b.dataset.amb)};
+$("#presets").onclick=e=>{const b=e.target.closest("button[data-n]");if(!b)return;addGoal(b.dataset.n,b.dataset.t)};
 $("#gform").onsubmit=e=>{e.preventDefault();addGoal()};
-$("#goals").onclick=e=>{if(e.target.closest("[data-fold]")){FOLD=!FOLD;renderGoals();return}const b=e.target.closest("button[data-a]");if(!b)return;const g=goal(b.closest(".goal").dataset.id);if(!g)return;
-  ({pick,inc,undo,del})[b.dataset.a](g)};
+$("#goals").onclick=e=>{
+  if(e.target.closest("[data-fold]")){FOLD=!FOLD;renderGoals();return}
+  const b=e.target.closest("button[data-a]");if(!b)return;
+  const g=goal(b.closest(".goal").dataset.id);if(!g)return;
+  const act=b.dataset.a;
+  if(act==="inc")inc(g,b);else({pick,undo,del})[act](g);
+};
 $("#go").onclick=toggle;
 $("#end").onclick=endSession;
 $("#veil").onclick=e=>{if(lock)return;if(e.target.id==="veil"||e.target.id==="close")unmodal()};
-/* 键盘：空格 开始/暂停，Esc 关闭弹窗（仅电脑端有意义） */
+
+/* 道场与神社委托事件 */
+$("#dojoModes").onclick=e=>{
+  const b=e.target.closest("button[data-dm]");if(!b)return;
+  if(blitzRun)endBlitz();
+  dojoMode=b.dataset.dm;curQ=null;qStreak=0;renderDojo();
+};
+$("#dojoDecks").onclick=e=>{
+  const b=e.target.closest("button[data-dk]");if(!b)return;
+  dojoDeck=b.dataset.dk;curQ=null;renderDojo();
+};
+$("#qbox").onclick=e=>{
+  const b=e.target.closest("button[data-oi]");if(!b)return;
+  answerQuiz(Number(b.dataset.oi),b);
+};
+$("#cform").onsubmit=e=>{
+  e.preventDefault();
+  const q=$("#cq").value.trim(),r=$("#cr").value.trim(),m=$("#cm").value.trim();
+  if(!q||!m){toast("请填写日语词汇和中文释义");return}
+  const cl=S.flags.custom||(S.flags.custom=[]);
+  if(cl.length>=150){toast("自建生词已达 150 条上限，请先清理已掌握词条");return}
+  cl.push({q,r:r||q,m});
+  $("#cq").value="";$("#cr").value="";$("#cm").value="";
+  fx(680);toast(`➕ 已将「${q}」加入专属词库`);
+  if(dojoDeck==="wb")curQ=null;
+  save();renderDojo();
+};
+$("#customList").onclick=e=>{
+  const b=e.target.closest("button[data-delc]");if(!b)return;
+  const idx=Number(b.dataset.delc),cl=S.flags.custom||[];
+  if(cl[idx]){cl.splice(idx,1);curQ=null;save();renderDojo()}
+};
+$("#shrine").onclick=e=>{
+  const b=e.target.closest("button[data-pet]");if(!b)return;
+  S.flags.pet=b.dataset.pet;petCustomSay=null;
+  const p=curPet();speakJP(p.s.split("|")[0]);
+  toast(`${p.e} 已设「${p.n}」为你的专注伴学灵！`);
+  save();renderPet();renderShrine();
+};
+
+/* 键盘快捷键：专注页空格暂停/开始，道场页 1-4 选题 / R 朗读，Esc 关弹窗 */
 addEventListener("keydown",e=>{
   if(e.key==="Escape"&&!lock&&$("#veil").classList.contains("on")){unmodal();return}
-  if(e.code==="Space"&&!e.repeat&&e.target instanceof Element&&!e.target.closest("input,button,textarea,select,a,[contenteditable]")&&!$("#veil").classList.contains("on")){e.preventDefault();toggle()}
+  if($("#veil").classList.contains("on"))return;
+  if(e.target instanceof Element&&e.target.closest("input,textarea,select,[contenteditable]"))return;
+  if(TAB==="dojo"){
+    if(["1","2","3","4"].includes(e.key)){
+      const idx=Number(e.key)-1,btn=document.querySelector(`#qbox .opt[data-oi="${idx}"]`);
+      if(btn&&!btn.disabled){e.preventDefault();answerQuiz(idx,btn)}
+      return;
+    }
+    if((e.key==="r"||e.key==="R")&&curQ){e.preventDefault();speakJP(curQ.q);return}
+  }
+  if(TAB==="focus"&&e.code==="Space"&&!e.repeat&&!(e.target instanceof Element&&e.target.closest("button,a"))){
+    e.preventDefault();toggle();
+  }
 });
 
+/* 全局每秒心跳：仅在 loaded 后执行业务结算 */
 setInterval(()=>{
-  tickN++;const s=S.session;
-  if(s&&s.run){const n=Date.now(),b=n-s.blockStart;s.best=Math.max(s.best,b);const a=Math.floor(b/BLOCK);
-    if(a>s.blockAwarded){const add=a-s.blockAwarded;s.blockAwarded=a;day(dk()).pts+=20*add;toast("连续专注 25 分钟 +"+20*add+" 分");checkBadges();save();renderDash()}}
+  tickN++;
+  if(loaded&&S.session&&S.session.run){
+    if(syncBlock(Date.now())){checkBadges();save();renderDash()}
+  }
   renderBar();
-  if(tickN%10===0){if(S.session)flush();checkBadges();renderDash()}
-  if(tickN%60===0&&S.session&&loaded)save();
+  if(loaded&&tickN%10===0){if(S.session)flush();checkBadges();renderDash()}
+  if(loaded&&tickN%60===0&&S.session)save();
 },1000);
+
 render();
 boot();
 document.addEventListener("visibilitychange",()=>{
@@ -668,7 +1841,7 @@ document.addEventListener("visibilitychange",()=>{
   if(document.hidden){if(dirty.size||pushT||S.session)push(true)}
   else pull().catch(()=>setSync("同步失败"));
 });
-addEventListener("pagehide",()=>{if(loaded&&(dirty.size||pushT))push(true)});
+addEventListener("pagehide",()=>{if(loaded&&(dirty.size||pushT||S.session))push(true)});
 </script>
 </body>
 </html>
